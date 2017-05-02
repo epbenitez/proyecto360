@@ -1,0 +1,55 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="estadodecuenta"  namespace="/estadodecuenta" extends="default">
+
+        <action name="*EstadoDeCuenta*" class="com.allinone.actions.estadodecuenta.EstadoCuentaAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/estadodecuenta/{1}.jsp</result>
+        </action>
+        
+    </package>
+    <package name="estadodecuentareportes" namespace="/estadodecuenta/reportes" extends="default">
+        
+        <action name="*EstadoDeCuenta*" class="com.allinone.actions.estadodecuenta.EstadoCuentaAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/estadodecuenta/reportes/{1}.jsp</result>
+            <result name="input">/WEB-INF/jsp/estadodecuenta/reportes/reporteAbonos.jsp</result>
+        </action>
+        
+        <action name="*CargosAbonos*" class="com.allinone.actions.estadodecuenta.EstadoCuentaAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/estadodecuenta/reportes/cargosabonos/{1}.jsp</result>
+            <result name="input">/WEB-INF/jsp/estadodecuenta/reportes/cargosabonos/reporteEstadisticaCargosAbonos.jsp</result>
+        </action>
+        
+    </package>
+    <package name="estadodecuentaconsulta"  namespace="/estadodecuenta/consulta" extends="default">
+
+        <action name="*EstadoDeCuenta*" class="com.allinone.actions.estadodecuenta.EstadoCuentaAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/estadodecuenta/consulta/{1}.jsp</result>
+        </action>
+        
+    </package> 
+    <package name="estadodecuentagestion"  namespace="/estadodecuenta/gestion" extends="default">
+
+        <action name="*EstadoDeCuenta*" class="com.allinone.actions.estadodecuenta.EstadoCuentaAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/estadodecuenta/gestion/{1}.jsp</result>
+        </action>
+        
+    </package>   
+    
+    <package name="upload"  namespace="/upload" extends="default">
+
+        <action name="*Masivos*" class="com.allinone.actions.estadodecuenta.EstadoCuentaAction" method="{1}" >
+            <interceptor-ref name="scope">
+                <param name="session">configuracion</param>
+                <param name="type">middle</param>
+                <param name="key">configuracionKey</param>
+            </interceptor-ref>
+            <interceptor-ref name="generalAllInOne" />
+            <result name="input">/WEB-INF/jsp/estadodecuenta/{1}.jsp</result>
+            <result name="success_json">/WEB-INF/jsp/ajaxJSON.jsp</result>
+        </action>
+    </package>
+    
+    
+    
+</struts>

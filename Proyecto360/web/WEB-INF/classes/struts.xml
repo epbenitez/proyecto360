@@ -1,0 +1,135 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.ui.theme" value="css_xhtml" />
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+    <constant name="struts.multipart.maxSize" value="240097152" />
+    <constant name="struts.custom.i18n.resources" value="messages" />
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <constant name="struts.action.excludePattern" value=".*Service*"/>
+
+    <!-- Configuration for the default package. -->
+    <package name="default" namespace="/" extends="struts-default">
+        
+
+        <!-- result-types? -->
+        <result-types>
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+        </result-types>
+
+        <!-- interceptors? -->
+        <interceptors>
+            <interceptor name="exceptionAllInOne" class="com.allinone.util.ExceptionMappingInterceptor" />
+            <interceptor-stack name="generalAllInOne">
+                <interceptor-ref name="exceptionAllInOne">
+                    <param name="logEnabled">true</param>
+                    <param name="logCategory">com.allinone.util</param>
+                    <param name="logLevel">ERROR</param>
+                </interceptor-ref>
+                <interceptor-ref name="alias" />
+                <interceptor-ref name="servletConfig" />
+                <interceptor-ref name="i18n" />
+                <interceptor-ref name="prepare" />
+                <interceptor-ref name="chain" />
+                <interceptor-ref name="debugging" />
+                <interceptor-ref name="profiling" />
+                <interceptor-ref name="scopedModelDriven" />
+                <interceptor-ref name="modelDriven" />
+                <interceptor-ref name="fileUpload">
+                    <param name="maximumSize">240097152</param>
+                </interceptor-ref>
+                <interceptor-ref name="checkbox" />
+                <interceptor-ref name="staticParams" />
+                <interceptor-ref name="actionMappingParams" />
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <!--                <interceptor-ref name="conversionError" />-->
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- default-interceptor-ref? -->
+        <default-interceptor-ref name="generalAllInOne" />
+
+        <!-- default-action-ref? -->
+        <default-action-ref name="login" />
+
+        <!-- default-class-ref? -->
+
+        <!-- global-results? -->
+        <global-results>
+            <result name="unhandledException">/WEB-INF/jsp/exception.jsp</result>
+            <result name="userSessionException">/WEB-INF/jsp/expiredUserSession.jsp</result>
+            <result name="noActionDefined">/WEB-INF/jsp/exception.jsp</result>
+            <result name="login" type="redirect">/login.action</result>
+            <result name="sinacceso">/WEB-INF/jsp/access_denied.jsp</result>
+        </global-results>
+
+        <!-- global-exception-mappings? -->
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Throwable" result="unhandledException" />
+            <exception-mapping exception="com.allinone.exception.UserSessionException" result="userSessionException" />
+            <exception-mapping exception="java.lang.NoSuchMethodException" result="noActionDefined" />
+            <exception-mapping exception="com.allinone.exception.SsoValidUserException" result="sinacceso" />
+        </global-exception-mappings>
+
+        <!-- action * -->
+
+        <action name="index" class="com.allinone.actions.IndexAction">
+            <result name="success">/WEB-INF/jsp/index.jsp</result>
+            <result name="error" type="redirect">/login.action</result>
+        </action>
+        
+        <action name="portal" class="com.allinone.actions.IndexAction" method="portal">
+            <result name="portal">/WEB-INF/jsp/login-allinone-portal.jsp</result>
+        </action>
+
+        
+
+        <action name="captcha" class="com.allinone.actions.CaptchaAction">
+            <result>/stickyImg</result>
+        </action>
+
+        <action name="login" class="com.allinone.actions.security.LoginAction">
+            <result name="input">/WEB-INF/jsp/security/login.jsp</result>
+            <result name="loggedin" type="redirect">/index.action</result>
+            <result>/WEB-INF/jsp/security/login.jsp</result>
+        </action>
+        
+        <action name="access" class="com.allinone.actions.security.LoginAction">
+            <result name="input">/WEB-INF/jsp/security/login_NEW.jsp</result>
+            <result name="loggedin" type="redirect">/index.action</result>
+            <result>/WEB-INF/jsp/security/login_NEW.jsp</result>
+        </action>
+        
+        <action name="*Contrasenia" class="com.allinone.actions.usuario.AdministraUsuariosAction" method="{1}Contrasenia" >
+            <interceptor-ref name="generalAllInOne" />
+            <result name="input">/WEB-INF/jsp/contrasenia/cambio.jsp</result>
+        </action>
+
+        <action name="administracionPortal" class="com.allinone.actions.admin.AdministracionUsuariosAction" method="administracionPortal" >
+            <interceptor-ref name="generalAllInOne" />
+            <result name="success">/WEB-INF/jsp/contrasenia/administracionPortal.jsp</result>
+        </action>
+        
+    </package>
+    
+    <include file="struts-admin.xml" />
+    <include file="struts-ajax.xml" />
+    <include file="struts-estadocuenta.xml" />
+    <include file="struts-pagos.xml" />
+    <include file="struts-solicitudes.xml" />
+    <include file="struts-areas.xml" />
+    <include file="struts-equipos.xml" />
+    <include file="struts-enviocorreos.xml" />
+    <include file="struts-proyectos.xml" />
+    <include file="struts-notificaciones.xml" />
+</struts>

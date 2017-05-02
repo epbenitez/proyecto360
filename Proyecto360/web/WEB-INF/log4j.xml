@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n"/>
+        </layout>
+    </appender>
+<!--    <logger name="com.opensymphony.xwork2.util.OgnlUtil">
+       <level value="ERROR"/>
+    </logger>
+
+    <logger name="com.opensymphony.xwork2.ognl.OgnlValueStack">
+       <level value="ERROR"/>
+    </logger>-->
+    <root>
+        <priority value="error"></priority><!--off-fatal-error-warn-info-debug-trace-->
+        <appender-ref ref="stdout"/>
+    </root>
+</log4j:configuration>

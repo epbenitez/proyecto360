@@ -1,0 +1,14 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="correos"  namespace="/correos" extends="default">
+
+        <action name="*Correos*" class="com.allinone.actions.correos.EnvioCorreosAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/correos/{1}.jsp</result>
+            <result name="input">/WEB-INF/jsp/correos/configuracion.jsp</result>
+            <result name="error" type="redirect">/correos/configuracionCorreos.action</result>
+        </action>
+        
+    </package>   
+    
+</struts>

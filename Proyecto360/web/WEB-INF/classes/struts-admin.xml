@@ -1,0 +1,29 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="admin"  namespace="/admin" extends="default">
+
+        <action name="*Usuario" class="com.allinone.actions.admin.AdministracionUsuariosAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/admin/usuarios/{1}.jsp</result>
+            <result name="input">/WEB-INF/jsp/admin/usuarios/detalle.jsp</result>
+            <result name="nuevo">/WEB-INF/jsp/admin/usuarios/nuevo.jsp</result>
+            <result name="lista">/WEB-INF/jsp/admin/usuarios/lista.jsp</result>
+        </action>
+                
+    </package>
+    <package name="admin-menu"  namespace="/admin/menu" extends="default">
+
+        <action name="*MenuRolesCondominio" class="com.allinone.actions.admin.AdministracionMenuRoles" method="{1}" >
+            <result name="success">/WEB-INF/jsp/admin/menuroles/{1}.jsp</result>
+        </action>
+                
+    </package>
+     <package name="admin-usuarios"  namespace="/admin/usuarios" extends="default">
+
+    <action name="*Administracion*"   class="com.allinone.actions.usuario.AdministraUsuariosAction" method="{1}" >
+        <interceptor-ref name="generalAllInOne" />
+        <result name="input">/WEB-INF/jsp/contrasenia/{1}.jsp</result>
+        <result name="success">/WEB-INF/jsp/contrasenia/usuariosCondominioCambio.jsp</result>
+    </action>
+     </package>
+</struts>

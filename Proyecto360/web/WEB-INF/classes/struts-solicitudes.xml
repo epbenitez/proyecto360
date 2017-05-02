@@ -1,0 +1,14 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="solicitudes"  namespace="/solicitudes" extends="default">
+
+        <action name="*Solicitudes*" class="com.allinone.actions.solicitudes.SolicitudesAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/solicitudes/{1}.jsp</result>
+            <result name="detalle">/WEB-INF/jsp/solicitudes/detalle.jsp</result>
+            <result name="guarda">/WEB-INF/jsp/solicitudes/alta.jsp</result>
+        </action>
+        
+    </package>   
+    
+</struts>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    
+    <!-- Spring Quartz Scheduler job -->
+    <bean name="schedulerJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="com.allinone.jobs.EnvioCorreosJob" />
+    </bean>
+
+    <!-- Cron Trigger, run every 10 seconds -->
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="schedulerJob" />
+        <!--        <property name="cronExpression" value="0/10 * * * * ?" />-->
+        <property name="cronExpression" value="0 0 7 * * ?" />
+    </bean>
+
+    <!-- Scheduler -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="schedulerJob" />
+            </list>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger" />
+            </list>
+        </property>
+        
+        <property name="applicationContextSchedulerContextKey">
+            <value>applicationContext</value>
+        </property>
+    </bean>
+    
+    <!-- DAO's -->
+    
+    <bean id="bitacoraDao" class="com.allinone.persistence.dao.jpa.BitacoraJpaDao" />
+    <bean id="usuarioDao" class="com.allinone.persistence.dao.jpa.UsuarioJpaDao" />
+    <bean id="usuarioPrivilegioDao" class="com.allinone.persistence.dao.jpa.UsuarioPrivilegioJpaDao" />
+    <bean id="relacionMenuRolesDao" class="com.allinone.persistence.dao.jpa.RelacionMenuRolesJpaDao" />
+    <bean id="entidadFederativaDao" class="com.allinone.persistence.dao.jpa.EntidadFederativaJpaDao" />
+    <bean id="paisDao" class="com.allinone.persistence.dao.jpa.PaisJpaDao" />
+    <bean id="localidadColoniaDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.LocalidadColonia" />
+    </bean>
+    <bean id="relacionGeograficaDao" class="com.allinone.persistence.dao.jpa.RelacionGeograficaJpaDao" />
+    <bean id="configuracionDao" class="com.allinone.persistence.dao.jpa.ConfiguracionJpaDao" />
+    <bean id="menuDao" class="com.allinone.persistence.dao.jpa.MenuJpaDao" />
+    
+    
+    <bean id="rolDao" class="com.allinone.persistence.dao.jpa.RolJpaDao"/>
+    <bean id="personalAdministrativoDao" class="com.allinone.persistence.dao.jpa.PersonalAdministrativoJpaDao" />
+    <bean id="documentosDao" class="com.allinone.persistence.dao.jpa.DocumentosJpaDao" />
+
+    
+    <bean id="cuestionarioDao" class="com.allinone.persistence.dao.jpa.CuestionarioJpaDao" />
+    <bean id="cuestionarioPreguntaRespuestaDao" class="com.allinone.persistence.dao.jpa.CuestionarioPreguntaRespuestaJpaDao" />
+    <bean id="cuestionarioPreguntaTipoDao" class="com.allinone.persistence.dao.jpa.CuestionarioPreguntaTipoJpaDao" />
+    <bean id="cuestionarioPreguntasDao" class="com.allinone.persistence.dao.jpa.CuestionarioPreguntasJpaDao" />
+    <bean id="cuestionarioRespuestasDao" class="com.allinone.persistence.dao.jpa.CuestionarioRespuestasJpaDao" />
+    <bean id="cuestionarioRespuestasUsuarioDao" class="com.allinone.persistence.dao.jpa.CuestionarioRespuestasUsuarioJpaDao" />
+    <bean id="cuestionarioSeccionDao" class="com.allinone.persistence.dao.jpa.CuestionarioSeccionJpaDao" />
+   
+    <bean id="condominioDao" class="com.allinone.persistence.dao.jpa.CondominioJpaDao" />
+    <bean id="departamentoDao" class="com.allinone.persistence.dao.jpa.DepartamentoJpaDao" />
+    <bean id="departamentoUsuarioDao" class="com.allinone.persistence.dao.jpa.DepartamentoUsuarioJpaDao" />
+    <bean id="tipoDepartamentoDao" class="com.allinone.persistence.dao.jpa.TipoDepartamentoJpaDao" />
+    <bean id="torreDao" class="com.allinone.persistence.dao.jpa.TorreJpaDao" />
+    <bean id="cargoDao" class="com.allinone.persistence.dao.jpa.CargoJpaDao" />
+    <bean id="abonoDao" class="com.allinone.persistence.dao.jpa.AbonoJpaDao" />
+    <bean id="conceptoDao" class="com.allinone.persistence.dao.jpa.ConceptoJpaDao" />
+    <bean id="configuracionCargaMasivaDao" class="com.allinone.persistence.dao.jpa.ConfiguracionCargaMasivaJpaDao" />
+   
+    <bean id="abonoDatosPagoDao" class="com.allinone.persistence.dao.jpa.AbonoDatosPagoJpaDao" />
+    <bean id="abonoTipoDao" class="com.allinone.persistence.dao.jpa.AbonoTipoJpaDao" />
+    <bean id="bancoDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.Banco" />
+    </bean>
+    <bean id="solicitudesTipoDao" class="com.allinone.persistence.dao.jpa.SolicitudesTipoJpaDao" />
+    <bean id="solicitudesEstadoDao" class="com.allinone.persistence.dao.jpa.SolicitudesEstadoJpaDao" />
+    <bean id="usuarioCondominioDao" class="com.allinone.persistence.dao.jpa.UsuarioCondominioJpaDao" />
+    <bean id="solicitudDao" class="com.allinone.persistence.dao.jpa.SolicitudJpaDao" />
+    <bean id="solicitudHistorialDao" class="com.allinone.persistence.dao.jpa.SolicitudHistorialJpaDao" />
+    <bean id="solicitudesUmbralesDao" class="com.allinone.persistence.dao.jpa.SolicitudesUmbralesJpaDao" />
+    <bean id="solicitudesPermisosDao" class="com.allinone.persistence.dao.jpa.SolicitudesPermisosJpaDao" />
+    <bean id="vwSolicitudesUmbralesResponsablesDao" class="com.allinone.persistence.dao.jpa.VWSolicitudesUmbralesResponsablesJpaDao" />
+    <bean id="solicitudesAreaDao" class="com.allinone.persistence.dao.jpa.SolicitudesAreaJpaDao" />
+    <bean id="solicitudesTipoAreaDao" class="com.allinone.persistence.dao.jpa.SolicitudesTipoAreaJpaDao" />
+    <bean id="solicitudesCategoriaDao" class="com.allinone.persistence.dao.jpa.SolicitudesCategoriaJpaDao" />
+    
+    <bean id="relacionMenuRolesCondominioDao" class="com.allinone.persistence.dao.jpa.RelacionMenuRolesCondominioJpaDao" />
+    
+    <bean id="areaDao" class="com.allinone.persistence.dao.jpa.AreaJpaDao" />
+    <bean id="areaHorariosDao" class="com.allinone.persistence.dao.jpa.AreaHorariosJpaDao" />
+    <bean id="areaReglasReservacionDao" class="com.allinone.persistence.dao.jpa.AreaReglasReservacionJpaDao" />
+    <bean id="areaReservacionDao" class="com.allinone.persistence.dao.jpa.AreaReservacionJpaDao" />
+    
+    <bean id="equipoDao" class="com.allinone.persistence.dao.jpa.EquipoJpaDao" />
+    <bean id="equipoMantenimientoEstatusDao" class="com.allinone.persistence.dao.jpa.EquipoMantenimientoEstatusJpaDao" />
+    <bean id="equipoMantenimientoFrecuenciaDao" class="com.allinone.persistence.dao.jpa.EquipoMantenimientoFrecuenciaJpaDao" />
+    <bean id="equipoMantenimientoDao" class="com.allinone.persistence.dao.jpa.EquipoMantenimientoJpaDao" />
+    <bean id="equipoMantenimientoTipoDao" class="com.allinone.persistence.dao.jpa.EquipoMantenimientoTipoJpaDao" />
+    <bean id="equipoSistemaDao" class="com.allinone.persistence.dao.jpa.EquipoSistemaJpaDao" />
+    <bean id="equipoSubsistemaDao" class="com.allinone.persistence.dao.jpa.EquipoSubsistemaJpaDao" />    
+    <bean id="equipoTipoDao" class="com.allinone.persistence.dao.jpa.EquipoTipoJpaDao" />
+    
+    <bean id="configuracionEnvioCorreosDao" class="com.allinone.persistence.dao.jpa.ConfiguracionEnvioCorreosJpaDao" />
+    <bean id="departamentoContactoDao" class="com.allinone.persistence.dao.jpa.DepartamentoContactoJpaDao" />
+    
+    <bean id="proyectoDao" class="com.allinone.persistence.dao.jpa.ProyectoJpaDao" />
+    <bean id="proyectoTareaDao" class="com.allinone.persistence.dao.jpa.ProyectoTareaJpaDao" />
+    <bean id="proyectoCategoriaDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.ProyectoCategoria" />
+    </bean>
+    <bean id="proyectoCuotaDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.ProyectoCuota" />
+    </bean>
+    <bean id="proyectoEstatusDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.ProyectoEstatus" />
+    </bean>
+    <bean id="proyectoPrioridadDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.ProyectoPrioridad" />
+    </bean>
+    <bean id="proyectoTipoDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
+        <constructor-arg value="com.allinone.persistence.model.ProyectoTipo" />
+    </bean>
+    <bean id="vwProyectoSiguienteTareaDao" class="com.allinone.persistence.dao.jpa.VwProyectoSiguienteTareaJpaDao" />
+    
+    <bean id="notificacionGrupoDao" class="com.allinone.persistence.dao.jpa.NotificacionGrupoJpaDao" />
+    <bean id="notificacionGrupoDepartamentoDao" class="com.allinone.persistence.dao.jpa.NotificacionGrupoDepartamentoJpaDao" />
+    <bean id="notificacionDao" class="com.allinone.persistence.dao.jpa.NotificacionJpaDao" />
+    <bean id="notificacionEstatusDao" class="com.allinone.persistence.dao.jpa.NotificacionEstatusJpaDao" />
+    <bean id="notificacionDocumentoDao" class="com.allinone.persistence.dao.jpa.NotificacionDocumentoJpaDao" />
+    <bean id="notificacionesGruposDao" class="com.allinone.persistence.dao.jpa.NotificacionesGruposJpaDao" />
+    <bean id="notificacionLogDao" class="com.allinone.persistence.dao.jpa.NotificacionLogJpaDao" />
+    
+    
+    <!-- Service -->
+
+    <bean id="service" class="com.allinone.service.Service"
+          p:bitacoraDao-ref="bitacoraDao"
+          p:usuarioDao-ref="usuarioDao"
+          p:usuarioPrivilegioDao-ref="usuarioPrivilegioDao"
+          p:relacionMenuRolesDao-ref="relacionMenuRolesDao"
+          p:entidadFederativaDao-ref="entidadFederativaDao"
+          p:paisDao-ref="paisDao"
+          p:localidadColoniaDao-ref="localidadColoniaDao"
+          p:relacionGeograficaDao-ref="relacionGeograficaDao"
+          p:configuracionDao-ref="configuracionDao"
+          p:menuDao-ref="menuDao"
+          p:rolDao-ref="rolDao"
+          p:personalAdministrativoDao-ref="personalAdministrativoDao"
+          p:documentosDao-ref="documentosDao"
+          p:cuestionarioDao-ref="cuestionarioDao"
+          p:cuestionarioPreguntaRespuestaDao-ref="cuestionarioPreguntaRespuestaDao"
+          p:cuestionarioPreguntasDao-ref="cuestionarioPreguntasDao"
+          p:cuestionarioRespuestasDao-ref="cuestionarioRespuestasDao"
+          p:cuestionarioRespuestasUsuarioDao-ref="cuestionarioRespuestasUsuarioDao"
+          p:cuestionarioSeccionDao-ref="cuestionarioSeccionDao"
+          p:condominioDao-ref="condominioDao"
+          p:departamentoDao-ref="departamentoDao"
+          p:departamentoUsuarioDao-ref="departamentoUsuarioDao"
+          p:tipoDepartamentoDao-ref="tipoDepartamentoDao"
+          p:torreDao-ref="torreDao"
+          p:abonoDao-ref="abonoDao"
+          p:cargoDao-ref="cargoDao"
+          p:configuracionCargaMasivaDao-ref="configuracionCargaMasivaDao"
+          p:conceptoDao-ref="conceptoDao"
+          p:abonoDatosPagoDao-ref="abonoDatosPagoDao"
+          p:abonoTipoDao-ref="abonoTipoDao"
+          p:bancoDao-ref="bancoDao"
+          p:solicitudesTipoDao-ref="solicitudesTipoDao"
+          p:solicitudesEstadoDao-ref="solicitudesEstadoDao"
+          p:usuarioCondominioDao-ref="usuarioCondominioDao"
+          p:solicitudDao-ref="solicitudDao"
+          p:solicitudHistorialDao-ref="solicitudHistorialDao"
+          p:solicitudesUmbralesDao-ref="solicitudesUmbralesDao"
+          p:solicitudesPermisosDao-ref="solicitudesPermisosDao"
+          p:vwSolicitudesUmbralesResponsablesDao-ref="vwSolicitudesUmbralesResponsablesDao"
+          p:solicitudesAreaDao-ref="solicitudesAreaDao"
+          p:solicitudesTipoAreaDao-ref="solicitudesTipoAreaDao"
+          p:solicitudesCategoriaDao-ref="solicitudesCategoriaDao"
+          p:relacionMenuRolesCondominioDao-ref="relacionMenuRolesCondominioDao"
+          p:areaDao-ref="areaDao"
+          p:areaHorariosDao-ref="areaHorariosDao"
+          p:areaReglasReservacionDao-ref="areaReglasReservacionDao"
+          p:areaReservacionDao-ref="areaReservacionDao"
+          p:equipoDao-ref="equipoDao"
+          p:equipoMantenimientoEstatusDao-ref="equipoMantenimientoEstatusDao"
+          p:equipoMantenimientoFrecuenciaDao-ref="equipoMantenimientoFrecuenciaDao"
+          p:equipoMantenimientoDao-ref="equipoMantenimientoDao"
+          p:equipoMantenimientoTipoDao-ref="equipoMantenimientoTipoDao"
+          p:equipoSistemaDao-ref="equipoSistemaDao"
+          p:equipoSubsistemaDao-ref="equipoSubsistemaDao"
+          p:equipoTipoDao-ref="equipoTipoDao"
+          p:configuracionEnvioCorreosDao-ref="configuracionEnvioCorreosDao"
+          p:departamentoContactoDao-ref="departamentoContactoDao"
+          p:proyectoDao-ref="proyectoDao"
+          p:proyectoTareaDao-ref="proyectoTareaDao"
+          p:proyectoCategoriaDao-ref="proyectoCategoriaDao"
+          p:proyectoCuotaDao-ref="proyectoCuotaDao"
+          p:proyectoEstatusDao-ref="proyectoEstatusDao"
+          p:proyectoPrioridadDao-ref="proyectoPrioridadDao"
+          p:proyectoTipoDao-ref="proyectoTipoDao"
+          p:vwProyectoSiguienteTareaDao-ref="vwProyectoSiguienteTareaDao"
+          p:notificacionGrupoDao-ref="notificacionGrupoDao"
+          p:notificacionGrupoDepartamentoDao-ref="notificacionGrupoDepartamentoDao"
+          p:notificacionEstatusDao-ref="notificacionEstatusDao"
+          p:notificacionDao-ref="notificacionDao"
+          p:notificacionDocumentoDao-ref="notificacionDocumentoDao"
+          p:notificacionesGruposDao-ref="notificacionesGruposDao"
+          p:notificacionLogDao-ref="notificacionLogDao"
+    />
+
+    <!-- Ambiente -->
+    <bean id="ambiente" class="com.allinone.util.Ambiente" p:service-ref="service" />
+</beans>

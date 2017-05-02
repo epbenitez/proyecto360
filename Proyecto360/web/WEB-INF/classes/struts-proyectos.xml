@@ -1,0 +1,18 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="proyectos"  namespace="/proyectos" extends="default">
+
+        <action name="*Proyectos*" class="com.allinone.actions.proyectos.ProyectosAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/proyectos/{1}.jsp</result>
+            <result name="error" type="redirect">/proyectos/gestionProyectos.action</result>
+            <result name="detalle">/WEB-INF/jsp/proyectos/detalle.jsp</result>
+            <result name="guarda">/WEB-INF/jsp/proyectos/alta.jsp</result>
+            <result name="tareas">/WEB-INF/jsp/proyectos/tareas.jsp</result>
+            <result name="errortareas" type="redirect">/proyectos/tareasProyectos.action</result>
+            
+        </action>
+        
+    </package>   
+    
+</struts>

@@ -1,0 +1,43 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="catalogos"  namespace="/catalogos" extends="default">
+
+        <action name="*Presupuesto" class="com.allinone.actions.catalogos.AdministracionPresupuestosAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/catalogos/presupuestos/{1}.jsp</result>
+            <result name="formulario">/WEB-INF/jsp/catalogos/presupuestos/form.jsp</result>
+        </action>
+
+        <action name="*TipoBecaPeriodo" class="com.allinone.actions.catalogos.AdministracionTipoBecaPeriodoAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/catalogos/tipoBecasPeriodo/{1}.jsp</result>
+            <result name="formulario">/WEB-INF/jsp/catalogos/tipoBecasPeriodo/form.jsp</result>
+            <result name="lista">/WEB-INF/jsp/catalogos/tipoBecasPeriodo/lista.jsp</result>
+        </action>
+        
+        <action name="*Periodo" class="com.allinone.actions.catalogos.AdministracionPeriodosAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/catalogos/periodos/{1}.jsp</result>
+            <result name="formulario">/WEB-INF/jsp/catalogos/periodos/edicion.jsp</result>
+            <result name="lista">/WEB-INF/jsp/catalogos/periodos/lista.jsp</result>
+            <result name="error">/WEB-INF/jsp/catalogos/periodos/form.jsp</result>
+        </action>
+        
+        <action name="*TipoBeca" class="com.allinone.actions.catalogos.AdministracionTipoBecaAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/catalogos/tipoBecas/{1}.jsp</result>
+            <result name="formulario">/WEB-INF/jsp/catalogos/tipoBecas/form.jsp</result>
+            <result name="lista">/WEB-INF/jsp/catalogos/tipoBecas/lista.jsp</result>
+        </action>
+        
+        <action name="*Proceso" class="com.allinone.actions.catalogos.AdministracionProcesoAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/catalogos/proceso/{1}.jsp</result>
+            <result name="formulario">/WEB-INF/jsp/catalogos/proceso/form.jsp</result>
+            <result name="lista">/WEB-INF/jsp/catalogos/proceso/lista.jsp</result>
+        </action>
+        
+        <action name="*UnidadAcademica" class="com.allinone.actions.catalogos.AdministracionUnidadAcademicaAction" method="{1}" >
+            <result name="success">/WEB-INF/jsp/catalogos/unidadAcademica/{1}.jsp</result>
+            <result name="formulario">/WEB-INF/jsp/catalogos/unidadAcademica/edicion.jsp</result>
+            <result name="lista">/WEB-INF/jsp/catalogos/unidadAcademica/lista.jsp</result>
+        </action>
+
+    </package>
+</struts>

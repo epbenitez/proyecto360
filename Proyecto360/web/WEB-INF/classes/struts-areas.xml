@@ -1,0 +1,20 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="areas"  namespace="/areas" extends="default">
+
+        <action name="*Areas*" class="com.allinone.actions.areas.AreasAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/areas/{1}.jsp</result>
+            <result name="detalle">/WEB-INF/jsp/areas/detalle.jsp</result>
+            <result name="guarda">/WEB-INF/jsp/areas/alta.jsp</result>
+        </action>
+        
+        <action name="*Reservaciones*" class="com.allinone.actions.areas.ReservacionesAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/areas/reservaciones/{1}.jsp</result>
+            <result name="detalle">/WEB-INF/jsp/areas/reservaciones/detalle.jsp</result>
+            <result name="guarda">/WEB-INF/jsp/areas/reservaciones/alta.jsp</result>
+        </action>
+        
+    </package>   
+    
+</struts>

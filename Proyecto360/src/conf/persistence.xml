@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+    <persistence-unit name="AllInOnePU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>allinoneJNDI</jta-data-source>
+        <properties>
+            <!--<property name="eclipselink.target-database" value="MySQL5"/>-->
+            <!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
+
+            <!-- Descomentar para la generación de las tablas automaticamente -->
+            <!-- <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="setup/database/createTables.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="setup/database/dropTables.sql"/> -->
+
+            <!-- Loggin de EclipseLink -->
+            <property name="eclipselink.logging.level" value="FINE" /><!--OFF FINE INFO SEVERE-->
+            <property name="eclipselink.logging.level.sql" value="FINE" />
+            <property name="eclipselink.logging.level.cache" value="OFF" />
+            <property name="eclipselink.logging.logger" value="DefaultLogger" />
+        </properties>
+    </persistence-unit>
+</persistence>

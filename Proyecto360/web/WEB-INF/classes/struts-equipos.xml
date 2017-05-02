@@ -1,0 +1,13 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="equipos"  namespace="/equipos" extends="default">
+
+        <action name="*Equipos*" class="com.allinone.actions.equipo.EquipoAction" method="{1}" >
+            <result name="input">/WEB-INF/jsp/equipos/{1}.jsp</result>
+        </action>
+        
+        
+    </package>   
+    
+</struts>
