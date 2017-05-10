@@ -194,7 +194,7 @@
 </head>
 <div class="container">
     <p></p>
-    <h1>Gesti&oacute;n de Solicitudes</h1>
+    <h1>Sistema de Tickets</h1>
 
     <div class="row">
         <div class="col-lg-12">
@@ -337,7 +337,7 @@
                     </label>
                     <div class="col-lg-9">
                         <s:select id="tipoSolicitud"  class="form-control" 
-                                  list="tipos" listKey="id" listValue="nombre" headerKey=""
+                                  list="tiposInmueble" listKey="id" listValue="nombre" headerKey=""
                                   headerValue="-- Seleccione --"
                                   name="tipoSolicitud"
                                   />

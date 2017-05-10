@@ -25,6 +25,10 @@ public class SolicitudesTipoArea  implements Serializable, BaseEntity {
     private SolicitudesTipo tipoSolicitud;
     @ManyToOne
     private SolicitudesArea areaSolicitud;
+    @ManyToOne
+    private SolicitudesCategoria categoriaSolicitud;
+    @ManyToOne
+    private SolicitudesTipoInmueble tipoInmuebleSolicitud;
 
     @Override
     public Long getId() {
@@ -41,6 +45,22 @@ public class SolicitudesTipoArea  implements Serializable, BaseEntity {
 
     public void setTipoSolicitud(SolicitudesTipo tipoSolicitud) {
         this.tipoSolicitud = tipoSolicitud;
+    }
+
+    public SolicitudesCategoria getCategoriaSolicitud() {
+        return categoriaSolicitud;
+    }
+
+    public void setCategoriaSolicitud(SolicitudesCategoria categoriaSolicitud) {
+        this.categoriaSolicitud = categoriaSolicitud;
+    }
+
+    public SolicitudesTipoInmueble getTipoInmuebleSolicitud() {
+        return tipoInmuebleSolicitud;
+    }
+
+    public void setTipoInmuebleSolicitud(SolicitudesTipoInmueble tipoInmuebleSolicitud) {
+        this.tipoInmuebleSolicitud = tipoInmuebleSolicitud;
     }
 
     public SolicitudesArea getAreaSolicitud() {

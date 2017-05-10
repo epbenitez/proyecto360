@@ -95,6 +95,8 @@
     <bean id="solicitudesAreaDao" class="com.allinone.persistence.dao.jpa.SolicitudesAreaJpaDao" />
     <bean id="solicitudesTipoAreaDao" class="com.allinone.persistence.dao.jpa.SolicitudesTipoAreaJpaDao" />
     <bean id="solicitudesCategoriaDao" class="com.allinone.persistence.dao.jpa.SolicitudesCategoriaJpaDao" />
+    <bean id="solicitudesTipoInmuebleDao" class="com.allinone.persistence.dao.jpa.SolicitudesTipoInmuebleJpaDao" />
+    
     
     <bean id="relacionMenuRolesCondominioDao" class="com.allinone.persistence.dao.jpa.RelacionMenuRolesCondominioJpaDao" />
     
@@ -188,6 +190,7 @@
           p:solicitudesAreaDao-ref="solicitudesAreaDao"
           p:solicitudesTipoAreaDao-ref="solicitudesTipoAreaDao"
           p:solicitudesCategoriaDao-ref="solicitudesCategoriaDao"
+          p:solicitudesTipoInmuebleDao-ref="solicitudesTipoInmuebleDao"
           p:relacionMenuRolesCondominioDao-ref="relacionMenuRolesCondominioDao"
           p:areaDao-ref="areaDao"
           p:areaHorariosDao-ref="areaHorariosDao"

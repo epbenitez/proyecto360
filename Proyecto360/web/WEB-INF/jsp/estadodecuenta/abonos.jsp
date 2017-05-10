@@ -6,7 +6,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <head>
-    <title>ALL IN ONE - Abonos Masivos</title>
+    <title>Abonos Masivos</title>
     <!-- Add fancyBox main JS and CSS files -->
     <script type="text/javascript" src="/resources/js/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
     <link rel="stylesheet" type="text/css" href="/resources/js/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />

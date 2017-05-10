@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label for="maskedDate">Condominio:</label>
+                        <label for="maskedDate">Inmueble:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
                                 <s:textfield name="solicitud.departamento.condominio.nombre" class="form-control" readonly="true" />
@@ -169,8 +169,16 @@
                                 <s:textfield name="solicitud.departamento.nombre" class="form-control" readonly="true" />
                         </div>
                     </div>
+                        
                     <div class="col-md-12">
-                        <label for="maskedDate">Tipo de Solicitud:</label>
+                        <label for="maskedDate">Tipo de Inmueble:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                                <s:textfield name="solicitud.tipoInmuebleSolicitud.nombre" class="form-control" readonly="true" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="maskedDate">Tipo de Servicio:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-database"></i></span>
                                 <s:textfield name="solicitud.tipoSolicitud.nombre" class="form-control" readonly="true" />
@@ -181,6 +189,13 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-database"></i></span>
                                 <s:textfield name="solicitud.area.nombre" class="form-control" readonly="true" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="maskedDate">Categor&iacute;a:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                                <s:textfield name="solicitud.categoriaSolicitud.nombre" class="form-control" readonly="true" />
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -227,35 +242,20 @@
                     </div>
 
                     <!-- FECHAS -->
-                    <div class="col-md-12">
+<!--                    <div class="col-md-12">
                         <label for="maskedDate">Cond&oacute;mino que solicita:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                 <s:textfield name="solicitud.solicitante" class="form-control" readonly="true" />
                         </div>
-                    </div> 
-                    <div class="col-md-12">
-                        <label class="col-lg-2 control-label text-right">
-                            Categor&iacute;a
-                        </label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-quote-left"></i></span>
-                                <s:select id="tipoSolicitud"  class="form-control" 
-                                          list="categorias" listKey="id" listValue="nombre" headerKey=""
-                                          headerValue="-- Seleccione --"
-                                          name="solicitud.categoriaSolicitud.id"
-                                          data-bv-notempty="true"
-                                          data-bv-notempty-message="Este campo es requerido"
-                                          />
-                            <span class="help-block" id="tipoSolicitudMessage" />
-                        </div>
-                    </div>
+                    </div> -->
+                    
                     <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">       
                         <div class="col-md-12">
                             <label for="maskedDate">Comentarios:</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-quote-left"></i></span>
-                                    <s:textfield name="solicitud.comentario" id="comentario" class="form-control" />
+                                    <s:textfield name="solicitud.asunto" id="comentario" class="form-control" />
                             </div>
                         </div> 
                         <div class="form-group">

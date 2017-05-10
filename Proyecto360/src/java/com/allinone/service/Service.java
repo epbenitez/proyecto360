@@ -59,6 +59,7 @@ import com.allinone.persistence.dao.SolicitudesEstadoDao;
 import com.allinone.persistence.dao.SolicitudesPermisosDao;
 import com.allinone.persistence.dao.SolicitudesTipoAreaDao;
 import com.allinone.persistence.dao.SolicitudesTipoDao;
+import com.allinone.persistence.dao.SolicitudesTipoInmuebleDao;
 import com.allinone.persistence.dao.TipoDepartamentoDao;
 import com.allinone.persistence.dao.TorreDao;
 import com.allinone.persistence.dao.UsuarioCondominioDao;
@@ -133,6 +134,7 @@ public class Service {
     private SolicitudesAreaDao solicitudesAreaDao;
     private SolicitudesTipoAreaDao solicitudesTipoAreaDao;
     private SolicitudesCategoriaDao solicitudesCategoriaDao;
+    private SolicitudesTipoInmuebleDao solicitudesTipoInmuebleDao;
 
     private RelacionMenuRolesCondominioDao relacionMenuRolesCondominioDao;
 
@@ -752,6 +754,14 @@ public class Service {
 
     public void setNotificacionLogDao(NotificacionLogDao notificacionLogDao) {
         this.notificacionLogDao = notificacionLogDao;
+    }
+
+    public SolicitudesTipoInmuebleDao getSolicitudesTipoInmuebleDao() {
+        return solicitudesTipoInmuebleDao;
+    }
+
+    public void setSolicitudesTipoInmuebleDao(SolicitudesTipoInmuebleDao solicitudesTipoInmuebleDao) {
+        this.solicitudesTipoInmuebleDao = solicitudesTipoInmuebleDao;
     }
 
 }

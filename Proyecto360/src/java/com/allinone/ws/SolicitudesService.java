@@ -207,7 +207,7 @@ public class SolicitudesService extends SpringBeanAutowiringSupport {
                     .append("\"FechaSolicitud\":\"").append(s.getFechaSolicitud()).append("\",")
                     .append("\"FechaSolucion\":\"").append(s.getFechaSolucion()).append("\",")
                     .append("\"Folio\":\"").append(s.getDepartamento().getCondominio().getClave()).append("-").append(s.getTipoSolicitud().getClave()).append("-").append(myFormatter.format(s.getConsecutivo())).append("\",")
-                    .append("\"Comentario\":\"").append(s.getComentario()).append("\"")
+                    .append("\"Comentario\":\"").append(s.getAsunto()).append("\"")
                     //                    .append("\"Atendio\":\"").append(s.get()).append("\",")
                     .append("},");
 
@@ -275,7 +275,7 @@ public class SolicitudesService extends SpringBeanAutowiringSupport {
 
         Solicitud solicitud = new Solicitud();
         solicitud.setDepartamento(d);
-        solicitud.setComentario(comentario);
+        solicitud.setAsunto(comentario);
         solicitud.setTipoSolicitud(tipo);
         solicitud.setArea(area);
 
@@ -293,7 +293,7 @@ public class SolicitudesService extends SpringBeanAutowiringSupport {
             h.setFecha(new Date());
             h.setUsuario(creador);
             h.setEstadoSolicitud(solicitud.getEstadoSolicitud());
-            h.setComentario(solicitud.getComentario());
+            h.setComentario(solicitud.getAsunto());
 
             service.getSolicitudHistorialDao().save(h);
         } catch (Exception e) {

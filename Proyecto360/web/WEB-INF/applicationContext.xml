@@ -100,7 +100,7 @@
 
     <!-- DataBase Common Pooling (DBCP) de Glassfish. -->
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="allinoneJNDI" />
+        <property name="jndiName" value="proyecto360JNDI" />
     </bean>
 
     <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" >

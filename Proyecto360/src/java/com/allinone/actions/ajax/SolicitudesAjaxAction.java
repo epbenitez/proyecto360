@@ -35,6 +35,8 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     private String pkTipoPermiso;
 
     private Long pkTipoSolicitud;
+    private Long pkTipoInmueble;
+    private Long pkAreaId;
 
     public String getTorres() {
         if (isPropietario()) {
@@ -92,14 +94,40 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         }
         return SUCCESS_JSON;
     }
+    
+    public String getTipoServicio(){
+        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByInmueble(pkTipoInmueble);
+        if (lista == null) {
+        } else {
+            for (SolicitudesTipoArea d : lista) {
+                getJsonResult().add("[\"" + d.getTipoSolicitud().getId()
+                        + "\", \"" + d.getTipoSolicitud().getNombre()
+                        + " \"]");
+            }
+        }
+        return SUCCESS_JSON;
+    }
 
     public String getAreas() {
-        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().find(pkTipoSolicitud);
+        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByServicio(pkTipoSolicitud);
         if (lista == null) {
         } else {
             for (SolicitudesTipoArea d : lista) {
                 getJsonResult().add("[\"" + d.getAreaSolicitud().getId()
                         + "\", \"" + d.getAreaSolicitud().getNombre()
+                        + " \"]");
+            }
+        }
+        return SUCCESS_JSON;
+    }
+    
+    public String getCategorias() {
+        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByServicio(pkAreaId);
+        if (lista == null) {
+        } else {
+            for (SolicitudesTipoArea d : lista) {
+                getJsonResult().add("[\"" + d.getCategoriaSolicitud().getId()
+                        + "\", \"" + d.getCategoriaSolicitud().getNombre()
                         + " \"]");
             }
         }
@@ -351,6 +379,22 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
 
     public void setPkTipoSolicitud(Long pkTipoSolicitud) {
         this.pkTipoSolicitud = pkTipoSolicitud;
+    }
+
+    public Long getPkTipoInmueble() {
+        return pkTipoInmueble;
+    }
+
+    public void setPkTipoInmueble(Long pkTipoInmueble) {
+        this.pkTipoInmueble = pkTipoInmueble;
+    }
+
+    public Long getPkAreaId() {
+        return pkAreaId;
+    }
+
+    public void setPkAreaId(Long pkAreaId) {
+        this.pkAreaId = pkAreaId;
     }
 
 }

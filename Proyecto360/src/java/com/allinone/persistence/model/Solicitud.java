@@ -28,13 +28,15 @@ public class Solicitud implements Serializable, BaseEntity {
     @ManyToOne
     private Departamento departamento;
     @ManyToOne
+    private SolicitudesTipoInmueble tipoInmuebleSolicitud;
+    @ManyToOne
     private SolicitudesTipo tipoSolicitud;
     @ManyToOne
     private SolicitudesArea area;
     @ManyToOne
-    private SolicitudesEstado estadoSolicitud;
-    @ManyToOne
     private SolicitudesCategoria categoriaSolicitud;
+    @ManyToOne
+    private SolicitudesEstado estadoSolicitud;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaSolicitud;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -46,7 +48,8 @@ public class Solicitud implements Serializable, BaseEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaNotificacionCliente;
     private String solicitante;
-    private String comentario;
+    private String asunto;
+    private String descripcion;
     private Long consecutivo;
     
     @Transient
@@ -141,13 +144,20 @@ public class Solicitud implements Serializable, BaseEntity {
         this.fechaNotificacionCliente = fechaNotificacionCliente;
     }
 
-
-    public String getComentario() {
-        return comentario;
+    public String getAsunto() {
+        return asunto;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setAsunto(String asunto) {
+        this.asunto = asunto;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public SolicitudesCategoria getCategoriaSolicitud() {
@@ -190,9 +200,17 @@ public class Solicitud implements Serializable, BaseEntity {
         this.area = area;
     }
 
+    public SolicitudesTipoInmueble getTipoInmuebleSolicitud() {
+        return tipoInmuebleSolicitud;
+    }
+
+    public void setTipoInmuebleSolicitud(SolicitudesTipoInmueble tipoInmuebleSolicitud) {
+        this.tipoInmuebleSolicitud = tipoInmuebleSolicitud;
+    }
+
     @Override
     public String toString() {
-        return "Solicitud{" + "id=" + id + ", departamento=" + departamento + ", tipoSolicitud=" + tipoSolicitud + ", area=" + area + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", comentario=" + comentario + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
+        return "Solicitud{" + "id=" + id + ", departamento=" + departamento + ", tipoInmuebleSolicitud=" + tipoInmuebleSolicitud + ", tipoSolicitud=" + tipoSolicitud + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
     }
     
 }

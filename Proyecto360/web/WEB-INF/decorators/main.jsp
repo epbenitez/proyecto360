@@ -13,7 +13,7 @@
     <html>
         <head>
             <meta charset="UTF-8" />
-            <title>ALL IN ONE</title>
+            <title>360</title>
             <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1" />
 
 
@@ -42,7 +42,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-                <title>All In One</title>
+                <title>360</title>
 
                 <!-- bootstrap -->
                 <link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap.min.css" />
@@ -106,12 +106,12 @@
                 <decorator:head />
 
             </head>
-            <body  class="fixed-header fixed-footer boxed-layout pace-done theme-white">
+            <body  class="fixed-header fixed-footer boxed-layout pace-done theme-blue-gradient">
                 <div id="theme-wrapper">
                     <header class="navbar" id="header-navbar">
                         <div class="container">
                             <a href="/index.action" id="logo" class="navbar-brand">
-                                <i class="fa fa-building-o"> &nbsp;</i>All in One
+                                <i class="fa fa-building-o"> &nbsp;</i>360
                             </a>
 
                             <div class="clearfix">
@@ -275,7 +275,7 @@
 
                                 <footer id="footer-bar" class="row">
                                     <p id="footer-copyright" class="col-xs-12">
-                                        All in One - Administraci&oacute;n de Condominios
+                                        Proyecto 360 
                                     </p>
                                 </footer>
                             </div>

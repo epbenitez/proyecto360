@@ -36,8 +36,16 @@
                 getDepartamentos();
             });
 
-            $("#tipoSolicitud").change(function () {
+            $("#tiposInmueble").change(function () {
+                getTipoServicio();
+            });
+
+            $("#tipoServicio").change(function () {
                 getAreas();
+            });
+
+            $("#area").change(function () {
+                getCategorias();
             });
 
             init_contadorTa("comentario", "comentarioContador", 200);
@@ -50,7 +58,7 @@
 </head>
 <div class="container">
     <p></p>
-    <h1>Gesti&oacute;n de Solicitudes</h1>
+    <h1>Alta de Ticket</h1>
 
     <div class="row">
         <div class="col-lg-12">
@@ -73,15 +81,15 @@
 
         <div class="row col-lg-12 main-box" id="busquedaForm">
             <div class="clearfix" >&nbsp;</div>
-            <h3 style="margin-top: 5px; margin-left: 10px"><span>Nueva Solicitud</span></h3>
-            <h2 style="margin-left: 10px" >Seleccione Condominio y  Torre para encontrar el departamento.</h2>
+            <h3 style="margin-top: 5px; margin-left: 10px"><span>Nuevo Ticket</span></h3>
+            <h2 style="margin-left: 10px" >Seleccione Inmueble y  Torre para encontrar el departamento.</h2>
             <div class="clearfix" >&nbsp;</div>
             <div class="clearfix" >&nbsp;</div><div class="clearfix" >&nbsp;</div>
             <form id="formAltaSolicitud" name="formAltaSolicitud" action="/solicitudes/guardaSolicitudes.action" method="POST">
                 <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
-                            Condominio:
+                            Inmueble:
                         </label>
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 
@@ -97,7 +105,7 @@
                 <security:authorize ifNotGranted="ROLE_PROPIETARIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
-                            Condominio:
+                            Inmueble:
                         </label>
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 
@@ -133,7 +141,7 @@
                         </label>
                         <div class="col-lg-9">
                             <s:select id="torre"  class="form-control"
-                                      list="#{}"
+                                      list="#{null}"
                                       headerValue="-- Seleccione --"
                                       name="solicitud.departamento.torre.id"
                                       data-bv-notempty="true"
@@ -166,7 +174,7 @@
                         </label>
                         <div class="col-lg-9">
                             <s:select id="departamento"  class="form-control"
-                                      list="#{}"
+                                      list="#{null}"
                                       headerValue="-- Seleccione --"
                                       name="solicitud.departamento.id"
                                       data-bv-notempty="true"
@@ -179,39 +187,68 @@
 
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
-                        Tipo de Solicitud
+                        Tipo de Inmueble
                     </label>
                     <div class="col-lg-9">
-                        <s:select id="tipoSolicitud"  class="form-control" 
-                                  list="tipos" listKey="id" listValue="nombre" headerKey=""
+                        <s:select id="tiposInmueble"  class="form-control" 
+                                  list="tiposInmueble" listKey="id" listValue="nombre" headerKey=""
                                   headerValue="-- Seleccione --"
-                                  name="solicitud.tipoSolicitud.id"
+                                  name="solicitud.tipoInmuebleSolicitud.id"
                                   data-bv-notempty="true"
                                   data-bv-notempty-message="Este campo es requerido"
                                   />
                         <span class="help-block" id="tipoSolicitudMessage" />
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label class="col-lg-2 control-label text-right">
+                        Tipo de Servicio
+                    </label>
+                    <div class="col-lg-9">
+                        <s:select id="tipoServicio"  class="form-control" 
+                                  list="#{null}"
+                                  headerValue="-- Seleccione --"
+                                  name="solicitud.tipoSolicitud.id"
+                                  data-bv-notempty="true"
+                                  data-bv-notempty-message="Este campo es requerido"
+                                  />
+                        <span class="help-block" id="tipoServicioMessage" />
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
                         &Aacute;rea
                     </label>
                     <div class="col-lg-9">
                         <s:select id="area"  class="form-control" 
-                                  list="#{}"
+                                  list="#{null}"
                                   headerValue="-- Seleccione --"
                                   name="solicitud.area.id"
                                   data-bv-notempty="true"
                                   data-bv-notempty-message="Este campo es requerido"
                                   />
-                        <span class="help-block" id="tipoSolicitudMessage" />
+                        <span class="help-block" id="areaMessage" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-2 control-label text-right">Cond&oacute;mino que solicita:</label>
+                    <label class="col-lg-2 control-label text-right">
+                        Categor&iacute;a
+                    </label>
                     <div class="col-lg-9">
-                        <s:textfield id="solicitante" name="solicitud.solicitante" class="form-control"
+                        <s:select id="categoriaSolicitud"  class="form-control" 
+                                  list="#{null}"
+                                  headerValue="-- Seleccione --"
+                                  name="solicitud.categoriaSolicitud.id"
+                                  data-bv-notempty="true"
+                                  data-bv-notempty-message="Este campo es requerido"
+                                  />
+                        <span class="help-block" id="categoriaSolicitudMessage" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label text-right">Asunto</label>
+                    <div class="col-lg-9">
+                        <s:textfield id="asunto" name="solicitud.asunto" class="form-control"
                                      maxLength="200"
                                      data-bv-notempty="true"
                                      data-bv-notempty-message="Este campo es requerido" />
@@ -220,9 +257,9 @@
                 </div> 
 
                 <div class="form-group">
-                    <label class="col-lg-2 control-label text-right">Comentarios:</label>
+                    <label class="col-lg-2 control-label text-right">Descripci&oacute;n</label>
                     <div class="col-lg-9">
-                        <s:textfield id="comentario" name="solicitud.comentario" class="form-control"
+                        <s:textfield id="descripcion" name="solicitud.descripcion" class="form-control"
                                      maxLength="200"
                                      data-bv-notempty="true"
                                      data-bv-notempty-message="Este campo es requerido" />
@@ -316,6 +353,41 @@
 
         return false;
     }
+    function getTipoServicio() {
+
+        var dialog;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/getTipoServicioSolicitudesAjax.action',
+            dataType: 'json',
+            data: {pkTipoInmueble: $('#tiposInmueble').val()},
+            beforeSend: function () {
+                dialog = BootstrapDialog.show({
+                    title: 'Información',
+                    message: 'Sus datos están siendo cargados. Por favor, espere.',
+                    closable: false
+                });
+            },
+            cache: false,
+            success: function (aData) {
+                dialog.close();
+                $('#tipoServicio').get(0).options.length = 0;
+                $('#tipoServicio').get(0).options[0] = new Option("-- Seleccione --", "");
+
+                $.each(aData.data, function (i, item) {
+//                            console.log(item[0]);
+                    $('#tipoServicio').get(0).options[$('#tipoServicio').get(0).options.length] = new Option(item[1], item[0]);
+                    // Display      Value
+                });
+
+            },
+            error: function () {
+                alert("Connection Is Not Available");
+            }
+        });
+
+        return false;
+    }
 
     function getAreas() {
 
@@ -324,7 +396,7 @@
             type: 'POST',
             url: '/ajax/getAreasSolicitudesAjax.action',
             dataType: 'json',
-            data: {pkTipoSolicitud: $('#tipoSolicitud').val()},
+            data: {pkTipoSolicitud: $('#tipoServicio').val()},
             beforeSend: function () {
                 dialog = BootstrapDialog.show({
                     title: 'Información',
@@ -341,6 +413,42 @@
                 $.each(aData.data, function (i, item) {
 //                            console.log(item[0]);
                     $('#area').get(0).options[$('#area').get(0).options.length] = new Option(item[1], item[0]);
+                    // Display      Value
+                });
+
+            },
+            error: function () {
+                alert("Connection Is Not Available");
+            }
+        });
+
+        return false;
+    }
+
+    function getCategorias() {
+
+        var dialog;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/getCategoriasSolicitudesAjax.action',
+            dataType: 'json',
+            data: {pkAreaId: $('#area').val()},
+            beforeSend: function () {
+                dialog = BootstrapDialog.show({
+                    title: 'Información',
+                    message: 'Sus datos están siendo cargados. Por favor, espere.',
+                    closable: false
+                });
+            },
+            cache: false,
+            success: function (aData) {
+                dialog.close();
+                $('#categoriaSolicitud').get(0).options.length = 0;
+                $('#categoriaSolicitud').get(0).options[0] = new Option("-- Seleccione --", "");
+
+                $.each(aData.data, function (i, item) {
+//                            console.log(item[0]);
+                    $('#categoriaSolicitud').get(0).options[$('#categoriaSolicitud').get(0).options.length] = new Option(item[1], item[0]);
                     // Display      Value
                 });
 

@@ -10,6 +10,7 @@ import com.allinone.persistence.model.SolicitudesCategoria;
 import com.allinone.persistence.model.SolicitudesEstado;
 import com.allinone.persistence.model.SolicitudesPermisos;
 import com.allinone.persistence.model.SolicitudesTipo;
+import com.allinone.persistence.model.SolicitudesTipoInmueble;
 import com.allinone.persistence.model.Torre;
 import com.allinone.persistence.model.Usuario;
 import com.allinone.persistence.model.UsuarioCondominio;
@@ -31,7 +32,8 @@ public class SolicitudesAction extends BaseAction {
     private List<Condominio> condominios = new ArrayList<Condominio>();
     private List<Torre> torres = new ArrayList<Torre>();
     private List<Departamento> departamentos = new ArrayList<Departamento>();
-    private List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
+    private List<SolicitudesTipoInmueble> tiposInmueble = new ArrayList<SolicitudesTipoInmueble>();
+//    private List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
     private List<SolicitudesEstado> estados = new ArrayList<SolicitudesEstado>();
     private List<SolicitudesCategoria> categorias = new ArrayList<SolicitudesCategoria>();
     private Solicitud solicitud = new Solicitud();
@@ -43,7 +45,7 @@ public class SolicitudesAction extends BaseAction {
     private String fechaCompromiso;
     private String fechaLlegadaAdmin;
     private String fechaEntrega;
-    
+
     private SolicitudHistorial histAbrioSolicitud;
 
     public SolicitudesAction() {
@@ -57,9 +59,10 @@ public class SolicitudesAction extends BaseAction {
             condominios.add(d.getDepartamento().getCondominio());
             torres.add(d.getDepartamento().getTorre());
             departamentos.add(d.getDepartamento());
-            tipos = getDaos().getSolicitudesTipoDao().findAll();
+//            tipos = getDaos().getSolicitudesTipoDao().findAll();
+            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
             estados = getDaos().getSolicitudesEstadoDao().findAll();
-            
+
         } else {
             establecePermisosCombos(Boolean.TRUE);
         }
@@ -71,7 +74,8 @@ public class SolicitudesAction extends BaseAction {
         List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), atender);
         if (permisos != null) {
             for (SolicitudesPermisos p : permisos) {
-                tipos.add(p.getTipoSolicitud());
+//                tipos.add(p.getTipoSolicitud());
+                tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
             }
         }
         estados = getDaos().getSolicitudesEstadoDao().findAll();
@@ -82,8 +86,9 @@ public class SolicitudesAction extends BaseAction {
             DepartamentoUsuario du = getDaos().getDepartamentoUsuarioDao().findByUserId(u.getId());
             Condominio condominio = du.getDepartamento().getCondominio();
             condominios.add(condominio);
-            tipos = getDaos().getSolicitudesTipoDao().findAll();
-            
+//            tipos = getDaos().getSolicitudesTipoDao().findAll();
+            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
+
         } else {
 
             condominios = getDaos().getCondominioDao().condominiosPorUsuario(u.getId());
@@ -98,9 +103,10 @@ public class SolicitudesAction extends BaseAction {
             condominios.add(d.getDepartamento().getCondominio());
             torres.add(d.getDepartamento().getTorre());
             departamentos.add(d.getDepartamento());
-            tipos = getDaos().getSolicitudesTipoDao().findAll();
+//            tipos = getDaos().getSolicitudesTipoDao().findAll();
+            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
             estados = getDaos().getSolicitudesEstadoDao().findAll();
-            
+
         } else {
             establecePermisosCombos(Boolean.FALSE);
         }
@@ -111,8 +117,12 @@ public class SolicitudesAction extends BaseAction {
         if (solicitud == null || solicitud.getDepartamento() == null
                 || solicitud.getDepartamento().getTorre() == null
                 || solicitud.getDepartamento().getCondominio() == null
-                || solicitud.getComentario() == null
-                || solicitud.getTipoSolicitud() == null) {
+                || solicitud.getTipoInmuebleSolicitud() == null
+                || solicitud.getTipoSolicitud() == null
+                || solicitud.getArea() == null
+                || solicitud.getCategoriaSolicitud() == null
+                || solicitud.getAsunto() == null
+                || solicitud.getDescripcion() == null) {
             addActionError("No se han proporcionado uno o más datos necesarios para generar su solicitud, por favor, verifique.");
             return GUARDA;
         }
@@ -131,7 +141,7 @@ public class SolicitudesAction extends BaseAction {
             h.setFecha(new Date());
             h.setUsuario(u);
             h.setEstadoSolicitud(solicitud.getEstadoSolicitud());
-            h.setComentario(solicitud.getComentario());
+            h.setComentario(solicitud.getAsunto());
 
             getDaos().getSolicitudHistorialDao().save(h);
         } catch (Exception e) {
@@ -193,10 +203,9 @@ public class SolicitudesAction extends BaseAction {
         }
 
         categorias = getDaos().getSolicitudesCategoriaDao().findAll();
-        
-        histAbrioSolicitud = getDaos().getSolicitudHistorialDao().getHistorial(solicitud.getId(),solicitud.getEstadoSolicitud().getId());
 
-        solicitud.setComentario("");
+        histAbrioSolicitud = getDaos().getSolicitudHistorialDao().getHistorial(solicitud.getId(), solicitud.getEstadoSolicitud().getId());
+
         return DETALLE;
     }
 
@@ -208,7 +217,7 @@ public class SolicitudesAction extends BaseAction {
 
         Solicitud solicitudOriginal = getDaos().getSolicitudDao().findById(solicitud.getId());
 
-        solicitudOriginal.setComentario(solicitud.getComentario());
+//        solicitudOriginal.setComentario(solicitud.getComentario());
         if (solicitud.getEstadoSolicitud() == null || solicitud.getEstadoSolicitud().getId() == null || solicitud.getEstadoSolicitud().getId().equals("")) {
             solicitud.setEstadoSolicitud(solicitudOriginal.getEstadoSolicitud());
         } else {
@@ -242,7 +251,7 @@ public class SolicitudesAction extends BaseAction {
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
         SolicitudHistorial hsolicitud = new SolicitudHistorial();
         hsolicitud.setFecha(new Date());
-        hsolicitud.setComentario(solicitud.getComentario());
+        hsolicitud.setComentario(solicitud.getAsunto());
         hsolicitud.setEstadoSolicitud(solicitud.getEstadoSolicitud());
         hsolicitud.setSolicitud(solicitud);
         hsolicitud.setUsuario(u);
@@ -259,7 +268,7 @@ public class SolicitudesAction extends BaseAction {
      */
     public String permisos() {
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
-        tipos = getDaos().getSolicitudesTipoDao().findAll();
+//        tipos = getDaos().getSolicitudesTipoDao().findAll();
         if (isAdministrator()) {
             condominios = getDaos().getCondominioDao().findAll();
         } else {
@@ -278,12 +287,12 @@ public class SolicitudesAction extends BaseAction {
         this.condominios = condominios;
     }
 
-    public List<SolicitudesTipo> getTipos() {
-        return tipos;
+    public List<SolicitudesTipoInmueble> getTiposInmueble() {
+        return tiposInmueble;
     }
 
-    public void setTipos(List<SolicitudesTipo> tipos) {
-        this.tipos = tipos;
+    public void setTiposInmueble(List<SolicitudesTipoInmueble> tiposInmueble) {
+        this.tiposInmueble = tiposInmueble;
     }
 
     public List<SolicitudesEstado> getEstados() {
@@ -381,7 +390,5 @@ public class SolicitudesAction extends BaseAction {
     public void setHistAbrioSolicitud(SolicitudHistorial histAbrioSolicitud) {
         this.histAbrioSolicitud = histAbrioSolicitud;
     }
-    
-    
 
 }

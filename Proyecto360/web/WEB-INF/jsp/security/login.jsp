@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-        <title>ALL IN ONE</title>
+        <title>360</title>
 
         <!-- bootstrap -->
         <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -43,7 +43,7 @@
                                     <header id="login-header">
                                         <div id="login-logo">
                                             <!--<img src="img/logo.png" alt=""/>-->
-                                            <i class="fa fa-building-o"> &nbsp;</i>ALL IN ONE
+                                            <i class="fa fa-building-o"> &nbsp;</i>360
                                             <div>Administraci&oacute;n de Condominios</div>
                                         </div>
 
