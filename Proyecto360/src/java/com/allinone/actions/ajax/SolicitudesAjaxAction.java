@@ -94,8 +94,8 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         }
         return SUCCESS_JSON;
     }
-    
-    public String getTipoServicio(){
+
+    public String getTipoServicio() {
         List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByInmueble(pkTipoInmueble);
         if (lista == null) {
         } else {
@@ -104,6 +104,16 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                         + "\", \"" + d.getTipoSolicitud().getNombre()
                         + " \"]");
             }
+        }
+        return SUCCESS_JSON;
+    }
+
+    public String getTipoImnueble() {
+        Condominio inmueble = getDaos().getCondominioDao().findById(pkCondominio);
+        if (inmueble != null) {
+            getJsonResult().add("[\"" + inmueble.getTipoInmueble().getId()
+                    + "\", \"" + inmueble.getTipoInmueble().getNombre()
+                    + " \"]");
         }
         return SUCCESS_JSON;
     }
@@ -120,7 +130,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         }
         return SUCCESS_JSON;
     }
-    
+
     public String getCategorias() {
         List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByServicio(pkAreaId);
         if (lista == null) {
@@ -153,37 +163,33 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         List<SolicitudHistorial> lista;
         if (pkCondominio == null) {
             if (isAdministrator()) {
-                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTorre, pkDepartamento, pkTipo, pkEstado);
+                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado);
             } else {
                 getJsonResult().add("");
                 return SUCCESS_JSON;
             }
+        } else if (pkTipo != null && pkTipo.toString().trim().length() > 0) {
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado);
+        } else if (isPropietario()) {
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipo>(), pkEstado);
         } else {
-
-            if (pkTipo != null && pkTipo.toString().trim().length() > 0) {
-                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTorre, pkDepartamento, pkTipo, pkEstado);
-            } else if (isPropietario()) {
-                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTorre, pkDepartamento, new ArrayList<SolicitudesTipo>(), pkEstado);
-            } else {
-                //Solo una lista de las solicitudes del tipo que tiene permiso en la tabla rmm_solicitudes_permisos
-                Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
-                List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), Boolean.TRUE);
-                List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
-                if (permisos != null) {
-                    for (SolicitudesPermisos p : permisos) {
-                        tipos.add(p.getTipoSolicitud());
-                    }
+            //Solo una lista de las solicitudes del tipo que tiene permiso en la tabla rmm_solicitudes_permisos
+            Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
+            List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), Boolean.TRUE);
+            List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
+            if (permisos != null) {
+                for (SolicitudesPermisos p : permisos) {
+                    tipos.add(p.getTipoSolicitud());
                 }
-                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTorre, pkDepartamento, tipos, pkEstado);
             }
-
-            if (lista != null && !lista.isEmpty()) {
-                lista = bo.getUmbrales(lista);
-            }
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, tipos, pkEstado);
         }
 
-        if (lista == null) {
+        if (lista == null || lista.isEmpty()) {
         } else if (isAdministrator() || isPropietario()) {
+
+            lista = bo.getUmbrales(lista);
+
             for (SolicitudHistorial sh : lista) {
 //                    Date fechaSolucion = d.getFechaSolucion() == null ? new Date() : d.getFechaSolucion();
                 String[] colorMasTooltip = new String[2];
@@ -194,20 +200,18 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                     colorMasTooltip = bo.getColor(sh.getSolicitud().getUmbral(), sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion());
                 }
 
-                getJsonResult().add("[\"" + sh.getSolicitud().getDepartamento().getCondominio().getNombre()
-                        + "\", \"" + sh.getSolicitud().getDepartamento().getTorre().getNombre()
-                        + "\", \"" + sh.getSolicitud().getDepartamento().getNombre()
+                getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
                         + "\", \"" + sh.getSolicitud().getTipoSolicitud().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
                         + "\", \"" + (sh.getSolicitud().getFechaSolicitud() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolicitud(), "yyyy-MM-dd hh:mm"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
                         //                            + "\", \"" + (d.getFechaCompromiso() == null ? "" : UtilFile.dateToString(d.getFechaCompromiso(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaCompromiso()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaSolucion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolucion(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion()) + " días)")
-                        + "\", \"" + sh.getSolicitud().getDepartamento().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoSolicitud().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
+                        + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoSolicitud().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
                         //                            + "\", \"" + (d.getFechaNotificacionCliente() == null ? "" : UtilFile.dateToString(d.getFechaNotificacionCliente(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaNotificacionCliente()) + " días)")
 
                         + "\", \"" + sh.getUsuarioRegistra()
-                        + "\", \"" + sh.getSolicitud().getSolicitante()
+                        //                        + "\", \"" + sh.getSolicitud().getSolicitante()
                         + "\", \"" + sh.getComentario()
                         + "\", \"" + sh.getUsuario().getUsuario()
                         + "\", \"<a class='fancybox fancybox.iframe' href='/solicitudes/detalleSolicitudes.action?solicitud.id=" + sh.getSolicitud().getId() + "'> <span class='fa-stack'><i class='fa fa-square fa-stack-2x'></i><i class='fa fa-pencil  fa-stack-1x fa-inverse'></i></span></a>"
@@ -223,19 +227,18 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                 } else {
                     colorMasTooltip = bo.getColor(sh.getSolicitud().getUmbral(), sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion());
                 }
-                getJsonResult().add("[\"" + sh.getSolicitud().getDepartamento().getTorre().getNombre()
-                        + "\", \"" + sh.getSolicitud().getDepartamento().getNombre()
+                getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
                         + "\", \"" + sh.getSolicitud().getTipoSolicitud().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
                         + "\", \"" + (sh.getSolicitud().getFechaSolicitud() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolicitud(), "yyyy-MM-dd hh:mm"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
                         //                            + "\", \"" + (d.getFechaCompromiso() == null ? "" : UtilFile.dateToString(d.getFechaCompromiso(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaCompromiso()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaSolucion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolucion(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion()) + " días)")
-                        + "\", \"" + sh.getSolicitud().getDepartamento().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoSolicitud().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
+                        + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoSolicitud().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
                         //                            + "\", \"" + (d.getFechaNotificacionCliente() == null ? "" : UtilFile.dateToString(d.getFechaNotificacionCliente(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaNotificacionCliente()) + " días)")
 
                         + "\", \"" + sh.getUsuarioRegistra()
-                        + "\", \"" + sh.getSolicitud().getSolicitante()
+                        //                        + "\", \"" + sh.getSolicitud().getSolicitante()
                         + "\", \"" + sh.getComentario()
                         + "\", \"" + sh.getUsuario().getUsuario()
                         + "\", \"<a class='fancybox fancybox.iframe' href='/solicitudes/detalleSolicitudes.action?solicitud.id=" + sh.getSolicitud().getId() + "'> <span class='fa-stack'><i class='fa fa-square fa-stack-2x'></i><i class='fa fa-pencil  fa-stack-1x fa-inverse'></i></span></a>"

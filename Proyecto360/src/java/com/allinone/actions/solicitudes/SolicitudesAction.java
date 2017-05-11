@@ -33,7 +33,7 @@ public class SolicitudesAction extends BaseAction {
     private List<Torre> torres = new ArrayList<Torre>();
     private List<Departamento> departamentos = new ArrayList<Departamento>();
     private List<SolicitudesTipoInmueble> tiposInmueble = new ArrayList<SolicitudesTipoInmueble>();
-//    private List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
+    private List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
     private List<SolicitudesEstado> estados = new ArrayList<SolicitudesEstado>();
     private List<SolicitudesCategoria> categorias = new ArrayList<SolicitudesCategoria>();
     private Solicitud solicitud = new Solicitud();
@@ -114,20 +114,18 @@ public class SolicitudesAction extends BaseAction {
     }
 
     public String guarda() {
-        if (solicitud == null || solicitud.getDepartamento() == null
-                || solicitud.getDepartamento().getTorre() == null
-                || solicitud.getDepartamento().getCondominio() == null
-                || solicitud.getTipoInmuebleSolicitud() == null
+        if (solicitud == null || solicitud.getCondominio() == null
                 || solicitud.getTipoSolicitud() == null
                 || solicitud.getArea() == null
                 || solicitud.getCategoriaSolicitud() == null
                 || solicitud.getAsunto() == null
                 || solicitud.getDescripcion() == null) {
+            System.out.println("solicitud: " + solicitud);
             addActionError("No se han proporcionado uno o más datos necesarios para generar su solicitud, por favor, verifique.");
             return GUARDA;
         }
 
-        Integer consecutivo = getDaos().getSolicitudDao().getConsecutivo(solicitud.getDepartamento().getCondominio().getId(), solicitud.getTipoSolicitud().getId());
+        Integer consecutivo = getDaos().getSolicitudDao().getConsecutivo(solicitud.getCondominio().getId(), solicitud.getTipoSolicitud().getId());
 
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
         try {
@@ -174,7 +172,7 @@ public class SolicitudesAction extends BaseAction {
         }
 
         historial = getDaos().getSolicitudHistorialDao().getHistorial(solicitud.getId());
-        usuarioCondominio = getDaos().getUsuarioCondominioDao().getUsuarioCondominio(solicitud.getDepartamento().getCondominio().getId());
+        usuarioCondominio = getDaos().getUsuarioCondominioDao().getUsuarioCondominio(solicitud.getCondominio().getId());
 
         if (solicitud.getEstadoSolicitud().getId() == 1L) {                         //ABIERTO
             estados = new ArrayList<SolicitudesEstado>();
@@ -268,7 +266,7 @@ public class SolicitudesAction extends BaseAction {
      */
     public String permisos() {
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
-//        tipos = getDaos().getSolicitudesTipoDao().findAll();
+        tipos = getDaos().getSolicitudesTipoDao().findAll();
         if (isAdministrator()) {
             condominios = getDaos().getCondominioDao().findAll();
         } else {
@@ -390,5 +388,14 @@ public class SolicitudesAction extends BaseAction {
     public void setHistAbrioSolicitud(SolicitudHistorial histAbrioSolicitud) {
         this.histAbrioSolicitud = histAbrioSolicitud;
     }
+
+    public List<SolicitudesTipo> getTipos() {
+        return tipos;
+    }
+
+    public void setTipos(List<SolicitudesTipo> tipos) {
+        this.tipos = tipos;
+    }
+    
 
 }

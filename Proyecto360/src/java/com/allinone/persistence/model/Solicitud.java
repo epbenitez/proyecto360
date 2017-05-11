@@ -4,6 +4,7 @@ package com.allinone.persistence.model;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,17 +26,15 @@ public class Solicitud implements Serializable, BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private Departamento departamento;
-    @ManyToOne
-    private SolicitudesTipoInmueble tipoInmuebleSolicitud;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Condominio condominio;
+    @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudesTipo tipoSolicitud;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudesArea area;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudesCategoria categoriaSolicitud;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudesEstado estadoSolicitud;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaSolicitud;
@@ -58,12 +57,10 @@ public class Solicitud implements Serializable, BaseEntity {
     public Solicitud(){
         
     }
-    public Solicitud(Long id, String departamento, String torreNombre, Long condominioId, Long tipoSolicitudId, 
+    public Solicitud(Long id, Long condominioId, Long tipoSolicitudId, 
             String tipoSolicitudNombre, String estado, Date fechaSolicitud, Date  fechaSolucion, Date fechaNotificacion,Long consecutivo){
         this.id = id;
-        this.departamento = new Departamento(departamento);
-        this.departamento.setCondominio(new Condominio(condominioId));
-        this.departamento.setTorre(new Torre(torreNombre));
+        this.condominio = new Condominio(condominioId);
         this.tipoSolicitud = new SolicitudesTipo(tipoSolicitudId,tipoSolicitudNombre);
         this.estadoSolicitud = new SolicitudesEstado(estado);
         this.fechaSolicitud = fechaSolicitud;
@@ -80,14 +77,13 @@ public class Solicitud implements Serializable, BaseEntity {
         this.id = id;
     }
 
-    public Departamento getDepartamento() {
-        return departamento;
+    public Condominio getCondominio() {
+        return condominio;
     }
 
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
+    public void setCondominio(Condominio condominio) {
+        this.condominio = condominio;
     }
-
     public SolicitudesTipo getTipoSolicitud() {
         return tipoSolicitud;
     }
@@ -200,17 +196,9 @@ public class Solicitud implements Serializable, BaseEntity {
         this.area = area;
     }
 
-    public SolicitudesTipoInmueble getTipoInmuebleSolicitud() {
-        return tipoInmuebleSolicitud;
-    }
-
-    public void setTipoInmuebleSolicitud(SolicitudesTipoInmueble tipoInmuebleSolicitud) {
-        this.tipoInmuebleSolicitud = tipoInmuebleSolicitud;
-    }
-
     @Override
     public String toString() {
-        return "Solicitud{" + "id=" + id + ", departamento=" + departamento + ", tipoInmuebleSolicitud=" + tipoInmuebleSolicitud + ", tipoSolicitud=" + tipoSolicitud + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
+        return "Solicitud{" + "id=" + id + ", condominio=" + condominio + ", tipoSolicitud=" + tipoSolicitud + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
     }
     
 }

@@ -39,16 +39,12 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
     }
 
     @Override
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long torreId, Long departamentoId, Long tipoId, Long estadoId) {
-
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId) {
         
-        
-        StringBuilder sql = new StringBuilder("select c.nombre, c.clave,t.nombre, d.nombre, st.nombre, st.clave, se.nombre, s.id, s.fechasolicitud, ");
+        StringBuilder sql = new StringBuilder("select c.nombre, c.clave,'', '', st.nombre, st.clave, se.nombre, s.id, s.fechasolicitud, ");
         sql.append(" s.fechasolucion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id ");
         sql.append(" from ent_solicitudes s ");
-        sql.append(" inner join ent_departamento d on d.id = s.departamento_id ");
-        sql.append(" inner join ent_condominio c on c.id = d.condominio_id ");
-        sql.append(" inner join ent_torre t on t.id = d.torre_id ");
+        sql.append(" inner join ent_condominio c on c.id = s.condominio_id ");
         sql.append(" inner join cat_solicitudes_tipo st on st.id = s.tiposolicitud_id ");
         sql.append(" inner join cat_solicitudes_estado se on se.id = s.estadosolicitud_id ");
         sql.append(" inner join ent_solicitudes_historial h on h.id = ");
@@ -60,15 +56,7 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
         sql.append(" where 1 = 1 ");
 
         if (condominioId != null && !condominioId.toString().isEmpty()) {
-            sql.append(" and d.condominio_id = ").append(condominioId);
-        }
-
-        if (torreId != null && !torreId.toString().isEmpty()) {
-            sql.append(" and d.torre_id = ").append(torreId);
-        }
-
-        if (departamentoId != null && !departamentoId.toString().isEmpty()) {
-            sql.append(" and d.id = ").append(departamentoId);
+            sql.append(" and s.condominio_id = ").append(condominioId);
         }
 
         if (tipoId != null && !tipoId.toString().isEmpty()) {
@@ -99,20 +87,21 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
                 sh.setComentario(o[13]==null?null:o[13].toString());
                 sh.setUsuarioRegistra(o[14]==null?null:o[14].toString());
                 
-                Departamento d = new Departamento();
+//                Departamento d = new Departamento();
                 
                 Condominio c = new Condominio();
                 c.setId(o[15]==null?null:new Long(o[15].toString()));
                 c.setNombre(o[0]==null?null:o[0].toString());
                 c.setClave(o[1]==null?null:o[1].toString());
-                d.setCondominio(c);
+                s.setCondominio(c);
+//                d.setCondominio(c);
                 
-                Torre t = new Torre();
-                t.setNombre(o[2]==null?null:o[2].toString());
-                d.setTorre(t);
+//                Torre t = new Torre();
+//                t.setNombre(o[2]==null?null:o[2].toString());
+//                d.setTorre(t);
                 
-                d.setNombre(o[3]==null?null:o[3].toString());
-                s.setDepartamento(d);
+//                d.setNombre(o[3]==null?null:o[3].toString());
+//                s.setDepartamento(d);
                 
                 SolicitudesTipo tipoSolicitud = new SolicitudesTipo();
                 tipoSolicitud.setId(o[16]==null?null:new Long(o[16].toString()));
@@ -136,14 +125,12 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
     }
     
     @Override
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long torreId, Long departamentoId, List<SolicitudesTipo> tipoLst, Long estadoId) {
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipo> tipoLst, Long estadoId) {
 
-        StringBuilder sql = new StringBuilder("select c.nombre, c.clave,t.nombre, d.nombre, st.nombre, st.clave, se.nombre, s.id, s.fechasolicitud, ");
+        StringBuilder sql = new StringBuilder("select c.nombre, c.clave,'', '', st.nombre, st.clave, se.nombre, s.id, s.fechasolicitud, ");
         sql.append(" s.fechasolucion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id ");
         sql.append(" from ent_solicitudes s ");
-        sql.append(" inner join ent_departamento d on d.id = s.departamento_id ");
-        sql.append(" inner join ent_condominio c on c.id = d.condominio_id ");
-        sql.append(" inner join ent_torre t on t.id = d.torre_id ");
+        sql.append(" inner join ent_condominio c on c.id = s.condominio_id ");
         sql.append(" inner join cat_solicitudes_tipo st on st.id = s.tiposolicitud_id ");
         sql.append(" inner join cat_solicitudes_estado se on se.id = s.estadosolicitud_id ");
         sql.append(" inner join ent_solicitudes_historial h on h.id = ");
@@ -155,15 +142,7 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
         sql.append(" where 1 = 1 ");
 
         if (condominioId != null && !condominioId.toString().isEmpty()) {
-            sql.append(" and d.condominio_id = ").append(condominioId);
-        }
-
-        if (torreId != null && !torreId.toString().isEmpty()) {
-            sql.append(" and d.torre_id = ").append(torreId);
-        }
-
-        if (departamentoId != null && !departamentoId.toString().isEmpty()) {
-            sql.append(" and d.id = ").append(departamentoId);
+            sql.append(" and s.condominio_id = ").append(condominioId);
         }
 
         if (tipoLst != null && !tipoLst.isEmpty()) {
@@ -199,20 +178,12 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
                 sh.setComentario(o[13]==null?null:o[13].toString());
                 sh.setUsuarioRegistra(o[14]==null?null:o[14].toString());
                 
-                Departamento d = new Departamento();
-                
                 Condominio c = new Condominio();
                 c.setId(o[15]==null?null:new Long(o[15].toString()));
                 c.setNombre(o[0]==null?null:o[0].toString());
                 c.setClave(o[1]==null?null:o[1].toString());
-                d.setCondominio(c);
+                s.setCondominio(c);
                 
-                Torre t = new Torre();
-                t.setNombre(o[2]==null?null:o[2].toString());
-                d.setTorre(t);
-                
-                d.setNombre(o[3]==null?null:o[3].toString());
-                s.setDepartamento(d);
                 
                 SolicitudesTipo tipoSolicitud = new SolicitudesTipo();
                 tipoSolicitud.setId(o[16]==null?null:new Long(o[16].toString()));

@@ -26,7 +26,7 @@ public class SolicitudesBO {
         }
 
         for (SolicitudHistorial sh : solicitudesH) {
-            SolicitudesUmbrales umbral = service.getSolicitudesUmbralesDao().findUmbral(sh.getSolicitud().getDepartamento().getCondominio().getId(), sh.getSolicitud().getTipoSolicitud().getId());
+            SolicitudesUmbrales umbral = service.getSolicitudesUmbralesDao().findUmbral(sh.getSolicitud().getCondominio().getId(), sh.getSolicitud().getTipoSolicitud().getId());
             sh.getSolicitud().setUmbral(umbral);
         }
 

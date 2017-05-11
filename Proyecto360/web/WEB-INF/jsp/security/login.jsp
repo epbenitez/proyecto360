@@ -44,7 +44,7 @@
                                         <div id="login-logo">
                                             <!--<img src="img/logo.png" alt=""/>-->
                                             <i class="fa fa-building-o"> &nbsp;</i>360
-                                            <div>Administraci&oacute;n de Condominios</div>
+                                            <div>Administraci&oacute;n de Condominios hjhjhj</div>
                                         </div>
 
                                     </header>

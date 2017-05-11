@@ -29,12 +29,9 @@
 
 
             $("#condominio").change(function () {
-                getTorres();
+                getTipoImnueble();
             });
 
-            $("#torre").change(function () {
-                getDepartamentos();
-            });
 
             $("#tiposInmueble").change(function () {
                 getTipoServicio();
@@ -94,7 +91,7 @@
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 
                                       list="condominios" listKey="id" listValue="nombre" headerKey=""
-                                      name="solicitud.departamento.condominio.id"
+                                      name="solicitud.condominio.id"
                                       data-bv-notempty="true"
                                       data-bv-notempty-message="Este campo es requerido"
                                       />
@@ -111,7 +108,7 @@
                             <s:select id="condominio"  class="form-control" 
                                       list="condominios" listKey="id" listValue="nombre" headerKey=""
                                       headerValue="-- Seleccione --"
-                                      name="solicitud.departamento.condominio.id"
+                                      name="solicitud.condominio.id"
                                       data-bv-notempty="true"
                                       data-bv-notempty-message="Este campo es requerido"
                                       />
@@ -119,7 +116,7 @@
                         </div>
                     </div>
                 </security:authorize>
-
+                <%--
                 <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
@@ -184,14 +181,14 @@
                         </div>
                     </div>
                 </security:authorize>
-
+--%>
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
                         Tipo de Inmueble
                     </label>
                     <div class="col-lg-9">
                         <s:select id="tiposInmueble"  class="form-control" 
-                                  list="tiposInmueble" listKey="id" listValue="nombre" headerKey=""
+                                  list="#{null}"
                                   headerValue="-- Seleccione --"
                                   name="solicitud.tipoInmuebleSolicitud.id"
                                   data-bv-notempty="true"
@@ -232,7 +229,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
-                        Categor&iacute;a
+                        Tipo de trabajo
                     </label>
                     <div class="col-lg-9">
                         <s:select id="categoriaSolicitud"  class="form-control" 
@@ -292,57 +289,25 @@
 
 <script>
 
-    function getTorres() {
+    function getTipoImnueble() {
         $.ajax({
             type: 'POST',
-            url: '/ajax/getTorresSolicitudesAjax.action',
+            url: '/ajax/getTipoImnuebleSolicitudesAjax.action',
             dataType: 'json',
             data: {pkCondominio: $('#condominio').val()},
             cache: false,
             success: function (aData) {
 
-                $('#torre').get(0).options.length = 0;
-                $('#torre').get(0).options[0] = new Option("-- Seleccione --", "");
+//                $('#tiposInmueble').get(0).options.length = 0;
+//                $('#tiposInmueble').get(0).options[0] = new Option("-- Seleccione --", "");
 
                 $.each(aData.data, function (i, item) {
 //                            console.log(item[0]);
-                    $('#torre').get(0).options[$('#torre').get(0).options.length] = new Option(item[1], item[0]);
+                    $('#tiposInmueble').get(0).options[$('#tiposInmueble').get(0).options.length] = new Option(item[1], item[0]);
                     // Display      Value
-                });
-
-            },
-            error: function () {
-                alert("Connection Is Not Available");
-            }
-        });
-
-        return false;
-    }
-
-    function getDepartamentos() {
-        var dialog;
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/getDepartamentosSolicitudesAjax.action',
-            dataType: 'json',
-            data: {pkCondominio: $('#condominio').val(), pkTorre: $('#torre').val()},
-            beforeSend: function () {
-                dialog = BootstrapDialog.show({
-                    title: 'Información',
-                    message: 'Sus datos están siendo cargados. Por favor, espere.',
-                    closable: false
-                });
-            },
-            cache: false,
-            success: function (aData) {
-                dialog.close();
-                $('#departamento').get(0).options.length = 0;
-                $('#departamento').get(0).options[0] = new Option("-- Seleccione --", "");
-
-                $.each(aData.data, function (i, item) {
-//                            console.log(item[0]);
-                    $('#departamento').get(0).options[$('#departamento').get(0).options.length] = new Option(item[1], item[0]);
-                    // Display      Value
+                    $('#tiposInmueble').val(item[0]);
+                    $('#tiposInmueble').prop('disabled', true);
+                    getTipoServicio();
                 });
 
             },

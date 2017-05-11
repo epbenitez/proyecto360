@@ -146,13 +146,13 @@
                     ],
         </security:authorize>
         <security:authorize ifNotGranted="ROLE_PROPIETARIO">
-                    "columnDefs": [
-                        {
-                            "targets": [8,9],
-                            "visible": false,
-                            "searchable": false
-                        }
-                    ],
+//                    "columnDefs": [
+//                        {
+//                            "targets": [8,9],
+//                            "visible": false,
+//                            "searchable": false
+//                        }
+//                    ],
         </security:authorize>
                     "language": {
                         "sProcessing": "Buscando información...",
@@ -227,7 +227,7 @@
                 <security:authorize ifAnyGranted="ROLE_ADMIN">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
-                            Condominio:
+                            Inmueble:
                         </label>
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 
@@ -242,7 +242,7 @@
                 <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
-                            Condominio:
+                            Inmueble:
                         </label>
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 
@@ -258,7 +258,7 @@
                 <security:authorize ifAnyGranted="ROLE_ADMINCONDOMINIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
-                            Condominio:
+                            Inmueble:
                         </label>
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 
@@ -269,7 +269,7 @@
                         </div>
                     </div>
                 </security:authorize>
-
+                <%--
                 <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
@@ -330,10 +330,10 @@
                         </div>
                     </div>
                 </security:authorize>
-
+--%>
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
-                        Tipo de Solicitud
+                        Tipo de Servicio:
                     </label>
                     <div class="col-lg-9">
                         <s:select id="tipoSolicitud"  class="form-control" 
@@ -376,10 +376,10 @@
                     <table id="listado" class="table-hover">
                         <thead>
                             <tr>
-                                <th>Condominio</th>
-                                <th>Torre</th>
-                                <th>Depto.</th>
-                                <th>Tipo de Solicitud</th>
+                                <th>Inmueble</th>
+<!--                                <th>Torre</th>
+                                <th>Depto.</th>-->
+                                <th>Tipo de Servicio</th>
                                 <th>Estatus</th>
                                 <th>Fecha de Solicitud</th>
                                 <!--                                <th>Fecha de Lectura</th>
@@ -388,7 +388,7 @@
                                 <th>Folio</th>
                                 
                                 <th>Usuario que Registra</th>
-                                <th>Condómino que solicita</th>
+                                <!--<th>Condómino que solicita</th>-->
                                 <th>Comentario</th>
                                 <th>Atendio</th>
                                 <th width="5%"></th>
@@ -401,8 +401,8 @@
                     <table id="listado" class="table-hover ">
                         <thead>
                             <tr>
-                                <th width="10%">Torre</th>
-                                <th width="10%">Depto.</th>
+<!--                                <th width="10%">Torre</th>
+                                <th width="10%">Depto.</th>-->
                                 <th width="15%">Tipo de<br> Solicitud</th>
                                 <th width="10%">Estatus</th>
                                 <th width="10%">Fecha de<br> Solicitud</th>
@@ -411,7 +411,7 @@
                                 <th width="10%">Fecha <br>Soluci&oacute;n</th>
                                 <th width="15%">Folio</th>
                                 <th>Usuario que Registra</th>
-                                <th>Condómino que solicita</th>
+                                <!--<th>Condómino que solicita</th>-->
                                 <th>Comentario</th>
                                 <th>Atendio</th>
                                 

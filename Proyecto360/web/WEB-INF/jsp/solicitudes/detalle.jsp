@@ -7,7 +7,7 @@
 <%@taglib prefix="security" uri="/WEB-INF/decorators/tld/security.tld" %>
 
 <head>
-    <title>Detalle de Solicitud</title>
+    <title>Detalle de Ticket</title>
     <script src="/js/UtilString.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript" class="init">
         $(document).ready(function () {
@@ -107,7 +107,7 @@
     <div class="col-lg-12">
         <div class="main-box clearfix">
             <header class="main-box-header clearfix">
-                <h1>Detalle de Solicitud</h1>
+                <h1>Detalle de Ticket</h1>
             </header>
 
             <div class="row">
@@ -143,7 +143,7 @@
                         <label for="maskedDate">Folio:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <s:set var="folio"><s:property  value="solicitud.departamento.condominio.clave" />-<s:property  value="solicitud.tipoSolicitud.clave" />-<s:property  value="getText('{0,number,0000}',{solicitud.consecutivo})" /></s:set>
+                            <s:set var="folio"><s:property  value="solicitud.condominio.clave" />-<s:property  value="solicitud.tipoSolicitud.clave" />-<s:property  value="getText('{0,number,0000}',{solicitud.consecutivo})" /></s:set>
                             <s:textfield name="folio" class="form-control" readonly="true" />
                         </div>
                     </div>
@@ -152,9 +152,10 @@
                         <label for="maskedDate">Inmueble:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                <s:textfield name="solicitud.departamento.condominio.nombre" class="form-control" readonly="true" />
+                                <s:textfield name="solicitud.condominio.nombre" class="form-control" readonly="true" />
                         </div>
                     </div>
+                                <%--
                     <div class="col-md-12">
                         <label for="maskedDate">Torre:</label>
                         <div class="input-group">
@@ -169,12 +170,12 @@
                                 <s:textfield name="solicitud.departamento.nombre" class="form-control" readonly="true" />
                         </div>
                     </div>
-                        
+                        --%>
                     <div class="col-md-12">
                         <label for="maskedDate">Tipo de Inmueble:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-database"></i></span>
-                                <s:textfield name="solicitud.tipoInmuebleSolicitud.nombre" class="form-control" readonly="true" />
+                                <s:textfield name="solicitud.condominio.tipoInmueble.nombre" class="form-control" readonly="true" />
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -192,7 +193,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <label for="maskedDate">Categor&iacute;a:</label>
+                        <label for="maskedDate">Tipo de trabajo:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-database"></i></span>
                                 <s:textfield name="solicitud.categoriaSolicitud.nombre" class="form-control" readonly="true" />

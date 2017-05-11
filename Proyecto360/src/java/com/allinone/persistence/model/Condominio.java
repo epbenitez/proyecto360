@@ -4,9 +4,11 @@ package com.allinone.persistence.model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.eclipse.persistence.annotations.Cache;
 
@@ -30,6 +32,8 @@ public class Condominio  implements Serializable,  BaseEntity {
     private String contactoTelefono;
     private String contactoCelular;
     private String contactoMail;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SolicitudesTipoInmueble tipoInmueble;
     
     public Condominio(){
         
@@ -103,12 +107,18 @@ public class Condominio  implements Serializable,  BaseEntity {
         this.contactoMail = contactoMail;
     }
 
+    public SolicitudesTipoInmueble getTipoInmueble() {
+        return tipoInmueble;
+    }
+
+    public void setTipoInmueble(SolicitudesTipoInmueble tipoInmueble) {
+        this.tipoInmueble = tipoInmueble;
+    }
+
     @Override
     public String toString() {
-        return "Condominio{" + "id=" + id + ", nombre=" + nombre + ", clave=" + clave + ", direccion=" + direccion + ", contacto=" + contacto + ", contactoTelefono=" + contactoTelefono + ", contactoCelular=" + contactoCelular + ", contactoMail=" + contactoMail + '}';
+        return "Condominio{" + "id=" + id + ", nombre=" + nombre + ", clave=" + clave + ", direccion=" + direccion + ", contacto=" + contacto + ", contactoTelefono=" + contactoTelefono + ", contactoCelular=" + contactoCelular + ", contactoMail=" + contactoMail + ", tipoInmueble=" + tipoInmueble + '}';
     }
-    
-    
     
 
 }
