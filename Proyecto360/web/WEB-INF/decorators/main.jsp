@@ -188,7 +188,7 @@
                                                     <img src="/img/logo_torres/<s:property value="deptoUsuario.departamento.condominio.clave" />.png" alt="<s:property value="deptoUsuario.departamento.torre.nombre" />"/>
                                                 </security:authorize>
                                                 <security:authorize ifNotGranted="ROLE_PROPIETARIO">
-                                                    <img src="/custom/images/user.png" alt="" class="fa fa-user"/>
+                                                    <img src="/custom/images/user.jpg" alt="" class="fa fa-user"/>
                                                 </security:authorize>
 
                                                 <span class="hidden-xs">
@@ -237,7 +237,7 @@
                                         </security:authorize>
                                         <security:authorize ifNotGranted="ROLE_PROPIETARIO">
                                             <div id="user-left-box" class="clearfix hidden-sm hidden-xs dropdown profile2-dropdown" style="text-align: center">
-                                                <img src="/custom/images/user.png" alt="" class="fa fa-user"/>
+                                                <img src="/custom/images/user.jpg" alt="" class="fa fa-user"/>
                                             </div>
                                         </security:authorize>
                                         <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
