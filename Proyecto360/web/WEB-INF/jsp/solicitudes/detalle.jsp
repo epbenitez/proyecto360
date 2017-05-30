@@ -11,95 +11,87 @@
     <script src="/js/UtilString.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript" class="init">
         $(document).ready(function () {
-            $('input, select').addClass('form-control');
-            $('#historial').DataTable({
-                <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
-                    "columnDefs": [
-                        {
-                            "targets": [3],
-                            "visible": false,
-                            "searchable": false
-                        }
-                    ],
-                </security:authorize>
-                "aoColumnDefs": [
-                    {"sClass": "alignCenter",
-                        "aTargets": [1, 2]
-                    }
-                ],
+        $('input, select').addClass('form-control');
+        $('#historial').DataTable({
+        <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
+        "columnDefs": [
+        {
+        "targets": [3],
+                "visible": false,
+                "searchable": false
+        }
+        ],
+        </security:authorize>
+        "aoColumnDefs": [
+        {"sClass": "alignCenter",
+                "aTargets": [1, 2]
+        }
+        ],
                 "order": [],
                 "columnDefs": [{
-                        "targets": 'no-sort',
+                "targets": 'no-sort',
                         "orderable": false,
-                    }]
-            });
-
-            $('#fechaCompromiso').datepicker({
-                language: 'es',
+                }]
+        });
+        $('#fechaProgramada').datepicker({
+        language: 'es',
                 format: 'dd-mm-yyyy'
-            });
-            $('#fechaCompromiso').css('cursor', 'default');
-
-            $('#fechaLlegadaAdmin').datepicker({
-                language: 'es',
+        });
+        $('#fechaProgramada').css('cursor', 'default');
+        $('#fechaLlegadaAdmin').datepicker({
+        language: 'es',
                 format: 'dd-mm-yyyy'
-            });
-            $('#fechaLlegadaAdmin').css('cursor', 'default');
-
-            $('#fechaEntrega').datepicker({
-                language: 'es',
+        });
+        $('#fechaLlegadaAdmin').css('cursor', 'default');
+        $('#fechaEntrega').datepicker({
+        language: 'es',
                 format: 'dd-mm-yyyy'
-            });
-            $('#fechaEntrega').css('cursor', 'default');
-
-            $('#fechaCompromisoDiv').hide();
-            $('#fechaLlegadaAdminDiv').hide();
-            $('#fechaEntregaDiv').hide();
-
-            $('#historial_length').hide();
-            $('#historial_filter').hide();
-            $('#historial_info').hide();
-            $('#historial_paginate').hide();
-
-            $('#estadoSolicitud').change(function () {
-                var id = this.value;
+        });
+        $('#fechaEntrega').css('cursor', 'default');
+        $('#fechaProgramadaDiv').hide();
+        $('#fechaLlegadaAdminDiv').hide();
+        $('#fechaEntregaDiv').hide();
+        $('#historial_length').hide();
+        $('#historial_filter').hide();
+        $('#historial_info').hide();
+        $('#historial_paginate').hide();
+        $('#estadoSolicitud').change(function () {
+        var id = this.value;
 //                alert(id);
-                $('#fechaCompromisoDiv').hide();
-                $('#fechaLlegadaAdminDiv').hide();
-                $('#fechaEntregaDiv').hide();
-                if (id == 2) {
-                    $('#fechaCompromisoDiv').show();
-                }
-                if (id == 3) {
-                    $('#fechaLlegadaAdminDiv').show();
-                    $('#fechaEntregaDiv').show();
-                }
-            });
+        $('#fechaProgramadaDiv').hide();
+        $('#fechaLlegadaAdminDiv').hide();
+        $('#fechaEntregaDiv').hide();
+        if (id == 2) {
+        $('#fechaProgramadaDiv').show();
+        }
+        if (id == 3) {
+        $('#fechaLlegadaAdminDiv').show();
+        $('#fechaEntregaDiv').show();
+        }
+        });
+        $('#estatusForm').submit(function (evt) {
+        var id = $('#estadoSolicitud').val();
+        if (id == 2 && $('#fechaProgramada').val() == "") {
+        BootstrapDialog.alert({
+        title: 'Atención',
+                message: 'Para poder cambiar el estatus de la solicitud, es necesario establecer la fecha de compromiso.',
+                type: BootstrapDialog.TYPE_WARNING
+        });
+        evt.preventDefault();
+        $('#buscar').removeAttr("disabled");
+        }
+        if (id == 3 && ($('#fechaLlegadaAdmin').val() == "" || $('#fechaEntrega').val() == "")) {
+        BootstrapDialog.alert({
+        title: 'Atención',
+                message: 'Para poder cambiar el estatus de la solicitud, es necesario establecer la fecha de llegada a la administración y la fecha de entrega.',
+                type: BootstrapDialog.TYPE_WARNING
+        });
+        evt.preventDefault();
+        $('#buscar').removeAttr("disabled");
+        }
 
-            $('#estatusForm').submit(function (evt) {
-                var id = $('#estadoSolicitud').val();
-                if (id == 2 && $('#fechaCompromiso').val() == "") {
-                    BootstrapDialog.alert({
-                        title: 'Atención',
-                        message: 'Para poder cambiar el estatus de la solicitud, es necesario establecer la fecha de compromiso.',
-                        type: BootstrapDialog.TYPE_WARNING
-                    });
-                    evt.preventDefault();
-                    $('#buscar').removeAttr("disabled");
-                }
-                if (id == 3 && ($('#fechaLlegadaAdmin').val() == "" || $('#fechaEntrega').val() == "")) {
-                    BootstrapDialog.alert({
-                        title: 'Atención',
-                        message: 'Para poder cambiar el estatus de la solicitud, es necesario establecer la fecha de llegada a la administración y la fecha de entrega.',
-                        type: BootstrapDialog.TYPE_WARNING
-                    });
-                    evt.preventDefault();
-                    $('#buscar').removeAttr("disabled");
-                }
-
-            });
-
-            init_contadorTa("comentario", "comentarioContador", 200);
+        });
+        init_contadorTa("comentario", "comentarioContador", 200);
         });
     </script>
 </head>
@@ -107,7 +99,7 @@
     <div class="col-lg-12">
         <div class="main-box clearfix">
             <header class="main-box-header clearfix">
-                <h1>Detalle de Ticket</h1>
+                <h1>Informaci&oacute;n del Ticket</h1>
             </header>
 
             <div class="row">
@@ -128,79 +120,86 @@
             </div>
 
             <s:if test="!hasActionErrors()">
+
+                <h3 style="margin-top: -5px; margin-left: 10px"><span>Informaci&oacute;n de la solicitud</span></h3>
+                <div class="col-md-12">
+                    <label for="maskedDate">Usuario:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <s:textfield name="histAbrioSolicitud.usuario.usuario" class="form-control" id="maskedDate" readonly="true" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="maskedDate">Folio:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                        <s:set var="folio"><s:property  value="solicitud.condominio.clave" />-<s:property  value="solicitud.tipoSolicitud.clave" />-<s:property  value="getText('{0,number,0000}',{solicitud.consecutivo})" /></s:set>
+                        <s:textfield name="folio" class="form-control" readonly="true" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="maskedDate">Inmueble:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                            <s:textfield name="solicitud.condominio.nombre" class="form-control" readonly="true" />
+                    </div>
+                </div>
+                <%--
+    <div class="col-md-12">
+        <label for="maskedDate">Torre:</label>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                <s:textfield name="solicitud.departamento.torre.nombre" class="form-control" readonly="true" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <label for="maskedDate">Departamento:</label>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                <s:textfield name="solicitud.departamento.nombre" class="form-control" readonly="true" />
+        </div>
+    </div>
+                --%>
+                <div class="col-md-12">
+                    <label for="maskedDate">Tipo de Inmueble:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                            <s:textfield name="solicitud.condominio.tipoInmueble.nombre" class="form-control" readonly="true" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="maskedDate">Tipo de Servicio:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                            <s:textfield name="solicitud.tipoServicio.nombre" class="form-control" readonly="true" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="maskedDate">&Aacute;rea:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                            <s:textfield name="solicitud.area.nombre" class="form-control" readonly="true" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="maskedDate">Tipo de trabajo:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                            <s:textfield name="solicitud.categoriaSolicitud.nombre" class="form-control" readonly="true" />
+                    </div>
+                </div>
+                <div>&nbsp;</div>
+            </div>
+
+            <div class="main-box clearfix">
+
+                <div class="clearfix" >&nbsp;</div>
+                <h3 style="margin-top: -5px; margin-left: 10px"><span>Seguimiento a Ticket</span></h3>
                 <form id="estatusForm" action="/solicitudes/guardaDetalleSolicitudes.action" method="POST" >
-
-                    <h3 style="margin-top: -5px; margin-left: 10px"><span>Informaci&oacute;n de la solicitud</span></h3>
                     <div class="col-md-12">
-                        <label for="maskedDate">Usuario:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                <s:textfield name="histAbrioSolicitud.usuario.usuario" class="form-control" id="maskedDate" readonly="true" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="maskedDate">Folio:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <s:set var="folio"><s:property  value="solicitud.condominio.clave" />-<s:property  value="solicitud.tipoSolicitud.clave" />-<s:property  value="getText('{0,number,0000}',{solicitud.consecutivo})" /></s:set>
-                            <s:textfield name="folio" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="maskedDate">Inmueble:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                <s:textfield name="solicitud.condominio.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                                <%--
-                    <div class="col-md-12">
-                        <label for="maskedDate">Torre:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                <s:textfield name="solicitud.departamento.torre.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="maskedDate">Departamento:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                <s:textfield name="solicitud.departamento.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                        --%>
-                    <div class="col-md-12">
-                        <label for="maskedDate">Tipo de Inmueble:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-database"></i></span>
-                                <s:textfield name="solicitud.condominio.tipoInmueble.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="maskedDate">Tipo de Servicio:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-database"></i></span>
-                                <s:textfield name="solicitud.tipoSolicitud.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="maskedDate">&Aacute;rea:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-database"></i></span>
-                                <s:textfield name="solicitud.area.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="maskedDate">Tipo de trabajo:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-database"></i></span>
-                                <s:textfield name="solicitud.categoriaSolicitud.nombre" class="form-control" readonly="true" />
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="maskedDate">Estatus:</label>
+                        <label for="maskedDate">Estatus:AA</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-sliders"></i></span>
                                 <s:select id="estadoSolicitud"  class="form-control" 
@@ -212,18 +211,18 @@
                         </div>
                     </div>
                     <!-- FECHAS -->
-                    <div id="fechaCompromisoDiv" class="col-md-12">
-                        <label for="maskedDate">Fecha Compromiso:</label>
+                    <div id="fechaProgramadaDiv" class="col-md-12">
+                        <label for="maskedDate">Fecha Programada:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" class="form-control" id="fechaCompromiso" name="fechaCompromiso"
+                            <input type="text" class="form-control" id="fechaProgramada" name="fechaProgramada"
                                    readonly="true">
-                            <span class="help-block" id="fechaCompromisoMessage"></span>
+                            <span class="help-block" id="fechaProgramadaMessage"></span>
                         </div>
                     </div>
 
                     <div id="fechaLlegadaAdminDiv" class="col-md-12">
-                        <label for="maskedDate">Fecha de Soluci&oacute;n</label>
+                        <label for="maskedDate">Fecha de Atenci&oacute;n</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             <input type="text" class="form-control" id="fechaLlegadaAdmin" name="fechaLlegadaAdmin"
@@ -243,14 +242,14 @@
                     </div>
 
                     <!-- FECHAS -->
-<!--                    <div class="col-md-12">
-                        <label for="maskedDate">Cond&oacute;mino que solicita:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                <s:textfield name="solicitud.solicitante" class="form-control" readonly="true" />
-                        </div>
-                    </div> -->
-                    
+                    <!--                    <div class="col-md-12">
+                                            <label for="maskedDate">Cond&oacute;mino que solicita:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <s:textfield name="solicitud.solicitante" class="form-control" readonly="true" />
+            </div>
+        </div> -->
+
                     <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">       
                         <div class="col-md-12">
                             <label for="maskedDate">Comentarios:</label>
@@ -275,39 +274,44 @@
                             </div>
                         </div>
                     </security:authorize> 
+                </form>
+                <div class="clearfix">&nbsp;</div>  
 
-                    <div class="clearfix">&nbsp;</div>  
-                    <div class="clearfix" >&nbsp;</div>
-                    <h3 style="margin-top: -5px; margin-left: 10px"><span>Historial de la solicitud</span></h3>
-                    <div class="col-lg-12">
-                        <div class="main-box">
-                            <table id="historial" class="table-hover display">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">Estatus</th>
-                                        <th width="10%">Fecha</th>
+                <div>&nbsp;</div>
+            </div>
+
+            <div class="main-box clearfix">
+                <div class="clearfix" >&nbsp;</div>
+                <h3 style="margin-top: -5px; margin-left: 10px"><span>Historial del Ticket</span></h3>
+                <div class="col-lg-12">
+                    <div class="main-box">
+                        <table id="historial" class="table-hover display">
+                            <thead>
+                                <tr>
+                                    <th width="10%">Estatus</th>
+                                    <th width="10%">Fecha</th>
                                         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">
                                         <th width="10%">Usuario</th>
                                         </security:authorize>
-                                        <th width="70%">Comentarios</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <s:iterator value="historial" >
-                                        <tr>
-                                            <td><s:property value="estadoSolicitud.nombre" escape="false" /></td>
-                                            <td><s:date name="fecha" format="dd/MM/yyyy" /></td>
-                                            <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">
+                                    <th width="70%">Comentarios</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <s:iterator value="historial" >
+                                    <tr>
+                                        <td><s:property value="estadoSolicitud.nombre" escape="false" /></td>
+                                        <td><s:date name="fecha" format="dd/MM/yyyy" /></td>
+                                        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">
                                             <td><s:property value="usuario.usuario" escape="false" /></td>
-                                            </security:authorize>
-                                            <td><s:property value="comentario" escape="false" /></td>
-                                        </tr>
-                                    </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
+                                        </security:authorize>
+                                        <td><s:property value="comentario" escape="false" /></td>
+                                    </tr>
+                                </s:iterator>
+                            </tbody>
+                        </table>
                     </div>
-                </form>
+                </div>
+
             </s:if>
         </div>
     </div>

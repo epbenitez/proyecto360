@@ -29,7 +29,7 @@ public class Solicitud implements Serializable, BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Condominio condominio;
     @ManyToOne(fetch = FetchType.LAZY)
-    private SolicitudesTipo tipoSolicitud;
+    private SolicitudesTipoServicio tipoServicio;
     @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudesArea area;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,13 +37,13 @@ public class Solicitud implements Serializable, BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudesEstado estadoSolicitud;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fechaSolicitud;
+    private Date fechaIngresoTicket;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaLectura;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fechaCompromiso;
+    private Date fechaProgramada;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fechaSolucion;
+    private Date fechaAtencion;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaNotificacionCliente;
     private String solicitante;
@@ -57,14 +57,14 @@ public class Solicitud implements Serializable, BaseEntity {
     public Solicitud(){
         
     }
-    public Solicitud(Long id, Long condominioId, Long tipoSolicitudId, 
-            String tipoSolicitudNombre, String estado, Date fechaSolicitud, Date  fechaSolucion, Date fechaNotificacion,Long consecutivo){
+    public Solicitud(Long id, Long condominioId, Long tipoServicioId, 
+            String tipoServicioNombre, String estado, Date fechaIngresoTicket, Date  fechaAtencion, Date fechaNotificacion,Long consecutivo){
         this.id = id;
         this.condominio = new Condominio(condominioId);
-        this.tipoSolicitud = new SolicitudesTipo(tipoSolicitudId,tipoSolicitudNombre);
+        this.tipoServicio = new SolicitudesTipoServicio(tipoServicioId,tipoServicioNombre);
         this.estadoSolicitud = new SolicitudesEstado(estado);
-        this.fechaSolicitud = fechaSolicitud;
-        this.fechaSolucion = fechaSolucion;
+        this.fechaIngresoTicket = fechaIngresoTicket;
+        this.fechaAtencion = fechaAtencion;
         this.fechaNotificacionCliente = fechaNotificacion;
         this.consecutivo = consecutivo;
     }
@@ -84,13 +84,7 @@ public class Solicitud implements Serializable, BaseEntity {
     public void setCondominio(Condominio condominio) {
         this.condominio = condominio;
     }
-    public SolicitudesTipo getTipoSolicitud() {
-        return tipoSolicitud;
-    }
-
-    public void setTipoSolicitud(SolicitudesTipo tipoSolicitud) {
-        this.tipoSolicitud = tipoSolicitud;
-    }
+    
 
     public SolicitudesEstado getEstadoSolicitud() {
         return estadoSolicitud;
@@ -100,12 +94,12 @@ public class Solicitud implements Serializable, BaseEntity {
         this.estadoSolicitud = estadoSolicitud;
     }
 
-    public Date getFechaSolicitud() {
-        return fechaSolicitud;
+    public Date getFechaIngresoTicket() {
+        return fechaIngresoTicket;
     }
 
-    public void setFechaSolicitud(Date fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
+    public void setFechaIngresoTicket(Date fechaIngresoTicket) {
+        this.fechaIngresoTicket = fechaIngresoTicket;
     }
 
     public Date getFechaLectura() {
@@ -116,20 +110,20 @@ public class Solicitud implements Serializable, BaseEntity {
         this.fechaLectura = fechaLectura;
     }
 
-    public Date getFechaCompromiso() {
-        return fechaCompromiso;
+    public Date getFechaProgramada() {
+        return fechaProgramada;
     }
 
-    public void setFechaCompromiso(Date fechaCompromiso) {
-        this.fechaCompromiso = fechaCompromiso;
+    public void setFechaProgramada(Date fechaProgramada) {
+        this.fechaProgramada = fechaProgramada;
     }
 
-    public Date getFechaSolucion() {
-        return fechaSolucion;
+    public Date getFechaAtencion() {
+        return fechaAtencion;
     }
 
-    public void setFechaSolucion(Date fechaSolucion) {
-        this.fechaSolucion = fechaSolucion;
+    public void setFechaAtencion(Date fechaAtencion) {
+        this.fechaAtencion = fechaAtencion;
     }
 
     public Date getFechaNotificacionCliente() {
@@ -196,9 +190,18 @@ public class Solicitud implements Serializable, BaseEntity {
         this.area = area;
     }
 
-    @Override
-    public String toString() {
-        return "Solicitud{" + "id=" + id + ", condominio=" + condominio + ", tipoSolicitud=" + tipoSolicitud + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
+    public SolicitudesTipoServicio getTipoServicio() {
+        return tipoServicio;
+    }
+
+    public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
+        this.tipoServicio = tipoServicio;
     }
     
+
+    @Override
+    public String toString() {
+        return "Solicitud{" + "id=" + id + ", condominio=" + condominio + ", tipoServicio=" + tipoServicio + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaIngresoTicket=" + fechaIngresoTicket + ", fechaLectura=" + fechaLectura + ", fechaProgramada=" + fechaProgramada + ", fechaAtencion=" + fechaAtencion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
+    }
+
 }

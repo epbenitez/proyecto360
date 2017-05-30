@@ -14,7 +14,7 @@ import org.eclipse.persistence.annotations.Cache;
  *
  * @author Patricia Benítez
  */
-@Entity
+    @Entity
 @Table(name = "rmm_solicitudes_permisos")
 @Cache(alwaysRefresh = true, type = org.eclipse.persistence.annotations.CacheType.NONE)
 public class SolicitudesPermisos implements Serializable, BaseEntity {
@@ -25,7 +25,7 @@ public class SolicitudesPermisos implements Serializable, BaseEntity {
     @ManyToOne
     private Condominio condominio;
     @ManyToOne
-    private SolicitudesTipo tipoSolicitud;
+    private SolicitudesTipoServicio tipoServicio;
     @ManyToOne
     private Usuario usuario;
     private String permiso;
@@ -48,12 +48,12 @@ public class SolicitudesPermisos implements Serializable, BaseEntity {
         this.condominio = condominio;
     }
 
-    public SolicitudesTipo getTipoSolicitud() {
-        return tipoSolicitud;
+    public SolicitudesTipoServicio getTipoServicio() {
+        return tipoServicio;
     }
 
-    public void setTipoSolicitud(SolicitudesTipo tipoSolicitud) {
-        this.tipoSolicitud = tipoSolicitud;
+    public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
+        this.tipoServicio = tipoServicio;
     }
 
     public Usuario getUsuario() {
@@ -74,7 +74,7 @@ public class SolicitudesPermisos implements Serializable, BaseEntity {
 
     @Override
     public String toString() {
-        return "SolicitudesPermisos{" + "id=" + id + ", condominio=" + condominio + ", tipoSolicitud=" + tipoSolicitud + ", usuario=" + usuario + ", permiso=" + permiso + '}';
+        return "SolicitudesPermisos{" + "id=" + id + ", condominio=" + condominio + ", tipoServicio=" + tipoServicio + ", usuario=" + usuario + ", permiso=" + permiso + '}';
     }
 
 }

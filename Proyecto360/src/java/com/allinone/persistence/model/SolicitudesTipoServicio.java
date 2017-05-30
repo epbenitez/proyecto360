@@ -13,9 +13,9 @@ import org.eclipse.persistence.annotations.Cache;
  * @author Patricia Benítez
  */
 @Entity
-@Table(name = "cat_solicitudes_tipo")
+@Table(name = "cat_solicitudes_tipo_servicio")
 @Cache(alwaysRefresh = true, type = org.eclipse.persistence.annotations.CacheType.NONE)
-public class SolicitudesTipo implements Serializable, BaseEntity {
+public class SolicitudesTipoServicio implements Serializable, BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,18 +23,18 @@ public class SolicitudesTipo implements Serializable, BaseEntity {
     private String nombre;
     private String clave;
     
-    public SolicitudesTipo(){
+    public SolicitudesTipoServicio(){
         
     }
-    public SolicitudesTipo(Long id, String nombre){
+    public SolicitudesTipoServicio(Long id, String nombre){
         this.id = id;
         this.nombre = nombre;
     }
-    public SolicitudesTipo(String nombre){
+    public SolicitudesTipoServicio(String nombre){
         this.nombre = nombre;
     }
     
-    public SolicitudesTipo(Long id){
+    public SolicitudesTipoServicio(Long id){
         this.id = id;
     }
 
@@ -64,7 +64,7 @@ public class SolicitudesTipo implements Serializable, BaseEntity {
 
     @Override
     public String toString() {
-        return "SolicitudesTipo{" + "id=" + id + ", nombre=" + nombre + ", clave=" + clave + '}';
+        return "SolicitudesTipoServicio{" + "id=" + id + ", nombre=" + nombre + ", clave=" + clave + '}';
     }
     
 

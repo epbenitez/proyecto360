@@ -16,11 +16,11 @@ public class SolicitudesUmbralesJpaDao extends JpaDaoBase<SolicitudesUmbrales,Lo
     }
     
     @Override
-    public SolicitudesUmbrales findUmbral(Long condominioId, Long tipoSolicitudId) {
+    public SolicitudesUmbrales findUmbral(Long condominioId, Long tipoServicioId) {
 
         String jpql = "SELECT s FROM SolicitudesUmbrales s WHERE s.condominio.id = ?1"
-                + " and s.tipoSolicitud.id = ?2  ";
-        List<SolicitudesUmbrales> lista = executeQuery(jpql, condominioId,tipoSolicitudId);
+                + " and s.tipoServicio.id = ?2  ";
+        List<SolicitudesUmbrales> lista = executeQuery(jpql, condominioId,tipoServicioId);
 
         return (lista==null || lista.isEmpty())?null:lista.get(0);
     }

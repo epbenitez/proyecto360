@@ -2,7 +2,7 @@ package com.allinone.persistence.dao.jpa;
 
 import com.allinone.persistence.dao.SolicitudDao;
 import com.allinone.persistence.model.Solicitud;
-import com.allinone.persistence.model.SolicitudesTipo;
+import com.allinone.persistence.model.SolicitudesTipoServicio;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class SolicitudJpaDao extends JpaDaoBase<Solicitud, Long> implements Soli
     @Override
     public List<Solicitud> getSolicitudes(Long condominioId, Long torreId, Long departamentoId, Long tipoId, Long estadoId) {
 
-        StringBuilder jpql = new StringBuilder("SELECT  new com.allinone.persistence.model.Solicitud(s.id, s.condominio.id, s.tipoSolicitud.id, s.tipoSolicitud.nombre, s.estadoSolicitud.nombre, ");
+        StringBuilder jpql = new StringBuilder("SELECT  new com.allinone.persistence.model.Solicitud(s.id, s.condominio.id, s.tipoServicio.id, s.tipoServicio.nombre, s.estadoSolicitud.nombre, ");
         jpql.append(" s.fechaSolicitud, s.fechaSolucion, s.fechaNotificacionCliente, s.consecutivo) FROM Solicitud s WHERE 1=1 ");
 
         if (condominioId != null && !condominioId.toString().isEmpty()) {
@@ -34,7 +34,7 @@ public class SolicitudJpaDao extends JpaDaoBase<Solicitud, Long> implements Soli
         }
 
         if (tipoId != null && !tipoId.toString().isEmpty()) {
-            jpql.append(" and s.tipoSolicitud.id = ").append(tipoId);
+            jpql.append(" and s.tipoServicio.id = ").append(tipoId);
         }
 
         if (estadoId != null && !estadoId.toString().isEmpty()) {
@@ -57,7 +57,7 @@ public class SolicitudJpaDao extends JpaDaoBase<Solicitud, Long> implements Soli
         }
 
         if (tipoId != null && !tipoId.toString().isEmpty()) {
-            jpql.append(" and s.tipoSolicitud.id = ").append(tipoId);
+            jpql.append(" and s.tipoServicio.id = ").append(tipoId);
         }
 
         if (estadoId != null && !estadoId.toString().isEmpty()) {
@@ -70,7 +70,7 @@ public class SolicitudJpaDao extends JpaDaoBase<Solicitud, Long> implements Soli
     }
 
     @Override
-    public List<Solicitud> getSolicitudes(Long condominioId, Long torreId, Long departamentoId, List<SolicitudesTipo> tipoLst, Long estadoId) {
+    public List<Solicitud> getSolicitudes(Long condominioId, Long torreId, Long departamentoId, List<SolicitudesTipoServicio> tipoLst, Long estadoId) {
 
         StringBuilder jpql = new StringBuilder("SELECT  s FROM Solicitud s WHERE 1=1 ");
 
@@ -88,8 +88,8 @@ public class SolicitudJpaDao extends JpaDaoBase<Solicitud, Long> implements Soli
 
         if (tipoLst != null && !tipoLst.isEmpty()) {
             jpql.append(" and (");
-            for (SolicitudesTipo st : tipoLst) {
-                jpql.append("  s.tipoSolicitud.id = ").append(st.getId()).append(" or ");
+            for (SolicitudesTipoServicio st : tipoLst) {
+                jpql.append("  s.tipoServicio.id = ").append(st.getId()).append(" or ");
             }
             jpql.delete(jpql.lastIndexOf(" or "), jpql.lastIndexOf(" or ") + 4);
             jpql.append(" )");
@@ -105,11 +105,11 @@ public class SolicitudJpaDao extends JpaDaoBase<Solicitud, Long> implements Soli
     }
 
     @Override
-    public Integer getConsecutivo(Long condominioId, Long tipoSolicitudId) {
+    public Integer getConsecutivo(Long condominioId, Long tipoServicioId) {
         String sql = "select s.consecutivo from ent_solicitudes s "
 //                + " inner join ent_departamento d on d.id = s.departamento_id "
-                + " where s.condominio_id ="+condominioId+" and tiposolicitud_id = " + tipoSolicitudId
-                + " order by s.condominio_id, s.tiposolicitud_id, s.consecutivo desc limit 1;";
+                + " where s.condominio_id ="+condominioId+" and tipoServicio_id = " + tipoServicioId
+                + " order by s.condominio_id, s.tipoServicio_id, s.consecutivo desc limit 1;";
 
         List<Object[]> lista = executeNativeQuery(sql);
         

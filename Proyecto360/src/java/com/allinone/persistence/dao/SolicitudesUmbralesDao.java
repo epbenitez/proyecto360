@@ -9,5 +9,5 @@ import com.allinone.persistence.model.SolicitudesUmbrales;
  */
 public interface SolicitudesUmbralesDao extends DaoBase<SolicitudesUmbrales,Long> {
 
-    public SolicitudesUmbrales findUmbral(Long condominioId, Long tipoSolicitudId);
+    public SolicitudesUmbrales findUmbral(Long condominioId, Long tipoServicioId);
 }

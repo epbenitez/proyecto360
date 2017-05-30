@@ -130,7 +130,7 @@
                                 "dataSrc": function ( json ) {
                                     //Make your callback here.
                                     $('[data-toggle="tooltip"]').tooltip();  
-                                    $('#significados').show();
+//                                    $('#significados').show();
                                     return json.data;
                                 }
                             },
@@ -146,13 +146,13 @@
                     ],
         </security:authorize>
         <security:authorize ifNotGranted="ROLE_PROPIETARIO">
-//                    "columnDefs": [
-//                        {
-//                            "targets": [8,9],
-//                            "visible": false,
-//                            "searchable": false
-//                        }
-//                    ],
+                    "columnDefs": [
+                        {
+                            "targets": [11],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ],
         </security:authorize>
                     "language": {
                         "sProcessing": "Buscando información...",
@@ -370,7 +370,7 @@
         </div>
 
         <div class="clearfix" >&nbsp;</div>
-        <div id="listadoDiv" class="col-lg-12">
+        <div id="listadoDiv" class="row col-lg-12 main-box">
             <div class="main-box">
                 <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_PROPIETARIO">
                     <table id="listado" class="table-hover">
@@ -381,10 +381,10 @@
                                 <th>Depto.</th>-->
                                 <th>Tipo de Servicio</th>
                                 <th>Estatus</th>
-                                <th>Fecha de Solicitud</th>
-                                <!--                                <th>Fecha de Lectura</th>
-                                                                <th>Fecha Compromiso</th>-->
-                                <th>Fecha Soluci&oacute;n</th>
+                                <th>Ingreso de<br> Ticket</th>
+                                <!--                                <th>Fecha de Lectura</th>-->
+                                                                <th>Fecha <br>Programada</th>
+                                <th>Fecha Atenci&oacute;n</th>
                                 <th>Folio</th>
                                 
                                 <th>Usuario que Registra</th>
@@ -405,9 +405,10 @@
                                 <th width="10%">Depto.</th>-->
                                 <th width="15%">Tipo de<br> Solicitud</th>
                                 <th width="10%">Estatus</th>
-                                <th width="10%">Fecha de<br> Solicitud</th>
+                                <th width="10%">Ingreso de<br> Ticket</th>
                                 <!--                                <th width="10%">Fecha de<br> Lectura</th>
-                                                                <th width="10%">Fecha <br>Compromiso</th>-->
+                                -->
+                                 <th>Fecha <br>Programada</th>
                                 <th width="10%">Fecha <br>Soluci&oacute;n</th>
                                 <th width="15%">Folio</th>
                                 <th>Usuario que Registra</th>

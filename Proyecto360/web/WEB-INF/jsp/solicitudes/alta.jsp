@@ -181,7 +181,7 @@
                         </div>
                     </div>
                 </security:authorize>
---%>
+                --%>
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
                         Tipo de Inmueble
@@ -205,7 +205,7 @@
                         <s:select id="tipoServicio"  class="form-control" 
                                   list="#{null}"
                                   headerValue="-- Seleccione --"
-                                  name="solicitud.tipoSolicitud.id"
+                                  name="solicitud.tipoServicio.id"
                                   data-bv-notempty="true"
                                   data-bv-notempty-message="Este campo es requerido"
                                   />
@@ -361,7 +361,10 @@
             type: 'POST',
             url: '/ajax/getAreasSolicitudesAjax.action',
             dataType: 'json',
-            data: {pkTipoSolicitud: $('#tipoServicio').val()},
+            data: {
+                pkTipoInmueble: $('#tiposInmueble').val(),
+                pkTipoSolicitud: $('#tipoServicio').val()
+            },
             beforeSend: function () {
                 dialog = BootstrapDialog.show({
                     title: 'Información',
@@ -397,7 +400,10 @@
             type: 'POST',
             url: '/ajax/getCategoriasSolicitudesAjax.action',
             dataType: 'json',
-            data: {pkAreaId: $('#area').val()},
+            data: {
+                pkTipoInmueble: $('#tiposInmueble').val(),
+                pkTipoSolicitud: $('#tipoServicio').val(),
+                pkAreaId: $('#area').val()},
             beforeSend: function () {
                 dialog = BootstrapDialog.show({
                     title: 'Información',

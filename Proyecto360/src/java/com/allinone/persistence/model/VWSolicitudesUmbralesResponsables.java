@@ -26,7 +26,7 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
     @ManyToOne
     private Departamento departamento;
     @ManyToOne
-    private SolicitudesTipo tipoSolicitud;
+    private SolicitudesTipoServicio tipoServicio;
     @ManyToOne
     private SolicitudesEstado estadoSolicitud;
 //    @ManyToOne
@@ -52,13 +52,13 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
     public VWSolicitudesUmbralesResponsables(){
         
     }
-    public VWSolicitudesUmbralesResponsables(Long id, String departamento, String torreNombre, Long condominioId, Long tipoSolicitudId, 
-            String tipoSolicitudNombre, String estado, Date fechaSolicitud, Date  fechaSolucion, Date fechaNotificacion,Long consecutivo){
+    public VWSolicitudesUmbralesResponsables(Long id, String departamento, String torreNombre, Long condominioId, Long tipoServicioId, 
+            String tipoServicioNombre, String estado, Date fechaSolicitud, Date  fechaSolucion, Date fechaNotificacion,Long consecutivo){
         this.id = id;
         this.departamento = new Departamento(departamento);
         this.departamento.setCondominio(new Condominio(condominioId));
         this.departamento.setTorre(new Torre(torreNombre));
-        this.tipoSolicitud = new SolicitudesTipo(tipoSolicitudId,tipoSolicitudNombre);
+        this.tipoServicio = new SolicitudesTipoServicio(tipoServicioId,tipoServicioNombre);
         this.estadoSolicitud = new SolicitudesEstado(estado);
         this.fechaSolicitud = fechaSolicitud;
         this.fechaSolucion = fechaSolucion;
@@ -82,12 +82,12 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
         this.departamento = departamento;
     }
 
-    public SolicitudesTipo getTipoSolicitud() {
-        return tipoSolicitud;
+    public SolicitudesTipoServicio getTipoServicio() {
+        return tipoServicio;
     }
 
-    public void setTipoSolicitud(SolicitudesTipo tipoSolicitud) {
-        this.tipoSolicitud = tipoSolicitud;
+    public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
+        this.tipoServicio = tipoServicio;
     }
 
     public SolicitudesEstado getEstadoSolicitud() {
@@ -189,6 +189,6 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
 
     @Override
     public String toString() {
-        return "VWSolicitudesUmbralesResponsables{" + "id=" + id + ", departamento=" + departamento + ", tipoSolicitud=" + tipoSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", comentario=" + comentario + ", consecutivo=" + consecutivo + ", correoElectronico=" + correoElectronico + ", diferenciaDias=" + diferenciaDias + ", umbral=" + umbral + '}';
+        return "VWSolicitudesUmbralesResponsables{" + "id=" + id + ", departamento=" + departamento + ", tipoServicio=" + tipoServicio + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", comentario=" + comentario + ", consecutivo=" + consecutivo + ", correoElectronico=" + correoElectronico + ", diferenciaDias=" + diferenciaDias + ", umbral=" + umbral + '}';
     }
 }

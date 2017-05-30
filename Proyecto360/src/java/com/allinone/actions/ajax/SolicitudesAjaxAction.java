@@ -6,9 +6,11 @@ import com.allinone.persistence.model.Condominio;
 import com.allinone.persistence.model.Departamento;
 import com.allinone.persistence.model.DepartamentoUsuario;
 import com.allinone.persistence.model.SolicitudHistorial;
+import com.allinone.persistence.model.SolicitudesArea;
+import com.allinone.persistence.model.SolicitudesCategoria;
 import com.allinone.persistence.model.SolicitudesPermisos;
-import com.allinone.persistence.model.SolicitudesTipo;
 import com.allinone.persistence.model.SolicitudesTipoArea;
+import com.allinone.persistence.model.SolicitudesTipoServicio;
 import com.allinone.persistence.model.Torre;
 import com.allinone.persistence.model.Usuario;
 import com.allinone.util.UtilFile;
@@ -96,12 +98,12 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getTipoServicio() {
-        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByInmueble(pkTipoInmueble);
+        List<SolicitudesTipoServicio> lista = getDaos().getSolicitudesTipoServicioDao().findBySolicitudTipoInmueble(pkTipoInmueble);
         if (lista == null) {
         } else {
-            for (SolicitudesTipoArea d : lista) {
-                getJsonResult().add("[\"" + d.getTipoSolicitud().getId()
-                        + "\", \"" + d.getTipoSolicitud().getNombre()
+            for (SolicitudesTipoServicio d : lista) {
+                getJsonResult().add("[\"" + d.getId()
+                        + "\", \"" + d.getNombre()
                         + " \"]");
             }
         }
@@ -119,12 +121,12 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getAreas() {
-        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByServicio(pkTipoSolicitud);
+        List<SolicitudesArea> lista = getDaos().getSolicitudesAreaDao().findBySolicitudTipoInmueble(pkTipoInmueble, pkTipoSolicitud);
         if (lista == null) {
         } else {
-            for (SolicitudesTipoArea d : lista) {
-                getJsonResult().add("[\"" + d.getAreaSolicitud().getId()
-                        + "\", \"" + d.getAreaSolicitud().getNombre()
+            for (SolicitudesArea d : lista) {
+                getJsonResult().add("[\"" + d.getId()
+                        + "\", \"" + d.getNombre()
                         + " \"]");
             }
         }
@@ -132,12 +134,12 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getCategorias() {
-        List<SolicitudesTipoArea> lista = getDaos().getSolicitudesTipoAreaDao().findByServicio(pkAreaId);
+        List<SolicitudesCategoria> lista = getDaos().getSolicitudesCategoriaDao().findBySolicitudTipoInmueble(pkTipoInmueble, pkTipoSolicitud,pkAreaId);
         if (lista == null) {
         } else {
-            for (SolicitudesTipoArea d : lista) {
-                getJsonResult().add("[\"" + d.getCategoriaSolicitud().getId()
-                        + "\", \"" + d.getCategoriaSolicitud().getNombre()
+            for (SolicitudesCategoria d : lista) {
+                getJsonResult().add("[\"" + d.getId()
+                        + "\", \"" + d.getNombre()
                         + " \"]");
             }
         }
@@ -145,10 +147,10 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getTiposDeSol() {
-        List<SolicitudesTipo> lista = getDaos().getSolicitudesTipoDao().find(pkCondominio);
+        List<SolicitudesTipoServicio> lista = getDaos().getSolicitudesTipoServicioDao().find(pkCondominio);
         if (lista == null) {
         } else {
-            for (SolicitudesTipo d : lista) {
+            for (SolicitudesTipoServicio d : lista) {
                 getJsonResult().add("[\"" + d.getId()
                         + "\", \"" + d.getNombre()
                         + " \"]");
@@ -171,15 +173,15 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         } else if (pkTipo != null && pkTipo.toString().trim().length() > 0) {
             lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado);
         } else if (isPropietario()) {
-            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipo>(), pkEstado);
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipoServicio>(), pkEstado);
         } else {
             //Solo una lista de las solicitudes del tipo que tiene permiso en la tabla rmm_solicitudes_permisos
             Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
             List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), Boolean.TRUE);
-            List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
+            List<SolicitudesTipoServicio> tipos = new ArrayList<SolicitudesTipoServicio>();
             if (permisos != null) {
                 for (SolicitudesPermisos p : permisos) {
-                    tipos.add(p.getTipoSolicitud());
+                    tipos.add(p.getTipoServicio());
                 }
             }
             lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, tipos, pkEstado);
@@ -197,17 +199,17 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                     colorMasTooltip[0] = "#cef9ff";
                     colorMasTooltip[1] = "Cancelado";
                 } else {
-                    colorMasTooltip = bo.getColor(sh.getSolicitud().getUmbral(), sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion());
+                    colorMasTooltip = bo.getColor(sh.getSolicitud().getUmbral(), sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion());
                 }
 
                 getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
-                        + "\", \"" + sh.getSolicitud().getTipoSolicitud().getNombre()
+                        + "\", \"" + sh.getSolicitud().getTipoServicio().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
-                        + "\", \"" + (sh.getSolicitud().getFechaSolicitud() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolicitud(), "yyyy-MM-dd hh:mm"))
+                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket()== null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm:ss"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
-                        //                            + "\", \"" + (d.getFechaCompromiso() == null ? "" : UtilFile.dateToString(d.getFechaCompromiso(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaCompromiso()) + " días)")
-                        + "\", \"" + (sh.getSolicitud().getFechaSolucion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolucion(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion()) + " días)")
-                        + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoSolicitud().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
+                                                    + "\", \"" + (sh.getSolicitud().getFechaProgramada() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
+                        + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")
+                        + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoServicio().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
                         //                            + "\", \"" + (d.getFechaNotificacionCliente() == null ? "" : UtilFile.dateToString(d.getFechaNotificacionCliente(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaNotificacionCliente()) + " días)")
 
                         + "\", \"" + sh.getUsuarioRegistra()
@@ -225,16 +227,16 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                     colorMasTooltip[0] = "#cef9ff";
                     colorMasTooltip[1] = "Cancelado";
                 } else {
-                    colorMasTooltip = bo.getColor(sh.getSolicitud().getUmbral(), sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion());
+                    colorMasTooltip = bo.getColor(sh.getSolicitud().getUmbral(), sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion());
                 }
                 getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
-                        + "\", \"" + sh.getSolicitud().getTipoSolicitud().getNombre()
+                        + "\", \"" + sh.getSolicitud().getTipoServicio().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
-                        + "\", \"" + (sh.getSolicitud().getFechaSolicitud() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolicitud(), "yyyy-MM-dd hh:mm"))
+                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
-                        //                            + "\", \"" + (d.getFechaCompromiso() == null ? "" : UtilFile.dateToString(d.getFechaCompromiso(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaCompromiso()) + " días)")
-                        + "\", \"" + (sh.getSolicitud().getFechaSolucion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaSolucion(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaSolicitud(), sh.getSolicitud().getFechaSolucion()) + " días)")
-                        + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoSolicitud().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
+                                                    + "\", \"" + (sh.getSolicitud().getFechaProgramada()== null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
+                        + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")
+                        + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoServicio().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
                         //                            + "\", \"" + (d.getFechaNotificacionCliente() == null ? "" : UtilFile.dateToString(d.getFechaNotificacionCliente(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaNotificacionCliente()) + " días)")
 
                         + "\", \"" + sh.getUsuarioRegistra()
@@ -260,7 +262,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                 for (SolicitudesPermisos p : permisos) {
 
                     getJsonResult().add("[\"" + p.getCondominio().getNombre()
-                            + "\", \"" + p.getTipoSolicitud().getNombre()
+                            + "\", \"" + p.getTipoServicio().getNombre()
                             + "\", \"" + (p.getPermiso().equals("a") ? "Atender" : "Ingresar")
                             + "\", \"" + p.getUsuario().getUsuario()
                             + "\", \"<a href='#' onclick='eliminar(" + p.getId() + ")'> <span class='fa-stack'><i class='fa fa-square fa-stack-2x'></i><i class='fa fa-trash-o  fa-stack-1x fa-inverse'></i></span></a>"
@@ -281,7 +283,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         SolicitudesPermisos permiso = new SolicitudesPermisos();
         permiso.setCondominio(new Condominio(pkCondominio));
         permiso.setPermiso(pkTipoPermiso);
-        permiso.setTipoSolicitud(new SolicitudesTipo(pkTipo));
+        permiso.setTipoServicio(new SolicitudesTipoServicio(pkTipo));
         permiso.setUsuario(new Usuario(pkUsuario));
 
         try {

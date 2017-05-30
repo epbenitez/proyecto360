@@ -22,7 +22,7 @@ public class SolicitudesTipoArea  implements Serializable, BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private SolicitudesTipo tipoSolicitud;
+    private SolicitudesTipoServicio tipoServicio;
     @ManyToOne
     private SolicitudesArea areaSolicitud;
     @ManyToOne
@@ -39,12 +39,12 @@ public class SolicitudesTipoArea  implements Serializable, BaseEntity {
         this.id = id;
     }
 
-    public SolicitudesTipo getTipoSolicitud() {
-        return tipoSolicitud;
+    public SolicitudesTipoServicio getTipoServicio() {
+        return tipoServicio;
     }
 
-    public void setTipoSolicitud(SolicitudesTipo tipoSolicitud) {
-        this.tipoSolicitud = tipoSolicitud;
+    public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
+        this.tipoServicio = tipoServicio;
     }
 
     public SolicitudesCategoria getCategoriaSolicitud() {

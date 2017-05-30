@@ -84,7 +84,7 @@
     <bean id="bancoDao" class="com.allinone.persistence.dao.jpa.JpaDaoBase">
         <constructor-arg value="com.allinone.persistence.model.Banco" />
     </bean>
-    <bean id="solicitudesTipoDao" class="com.allinone.persistence.dao.jpa.SolicitudesTipoJpaDao" />
+    <bean id="solicitudesTipoServicioDao" class="com.allinone.persistence.dao.jpa.SolicitudesTipoServicioJpaDao" />
     <bean id="solicitudesEstadoDao" class="com.allinone.persistence.dao.jpa.SolicitudesEstadoJpaDao" />
     <bean id="usuarioCondominioDao" class="com.allinone.persistence.dao.jpa.UsuarioCondominioJpaDao" />
     <bean id="solicitudDao" class="com.allinone.persistence.dao.jpa.SolicitudJpaDao" />
@@ -179,7 +179,7 @@
           p:abonoDatosPagoDao-ref="abonoDatosPagoDao"
           p:abonoTipoDao-ref="abonoTipoDao"
           p:bancoDao-ref="bancoDao"
-          p:solicitudesTipoDao-ref="solicitudesTipoDao"
+          p:solicitudesTipoServicioDao-ref="solicitudesTipoServicioDao"
           p:solicitudesEstadoDao-ref="solicitudesEstadoDao"
           p:usuarioCondominioDao-ref="usuarioCondominioDao"
           p:solicitudDao-ref="solicitudDao"

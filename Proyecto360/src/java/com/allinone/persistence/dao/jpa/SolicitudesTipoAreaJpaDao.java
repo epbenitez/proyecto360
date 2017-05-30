@@ -22,9 +22,9 @@ public class SolicitudesTipoAreaJpaDao extends JpaDaoBase<SolicitudesTipoArea,Lo
     }
     
     @Override
-    public List<SolicitudesTipoArea> findByServicio(Long tipoSolicitudId) {
-        String jpql = "SELECT  s FROM SolicitudesTipoArea s WHERE s.tipoSolicitud.id = ?1 ";
-        List<SolicitudesTipoArea> list = executeQuery(jpql, tipoSolicitudId);
+    public List<SolicitudesTipoArea> findByServicio(Long tipoServicioId) {
+        String jpql = "SELECT  s FROM SolicitudesTipoArea s WHERE s.tipoServicio.id = ?1 ";
+        List<SolicitudesTipoArea> list = executeQuery(jpql, tipoServicioId);
         return list == null || list.isEmpty() ? null : list;
     }
     

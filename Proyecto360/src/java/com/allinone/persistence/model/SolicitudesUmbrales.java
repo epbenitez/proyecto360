@@ -25,7 +25,7 @@ public class SolicitudesUmbrales implements Serializable, BaseEntity {
     @ManyToOne
     private Condominio condominio;
     @ManyToOne
-    private SolicitudesTipo tipoSolicitud;
+    private SolicitudesTipoServicio tipoServicio;
 //    @ManyToOne
 //    private SolicitudesCategoria categoriaSolicitud;
     
@@ -52,12 +52,12 @@ public class SolicitudesUmbrales implements Serializable, BaseEntity {
         this.condominio = condominio;
     }
 
-    public SolicitudesTipo getTipoSolicitud() {
-        return tipoSolicitud;
+    public SolicitudesTipoServicio getTipoServicio() {
+        return tipoServicio;
     }
 
-    public void setTipoSolicitud(SolicitudesTipo tipoSolicitud) {
-        this.tipoSolicitud = tipoSolicitud;
+    public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
+        this.tipoServicio = tipoServicio;
     }
 
 //    public SolicitudesCategoria getCategoriaSolicitud() {
@@ -102,8 +102,7 @@ public class SolicitudesUmbrales implements Serializable, BaseEntity {
 
     @Override
     public String toString() {
-        return "SolicitudesUmbrales{" + "id=" + id + ", condominio=" + condominio + ", tipoSolicitud=" + tipoSolicitud + ", diasUmbralVerde=" + diasUmbralVerde + ", diasUmbralAmarillo=" + diasUmbralAmarillo + ", diasUmbralNaranja=" + diasUmbralNaranja + ", diasUmbralRojo=" + diasUmbralRojo + '}';
+        return "SolicitudesUmbrales{" + "id=" + id + ", condominio=" + condominio + ", tipoServicio=" + tipoServicio + ", diasUmbralVerde=" + diasUmbralVerde + ", diasUmbralAmarillo=" + diasUmbralAmarillo + ", diasUmbralNaranja=" + diasUmbralNaranja + ", diasUmbralRojo=" + diasUmbralRojo + '}';
     }
-
 
 }

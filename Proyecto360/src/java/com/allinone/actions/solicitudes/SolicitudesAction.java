@@ -9,8 +9,8 @@ import com.allinone.persistence.model.SolicitudHistorial;
 import com.allinone.persistence.model.SolicitudesCategoria;
 import com.allinone.persistence.model.SolicitudesEstado;
 import com.allinone.persistence.model.SolicitudesPermisos;
-import com.allinone.persistence.model.SolicitudesTipo;
 import com.allinone.persistence.model.SolicitudesTipoInmueble;
+import com.allinone.persistence.model.SolicitudesTipoServicio;
 import com.allinone.persistence.model.Torre;
 import com.allinone.persistence.model.Usuario;
 import com.allinone.persistence.model.UsuarioCondominio;
@@ -33,7 +33,7 @@ public class SolicitudesAction extends BaseAction {
     private List<Torre> torres = new ArrayList<Torre>();
     private List<Departamento> departamentos = new ArrayList<Departamento>();
     private List<SolicitudesTipoInmueble> tiposInmueble = new ArrayList<SolicitudesTipoInmueble>();
-    private List<SolicitudesTipo> tipos = new ArrayList<SolicitudesTipo>();
+    private List<SolicitudesTipoServicio> tipos = new ArrayList<SolicitudesTipoServicio>();
     private List<SolicitudesEstado> estados = new ArrayList<SolicitudesEstado>();
     private List<SolicitudesCategoria> categorias = new ArrayList<SolicitudesCategoria>();
     private Solicitud solicitud = new Solicitud();
@@ -42,7 +42,7 @@ public class SolicitudesAction extends BaseAction {
 
     private List<Usuario> usuarios = new ArrayList<Usuario>();
 
-    private String fechaCompromiso;
+    private String fechaProgramada;
     private String fechaLlegadaAdmin;
     private String fechaEntrega;
 
@@ -115,7 +115,7 @@ public class SolicitudesAction extends BaseAction {
 
     public String guarda() {
         if (solicitud == null || solicitud.getCondominio() == null
-                || solicitud.getTipoSolicitud() == null
+                || solicitud.getTipoServicio()== null
                 || solicitud.getArea() == null
                 || solicitud.getCategoriaSolicitud() == null
                 || solicitud.getAsunto() == null
@@ -125,11 +125,11 @@ public class SolicitudesAction extends BaseAction {
             return GUARDA;
         }
 
-        Integer consecutivo = getDaos().getSolicitudDao().getConsecutivo(solicitud.getCondominio().getId(), solicitud.getTipoSolicitud().getId());
+        Integer consecutivo = getDaos().getSolicitudDao().getConsecutivo(solicitud.getCondominio().getId(), solicitud.getTipoServicio().getId());
 
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
         try {
-            solicitud.setFechaSolicitud(new Date());
+            solicitud.setFechaIngresoTicket(new Date());
             solicitud.setEstadoSolicitud(new SolicitudesEstado(1L));
             solicitud.setConsecutivo(consecutivo.longValue() + 1);
             solicitud = getDaos().getSolicitudDao().save(solicitud);
@@ -222,12 +222,12 @@ public class SolicitudesAction extends BaseAction {
             solicitudOriginal.setEstadoSolicitud(solicitud.getEstadoSolicitud());
 
             if (solicitud.getEstadoSolicitud().getId() == 2L) {                         //EN PROCESO
-                if (fechaCompromiso == null) {
-                    addActionError("Debe establecer la fecha compromiso.");
+                if (fechaProgramada == null) {
+                    addActionError("Debe establecer la fecha programada.");
                     return detalle();
                 }
-                Date d = UtilFile.strToDate(fechaCompromiso, "dd-MM-yyyy");
-                solicitudOriginal.setFechaCompromiso(d);
+                Date d = UtilFile.strToDate(fechaProgramada, "dd-MM-yyyy");
+                solicitudOriginal.setFechaProgramada(d);
             }
             if (solicitud.getEstadoSolicitud().getId() == 3L) {                         //CONCLUIDO
                 if (fechaLlegadaAdmin == null || fechaEntrega == null) {
@@ -235,7 +235,7 @@ public class SolicitudesAction extends BaseAction {
                     return detalle();
                 }
                 Date d = UtilFile.strToDate(fechaLlegadaAdmin, "dd-MM-yyyy");
-                solicitudOriginal.setFechaSolucion(d);
+                solicitudOriginal.setFechaAtencion(d);
                 d = UtilFile.strToDate(fechaEntrega, "dd-MM-yyyy");
                 solicitudOriginal.setFechaNotificacionCliente(d);
             }
@@ -266,7 +266,7 @@ public class SolicitudesAction extends BaseAction {
      */
     public String permisos() {
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
-        tipos = getDaos().getSolicitudesTipoDao().findAll();
+        tipos = getDaos().getSolicitudesTipoServicioDao().findAll();
         if (isAdministrator()) {
             condominios = getDaos().getCondominioDao().findAll();
         } else {
@@ -325,13 +325,15 @@ public class SolicitudesAction extends BaseAction {
         this.historial = historial;
     }
 
-    public String getFechaCompromiso() {
-        return fechaCompromiso;
+    public String getFechaProgramada() {
+        return fechaProgramada;
     }
 
-    public void setFechaCompromiso(String fechaCompromiso) {
-        this.fechaCompromiso = fechaCompromiso;
+    public void setFechaProgramada(String fechaProgramada) {
+        this.fechaProgramada = fechaProgramada;
     }
+
+    
 
     public String getFechaLlegadaAdmin() {
         return fechaLlegadaAdmin;
@@ -389,11 +391,11 @@ public class SolicitudesAction extends BaseAction {
         this.histAbrioSolicitud = histAbrioSolicitud;
     }
 
-    public List<SolicitudesTipo> getTipos() {
+    public List<SolicitudesTipoServicio> getTipos() {
         return tipos;
     }
 
-    public void setTipos(List<SolicitudesTipo> tipos) {
+    public void setTipos(List<SolicitudesTipoServicio> tipos) {
         this.tipos = tipos;
     }
     

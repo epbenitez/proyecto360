@@ -58,7 +58,7 @@ import com.allinone.persistence.dao.SolicitudesCategoriaDao;
 import com.allinone.persistence.dao.SolicitudesEstadoDao;
 import com.allinone.persistence.dao.SolicitudesPermisosDao;
 import com.allinone.persistence.dao.SolicitudesTipoAreaDao;
-import com.allinone.persistence.dao.SolicitudesTipoDao;
+import com.allinone.persistence.dao.SolicitudesTipoServicioDao;
 import com.allinone.persistence.dao.SolicitudesTipoInmuebleDao;
 import com.allinone.persistence.dao.TipoDepartamentoDao;
 import com.allinone.persistence.dao.TorreDao;
@@ -123,7 +123,7 @@ public class Service {
     private DaoBase<Banco, Long> bancoDao;
 
     //SOLICITUDES
-    private SolicitudesTipoDao solicitudesTipoDao;
+    private SolicitudesTipoServicioDao solicitudesTipoDao;
     private SolicitudesEstadoDao solicitudesEstadoDao;
     private UsuarioCondominioDao usuarioCondominioDao;
     private SolicitudDao solicitudDao;
@@ -428,11 +428,11 @@ public class Service {
         this.bancoDao = bancoDao;
     }
 
-    public SolicitudesTipoDao getSolicitudesTipoDao() {
+    public SolicitudesTipoServicioDao getSolicitudesTipoServicioDao() {
         return solicitudesTipoDao;
     }
 
-    public void setSolicitudesTipoDao(SolicitudesTipoDao solicitudesTipoDao) {
+    public void setSolicitudesTipoServicioDao(SolicitudesTipoServicioDao solicitudesTipoDao) {
         this.solicitudesTipoDao = solicitudesTipoDao;
     }
 

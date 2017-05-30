@@ -10,7 +10,7 @@ import java.util.List;
 public interface SolicitudesTipoAreaDao extends DaoBase<SolicitudesTipoArea,Long> {
     
     public List<SolicitudesTipoArea> findByInmueble(Long tipoInmuebleId);
-    public List<SolicitudesTipoArea> findByServicio(Long tipoSolicitudId);
+    public List<SolicitudesTipoArea> findByServicio(Long tipoServicioId);
     public List<SolicitudesTipoArea> findByAreas(Long areaSolicitudId);
     public List<SolicitudesTipoArea> findByCategoria(Long categoriaSolicitudId);
     

@@ -1,7 +1,7 @@
 package com.allinone.persistence.dao;
 
 import com.allinone.persistence.model.SolicitudHistorial;
-import com.allinone.persistence.model.SolicitudesTipo;
+import com.allinone.persistence.model.SolicitudesTipoServicio;
 import java.util.List;
 
 /**
@@ -16,5 +16,5 @@ public interface SolicitudHistorialDao extends DaoBase<SolicitudHistorial, Long>
 
     public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId);
 
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipo> tipoLst, Long estadoId);
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipoServicio> tipoLst, Long estadoId);
 }

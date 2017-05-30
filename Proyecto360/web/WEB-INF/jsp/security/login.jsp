@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-        <title>Cube - Bootstrap Admin Template</title>
+        <title>TR3S60 SOLUCIONES</title>
 
         <!-- bootstrap -->
         <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -51,8 +51,7 @@
                                         <header id="login-header">
                                             <div id="login-logo">
                                                 <!--											<img src="img/logo.png" alt=""/>-->
-                                                <i class="fa fa-building-o"> &nbsp;</i>360
-                                                <div>Administraci&oacute;n de Condominios </div>
+                                                TR3S60 SOLUCIONES
                                             </div>
                                         </header>
                                         <div id="login-box-inner">
@@ -75,29 +74,14 @@
                                             <!--<form role="form" action="index.html">-->
                                         <form role="form" id="j_spring_security_check" name="j_spring_security_check" action="/j_spring_security_check" method="post">
                                             <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                <span class="input-group-addon"><i class="fa fa-child"></i></span>
                                                 <!--<input class="form-control" type="text" placeholder="Email address">-->
-                                                <input class="form-control" type="text" placeholder="Nombre de Usuario" name="j_username" value="<s:if test="login_error"><s:property value="%{#session.SPRING_SECURITY_LAST_USERNAME}" /></s:if><s:else></s:else>" id="j_spring_security_check_j_username"  />
+                                                <input class="form-control" type="text" placeholder="Usuario" name="j_username" value="<s:if test="login_error"><s:property value="%{#session.SPRING_SECURITY_LAST_USERNAME}" /></s:if><s:else></s:else>" id="j_spring_security_check_j_username"  />
                                             </div>
                                             <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                <span class="input-group-addon"><i class="fa fa-ge"></i></span>
                                                 <!--<input type="password" class="form-control" placeholder="Password">-->
                                                 <input type="password" class="form-control" placeholder="Contraseña" name="j_password" maxlength="15" id="j_spring_security_check_j_password" ondragstart="return false" onselectstart="return false"/>
-                                            </div>
-                                            <div id="remember-me-wrapper">
-                                                <div class="row">
-                                                    <div class="col-xs-6">
-                                                        <div class="checkbox-nice">
-                                                            <input type="checkbox" id="remember-me" checked="checked" />
-                                                            <label for="remember-me">
-                                                                Recuerdame
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <a href="forgot-password.html" id="login-forget-link" class="col-xs-6">
-                                                        &iquest;Olvidaste tu password?
-                                                    </a>
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xs-12">
@@ -113,8 +97,8 @@
                             <div id="login-box-footer">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <a href="/registro/inicioRegistro.action">
-                                        &iexcl;Registrate aqu&iacute;!
+                                        <a href="forgot-password.html" >
+                                        &iquest;Olvidaste tu password?
                                     </a>
                                     </div>
                                 </div>
@@ -122,94 +106,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="config-tool" class="closed">
-            <a id="config-tool-cog">
-                <i class="fa fa-cog"></i>
-            </a>
-
-            <div id="config-tool-options">
-                <h4>Layout Options</h4>
-                <ul>
-                    <li>
-                        <div class="checkbox-nice">
-                            <input type="checkbox" id="config-fixed-header" />
-                            <label for="config-fixed-header">
-                                Fixed Header
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="checkbox-nice">
-                            <input type="checkbox" id="config-fixed-sidebar" />
-                            <label for="config-fixed-sidebar">
-                                Fixed Left Menu
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="checkbox-nice">
-                            <input type="checkbox" id="config-fixed-footer" />
-                            <label for="config-fixed-footer">
-                                Fixed Footer
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="checkbox-nice">
-                            <input type="checkbox" id="config-boxed-layout" />
-                            <label for="config-boxed-layout">
-                                Boxed Layout
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="checkbox-nice">
-                            <input type="checkbox" id="config-rtl-layout" />
-                            <label for="config-rtl-layout">
-                                Right-to-Left
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-                <br/>
-                <h4>Skin Color</h4>
-                <ul id="skin-colors" class="clearfix">
-                    <li>
-                        <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
 

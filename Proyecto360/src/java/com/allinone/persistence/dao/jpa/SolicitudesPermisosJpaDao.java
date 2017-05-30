@@ -26,11 +26,11 @@ public class SolicitudesPermisosJpaDao extends JpaDaoBase<SolicitudesPermisos,Lo
     }
     
     @Override
-    public List<SolicitudesPermisos> findBy(Long condominioId, Long tipoSolicitud, String tipoPermiso, Long idUsuario) {
+    public List<SolicitudesPermisos> findBy(Long condominioId, Long tipoServicio, String tipoPermiso, Long idUsuario) {
 
         String jpql = "SELECT u FROM SolicitudesPermisos u WHERE 1=1 "
                 + (condominioId==null?"":" and u.condominio.id = " + condominioId)
-                + (tipoSolicitud==null?"":" and u.tipoSolicitud.id = " + tipoSolicitud)
+                + (tipoServicio==null?"":" and u.tipoServicio.id = " + tipoServicio)
                 + (tipoPermiso==null || tipoPermiso.equals("")?"":" and u.permiso like '" + tipoPermiso + "'")
                 + (idUsuario==null || idUsuario.toString().equals("")?"":" and u.usuario.id = " + idUsuario + "");
         List<SolicitudesPermisos> lista = executeQuery(jpql);
