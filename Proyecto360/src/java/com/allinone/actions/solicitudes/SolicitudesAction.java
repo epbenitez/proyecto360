@@ -7,6 +7,7 @@ import com.allinone.persistence.model.DepartamentoUsuario;
 import com.allinone.persistence.model.Solicitud;
 import com.allinone.persistence.model.SolicitudHistorial;
 import com.allinone.persistence.model.SolicitudesCategoria;
+import com.allinone.persistence.model.SolicitudesDocumento;
 import com.allinone.persistence.model.SolicitudesEstado;
 import com.allinone.persistence.model.SolicitudesPermisos;
 import com.allinone.persistence.model.SolicitudesTipoInmueble;
@@ -15,10 +16,19 @@ import com.allinone.persistence.model.Torre;
 import com.allinone.persistence.model.Usuario;
 import com.allinone.persistence.model.UsuarioCondominio;
 import com.allinone.util.UtilFile;
+import static com.opensymphony.xwork2.Action.ERROR;
+import static com.opensymphony.xwork2.Action.INPUT;
+import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ActionContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -47,6 +57,23 @@ public class SolicitudesAction extends BaseAction {
     private String fechaEntrega;
 
     private SolicitudHistorial histAbrioSolicitud;
+
+    protected String contentDisposition = "inline";
+    private InputStream fileInputStream;
+    
+    private File uploadF1;
+    private String uploadF1FileName;
+    private String uploadF1ContentType;
+
+    private File uploadF2;
+    private String uploadF2FileName;
+    private String uploadF2ContentType;
+
+    private File uploadF3;
+    private String uploadF3FileName;
+    private String uploadF3ContentType;
+    
+    private Long solicitudesDocumentoId;
 
     public SolicitudesAction() {
 
@@ -115,7 +142,7 @@ public class SolicitudesAction extends BaseAction {
 
     public String guarda() {
         if (solicitud == null || solicitud.getCondominio() == null
-                || solicitud.getTipoServicio()== null
+                || solicitud.getTipoServicio() == null
                 || solicitud.getArea() == null
                 || solicitud.getCategoriaSolicitud() == null
                 || solicitud.getAsunto() == null
@@ -128,23 +155,41 @@ public class SolicitudesAction extends BaseAction {
         Integer consecutivo = getDaos().getSolicitudDao().getConsecutivo(solicitud.getCondominio().getId(), solicitud.getTipoServicio().getId());
 
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
+        SolicitudHistorial h = new SolicitudHistorial();
         try {
             solicitud.setFechaIngresoTicket(new Date());
             solicitud.setEstadoSolicitud(new SolicitudesEstado(1L));
             solicitud.setConsecutivo(consecutivo.longValue() + 1);
             solicitud = getDaos().getSolicitudDao().save(solicitud);
 
-            SolicitudHistorial h = new SolicitudHistorial();
+            
             h.setSolicitud(solicitud);
             h.setFecha(new Date());
             h.setUsuario(u);
             h.setEstadoSolicitud(solicitud.getEstadoSolicitud());
             h.setComentario(solicitud.getAsunto());
 
-            getDaos().getSolicitudHistorialDao().save(h);
+            h = getDaos().getSolicitudHistorialDao().save(h);
         } catch (Exception e) {
             e.printStackTrace();
             addActionError("Ocurrió un error al intentar dar de alta la solicitud. " + e.getLocalizedMessage());
+            return alta();
+        }
+
+        //Guardando documentos
+        try {
+            if (getUploadF1() != null) {
+                guardaDocumento(h, uploadF1, uploadF1FileName, uploadF1ContentType);
+            }
+            if (getUploadF2() != null) {
+                guardaDocumento(h, uploadF2, uploadF2FileName, uploadF2ContentType);
+            }
+            if (getUploadF3() != null) {
+                guardaDocumento(h, uploadF3, uploadF3FileName, uploadF3ContentType);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            addActionError("Ocurrió un error al intentar guardar los documentos de la solicitud. " + e.getLocalizedMessage());
             return alta();
         }
         addActionMessage("Se ha dado de alta la solicitud exitósamente.");
@@ -254,7 +299,26 @@ public class SolicitudesAction extends BaseAction {
         hsolicitud.setSolicitud(solicitud);
         hsolicitud.setUsuario(u);
 
-        getDaos().getSolicitudHistorialDao().save(hsolicitud);
+        hsolicitud = getDaos().getSolicitudHistorialDao().save(hsolicitud);
+        
+        
+        //Guardando documentos
+        try {
+            if (getUploadF1() != null) {
+                guardaDocumento(hsolicitud, uploadF1, uploadF1FileName, uploadF1ContentType);
+            }
+            if (getUploadF2() != null) {
+                guardaDocumento(hsolicitud, uploadF2, uploadF2FileName, uploadF2ContentType);
+            }
+            if (getUploadF3() != null) {
+                guardaDocumento(hsolicitud, uploadF3, uploadF3FileName, uploadF3ContentType);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            addActionError("Ocurrió un error al intentar guardar los documentos. " + e.getLocalizedMessage());
+            return detalle();
+        }
+        
         addActionMessage("Estado de solicitud actualizado correctamente");
         return detalle();
     }
@@ -275,6 +339,48 @@ public class SolicitudesAction extends BaseAction {
         }
         usuarios = getDaos().getUsuarioDao().findAll();
         return INPUT;
+    }
+
+    public String guardaDocumento(SolicitudHistorial s, File f, String fname, String fcontenttype) {
+        if (solicitud.getId() == null) {
+            return ERROR;
+        }
+        try {
+            if (getUploadF1() != null) {
+                SolicitudesDocumento doc = new SolicitudesDocumento();
+                doc.setSolicitudHistorial(s);
+                doc.setContentType(fcontenttype);
+                doc.setFilename(fname);
+                doc.setContent(UtilFile.getBytesFromFile(f));
+                doc.setFecha(new Date());
+                getDaos().getSolicitudesDocumentoDao().save(doc);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            addActionError("No pudo ser guardado el documento indicado.");
+            return SUCCESS;
+        }
+        addActionMessage("El mensaje se ha guardado exitósamente.");
+        return INPUT;
+    }
+    
+    public String descargaDocumento() {
+        ///notificaciones/mensajeria/descargaArchivoAction.action?documento.id=1
+        if (solicitudesDocumentoId == null) {
+            return ERROR;
+        }
+
+        SolicitudesDocumento doc = getDaos().getSolicitudesDocumentoDao().findById(solicitudesDocumentoId);
+
+        File f = UtilFile.bytesToFile(doc.getContent(), doc.getFilename());
+        this.setContentDisposition("attachment;filename=\"" + doc.getFilename() + "\"");
+        try {
+            this.setFileInputStream(new FileInputStream(f));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SolicitudesAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return SUCCESS;
     }
 
     public List<Condominio> getCondominios() {
@@ -332,8 +438,6 @@ public class SolicitudesAction extends BaseAction {
     public void setFechaProgramada(String fechaProgramada) {
         this.fechaProgramada = fechaProgramada;
     }
-
-    
 
     public String getFechaLlegadaAdmin() {
         return fechaLlegadaAdmin;
@@ -398,6 +502,101 @@ public class SolicitudesAction extends BaseAction {
     public void setTipos(List<SolicitudesTipoServicio> tipos) {
         this.tipos = tipos;
     }
-    
+
+    public File getUploadF1() {
+        return uploadF1;
+    }
+
+    public void setUploadF1(File uploadF1) {
+        this.uploadF1 = uploadF1;
+    }
+
+    public String getUploadF1FileName() {
+        return uploadF1FileName;
+    }
+
+    public void setUploadF1FileName(String uploadF1FileName) {
+        this.uploadF1FileName = uploadF1FileName;
+    }
+
+    public String getUploadF1ContentType() {
+        return uploadF1ContentType;
+    }
+
+    public void setUploadF1ContentType(String uploadF1ContentType) {
+        this.uploadF1ContentType = uploadF1ContentType;
+    }
+
+    public File getUploadF2() {
+        return uploadF2;
+    }
+
+    public void setUploadF2(File uploadF2) {
+        this.uploadF2 = uploadF2;
+    }
+
+    public String getUploadF2FileName() {
+        return uploadF2FileName;
+    }
+
+    public void setUploadF2FileName(String uploadF2FileName) {
+        this.uploadF2FileName = uploadF2FileName;
+    }
+
+    public String getUploadF2ContentType() {
+        return uploadF2ContentType;
+    }
+
+    public void setUploadF2ContentType(String uploadF2ContentType) {
+        this.uploadF2ContentType = uploadF2ContentType;
+    }
+
+    public File getUploadF3() {
+        return uploadF3;
+    }
+
+    public void setUploadF3(File uploadF3) {
+        this.uploadF3 = uploadF3;
+    }
+
+    public String getUploadF3FileName() {
+        return uploadF3FileName;
+    }
+
+    public void setUploadF3FileName(String uploadF3FileName) {
+        this.uploadF3FileName = uploadF3FileName;
+    }
+
+    public String getUploadF3ContentType() {
+        return uploadF3ContentType;
+    }
+
+    public void setUploadF3ContentType(String uploadF3ContentType) {
+        this.uploadF3ContentType = uploadF3ContentType;
+    }
+
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    public void setContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
+    }
+
+    public InputStream getFileInputStream() {
+        return fileInputStream;
+    }
+
+    public void setFileInputStream(InputStream fileInputStream) {
+        this.fileInputStream = fileInputStream;
+    }
+
+    public Long getSolicitudesDocumentoId() {
+        return solicitudesDocumentoId;
+    }
+
+    public void setSolicitudesDocumentoId(Long solicitudesDocumentoId) {
+        this.solicitudesDocumentoId = solicitudesDocumentoId;
+    }
 
 }

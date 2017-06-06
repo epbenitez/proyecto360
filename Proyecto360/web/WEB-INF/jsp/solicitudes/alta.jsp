@@ -82,7 +82,7 @@
             <h2 style="margin-left: 10px" >Seleccione Inmueble y  Torre para encontrar el departamento.</h2>
             <div class="clearfix" >&nbsp;</div>
             <div class="clearfix" >&nbsp;</div><div class="clearfix" >&nbsp;</div>
-            <form id="formAltaSolicitud" name="formAltaSolicitud" action="/solicitudes/guardaSolicitudes.action" method="POST">
+            <form id="formAltaSolicitud" name="formAltaSolicitud" action="/solicitudes/guardaSolicitudes.action" method="POST"  enctype="multipart/form-data">
                 <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
@@ -267,6 +267,34 @@
                     <div class="col-lg-2" ></div>    
                     <div class="col-lg-9" id="comentarioContador" text-right></div>    
                 </div> 
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label text-right">Cargar Archivo</label>
+                    <div class="col-lg-9">
+                        <s:file  class="file" data-show-preview="true" labelposition="left" name="uploadF1" /> 
+                        <!--accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"-->
+                        <span class="help-block" id="comentarioMessage" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-lg-2 control-label text-right">Cargar Archivo</label>
+                    <div class="col-lg-9">
+                        <s:file  class="file" data-show-preview="true" labelposition="left" name="uploadF2" /> 
+                        <!--accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"-->
+                        <span class="help-block" id="comentarioMessage" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-lg-2 control-label text-right">Cargar Archivo</label>
+                    <div class="col-lg-9">
+                        <s:file  class="file" data-show-preview="true" labelposition="left" name="uploadF3" /> 
+                        <!--accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"-->
+                        <span class="help-block" id="comentarioMessage" />
+                    </div>
+                </div>
+                
                 <div class="clearfix" >&nbsp;</div>
                 <div class="clearfix" >&nbsp;</div>
                 <div class="form-group">

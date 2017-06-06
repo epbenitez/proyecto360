@@ -8,6 +8,15 @@
             <result name="detalle">/WEB-INF/jsp/solicitudes/detalle.jsp</result>
             <result name="guarda">/WEB-INF/jsp/solicitudes/alta.jsp</result>
         </action>
+        <action name="*ArchivoAction" class="com.allinone.actions.solicitudes.SolicitudesAction" method="{1}">
+            <result name="success" type="stream">
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="contentDisposition">attachment;</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/WEB-INF/jsp/errorDownload.jsp</result>
+        </action>
         
     </package>   
     

@@ -56,19 +56,20 @@
         $('#historial_info').hide();
         $('#historial_paginate').hide();
         $('#estadoSolicitud').change(function () {
-        var id = this.value;
-//                alert(id);
-        $('#fechaProgramadaDiv').hide();
-        $('#fechaLlegadaAdminDiv').hide();
-        $('#fechaEntregaDiv').hide();
-        if (id == 2) {
-        $('#fechaProgramadaDiv').show();
-        }
-        if (id == 3) {
-        $('#fechaLlegadaAdminDiv').show();
-        $('#fechaEntregaDiv').show();
-        }
-        });
+            var id = this.value;
+    //                alert(id);
+            $('#fechaProgramadaDiv').hide();
+            $('#fechaLlegadaAdminDiv').hide();
+            $('#fechaEntregaDiv').hide();
+            if (id == 2) {
+            $('#fechaProgramadaDiv').show();
+            }
+            if (id == 3) {
+            $('#fechaLlegadaAdminDiv').show();
+            $('#fechaEntregaDiv').show();
+            }
+            });
+        
         $('#estatusForm').submit(function (evt) {
         var id = $('#estadoSolicitud').val();
         if (id == 2 && $('#fechaProgramada').val() == "") {
@@ -92,6 +93,7 @@
 
         });
         init_contadorTa("comentario", "comentarioContador", 200);
+        $('#comentario').val("");
         });
     </script>
 </head>
@@ -190,6 +192,22 @@
                             <s:textfield name="solicitud.categoriaSolicitud.nombre" class="form-control" readonly="true" />
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <label for="maskedDate">Estatus:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-sliders"></i></span>
+                            <s:textfield name="solicitud.estadoSolicitud.nombre" readonly="true" />
+                    </div>
+                </div>
+                <div>&nbsp;</div>   
+                <div class="col-md-12">
+                    <label for="maskedDate">Comentarios:</label>
+                    <div class="input-group">
+                        <!--<span class="input-group-addon"><i class="fa fa-quote-left"></i></span>-->
+                        <%--<s:textarea name="solicitud.asunto" id="comentario" class="form-control" rows="3" cols="96" readonly="true" />--%>
+                        <s:property value="solicitud.asunto" />
+                    </div>
+                </div> 
                 <div>&nbsp;</div>
             </div>
 
@@ -197,7 +215,7 @@
 
                 <div class="clearfix" >&nbsp;</div>
                 <h3 style="margin-top: -5px; margin-left: 10px"><span>Seguimiento a Ticket</span></h3>
-                <form id="estatusForm" action="/solicitudes/guardaDetalleSolicitudes.action" method="POST" >
+                <form id="estatusForm" action="/solicitudes/guardaDetalleSolicitudes.action" method="POST"  enctype="multipart/form-data">
                     <div class="col-md-12">
                         <label for="maskedDate">Estatus:AA</label>
                         <div class="input-group">
@@ -274,6 +292,34 @@
                             </div>
                         </div>
                     </security:authorize> 
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label text-right">Cargar Archivo</label>
+                        <div class="col-lg-9">
+                            <s:file  class="file" data-show-preview="true" labelposition="left" name="uploadF1" /> 
+                            <!--accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"-->
+                            <span class="help-block" id="comentarioMessage" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label text-right">Cargar Archivo</label>
+                        <div class="col-lg-9">
+                            <s:file  class="file" data-show-preview="true" labelposition="left" name="uploadF2" /> 
+                            <!--accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"-->
+                            <span class="help-block" id="comentarioMessage" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label text-right">Cargar Archivo</label>
+                        <div class="col-lg-9">
+                            <s:file  class="file" data-show-preview="true" labelposition="left" name="uploadF3" /> 
+                            <!--accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"-->
+                            <span class="help-block" id="comentarioMessage" />
+                        </div>
+                    </div>
+
                 </form>
                 <div class="clearfix">&nbsp;</div>  
 
@@ -293,7 +339,8 @@
                                         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">
                                         <th width="10%">Usuario</th>
                                         </security:authorize>
-                                    <th width="70%">Comentarios</th>
+                                    <th width="60%">Comentarios</th>
+                                    <th width="10%">Documentos</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -305,6 +352,13 @@
                                             <td><s:property value="usuario.usuario" escape="false" /></td>
                                         </security:authorize>
                                         <td><s:property value="comentario" escape="false" /></td>
+                                        <td>
+                                            <ul>
+                                                <s:iterator value="documentos">
+                                                    <li> <a href="/solicitudes/descargaDocumentoArchivoAction.action?solicitudesDocumentoId=<s:property value="id"></s:property>"> <s:property value="filename"></s:property></a></li>
+                                                    </s:iterator>
+                                            </ul>
+                                        </td>
                                     </tr>
                                 </s:iterator>
                             </tbody>

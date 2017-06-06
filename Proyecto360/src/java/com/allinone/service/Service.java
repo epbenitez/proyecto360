@@ -55,6 +55,7 @@ import com.allinone.persistence.dao.SolicitudDao;
 import com.allinone.persistence.dao.SolicitudHistorialDao;
 import com.allinone.persistence.dao.SolicitudesAreaDao;
 import com.allinone.persistence.dao.SolicitudesCategoriaDao;
+import com.allinone.persistence.dao.SolicitudesDocumentoDao;
 import com.allinone.persistence.dao.SolicitudesEstadoDao;
 import com.allinone.persistence.dao.SolicitudesPermisosDao;
 import com.allinone.persistence.dao.SolicitudesTipoAreaDao;
@@ -171,6 +172,8 @@ public class Service {
     private NotificacionDocumentoDao notificacionDocumentoDao;
     private NotificacionesGruposDao notificacionesGruposDao;
     private NotificacionLogDao notificacionLogDao;
+    
+    private SolicitudesDocumentoDao solicitudesDocumentoDao;
 
     public BitacoraDao getBitacoraDao() {
         return bitacoraDao;
@@ -762,6 +765,22 @@ public class Service {
 
     public void setSolicitudesTipoInmuebleDao(SolicitudesTipoInmuebleDao solicitudesTipoInmuebleDao) {
         this.solicitudesTipoInmuebleDao = solicitudesTipoInmuebleDao;
+    }
+
+    public SolicitudesTipoServicioDao getSolicitudesTipoDao() {
+        return solicitudesTipoDao;
+    }
+
+    public void setSolicitudesTipoDao(SolicitudesTipoServicioDao solicitudesTipoDao) {
+        this.solicitudesTipoDao = solicitudesTipoDao;
+    }
+
+    public SolicitudesDocumentoDao getSolicitudesDocumentoDao() {
+        return solicitudesDocumentoDao;
+    }
+
+    public void setSolicitudesDocumentoDao(SolicitudesDocumentoDao solicitudesDocumentoDao) {
+        this.solicitudesDocumentoDao = solicitudesDocumentoDao;
     }
 
 }

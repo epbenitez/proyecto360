@@ -144,6 +144,8 @@
     <bean id="notificacionesGruposDao" class="com.allinone.persistence.dao.jpa.NotificacionesGruposJpaDao" />
     <bean id="notificacionLogDao" class="com.allinone.persistence.dao.jpa.NotificacionLogJpaDao" />
     
+    <bean id="solicitudesDocumentoDao" class="com.allinone.persistence.dao.jpa.SolicitudesDocumentoJpaDao" />
+    
     
     <!-- Service -->
 
@@ -221,6 +223,7 @@
           p:notificacionDocumentoDao-ref="notificacionDocumentoDao"
           p:notificacionesGruposDao-ref="notificacionesGruposDao"
           p:notificacionLogDao-ref="notificacionLogDao"
+          p:solicitudesDocumentoDao-ref="solicitudesDocumentoDao"
     />
 
     <!-- Ambiente -->
