@@ -36,7 +36,7 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
     }
 
     @Override
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId) {
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId, Long areaId, Long categoriaId) {
         
         StringBuilder sql = new StringBuilder("select c.nombre, c.clave,'', '', st.nombre, st.clave, se.nombre, s.id, s.fechaingresoticket, ");
         sql.append(" s.fechaatencion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id ");
@@ -62,6 +62,14 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
 
         if (estadoId != null && !estadoId.toString().isEmpty()) {
             sql.append(" and s.estadoSolicitud_id = ").append(estadoId);
+        }
+        
+        if (areaId != null && !areaId.toString().isEmpty()) {
+            sql.append(" and s.area_id = ").append(areaId);
+        }
+
+        if (categoriaId != null && !categoriaId.toString().isEmpty()) {
+            sql.append(" and s.categoriasolicitud_id = ").append(categoriaId);
         }
 
 //        List<Solicitud> solicitudesList = executeQuery(jpql.toString());
@@ -122,7 +130,7 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
     }
     
     @Override
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipoServicio> tipoLst, Long estadoId) {
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipoServicio> tipoLst, Long estadoId, Long areaId, Long categoriaId) {
 
         StringBuilder sql = new StringBuilder("select c.nombre, c.clave,'', '', st.nombre, st.clave, se.nombre, s.id, s.fechaingresoticket, ");
         sql.append(" s.fechaatencion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id ");
@@ -153,6 +161,15 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
 
         if (estadoId != null && !estadoId.toString().isEmpty()) {
             sql.append(" and s.estadoSolicitud_id = ").append(estadoId);
+        }
+        
+        
+        if (areaId != null && !areaId.toString().isEmpty()) {
+            sql.append(" and s.area_id = ").append(areaId);
+        }
+
+        if (categoriaId != null && !categoriaId.toString().isEmpty()) {
+            sql.append(" and s.categoriasolicitud_id = ").append(categoriaId);
         }
 
 //        List<Solicitud> solicitudesList = executeQuery(jpql.toString());

@@ -12,6 +12,6 @@ public interface SolicitudesTipoServicioDao extends DaoBase<SolicitudesTipoServi
     
     public List<SolicitudesTipoServicio> find(Long condominioId);
     
-    public List<SolicitudesTipoServicio> findBySolicitudTipoInmueble(Long inmuebleId);
+    public List<SolicitudesTipoServicio> findBySolicitudTipoInmueble(Long inmuebleId, Long restringirPermisosUsuarioId, Boolean atender);
 
 }

@@ -27,11 +27,23 @@ public class SolicitudesTipoServicioJpaDao extends JpaDaoBase<SolicitudesTipoSer
         return list == null || list.isEmpty() ? null : list;
     }
 
+    /**
+     * 
+     * @param inmuebleId
+     * @param restringirPermisosUsuarioId ID de usuario al cual se deberá restringir de acuerdo a la tabla de permisos el listado
+     * @param atender true: Atender Solicitudes, false: Ingresar Solicitudes
+     * @return 
+     */
     @Override
-    public List<SolicitudesTipoServicio> findBySolicitudTipoInmueble(Long inmuebleId) {
+    public List<SolicitudesTipoServicio> findBySolicitudTipoInmueble(Long inmuebleId, Long restringirPermisosUsuarioId, Boolean atender) {
         String sql = "select distinct(ts.id),ts.nombre, ts.clave from rmm_solicitudes_tipo_area a\n"
                 + "inner join cat_solicitudes_tipo_servicio ts on ts.id = a.tiposervicio_id\n"
                 + "where a.tipoinmueblesolicitud_id =  " +inmuebleId;
+        if(restringirPermisosUsuarioId!=null){
+            sql+=" and ts.id in ( select tiposervicio_id from rmm_solicitudes_permisos where usuario_id = "+restringirPermisosUsuarioId
+                    +" and permiso like '"+(atender?"a":"i")+"'"
+                    + ") ";
+        }
         List<Object[]> list = executeNativeQuery(sql);
         
         if(list==null || list.isEmpty()){

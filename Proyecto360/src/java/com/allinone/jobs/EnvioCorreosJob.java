@@ -41,7 +41,7 @@ public class EnvioCorreosJob extends TareaQuartz {
                         + "<b>Solicitante:</b> " + s.getSolicitante() + "<br>"
                         + "<b>Fecha de Solicitud:</b> " + UtilFile.dateToString(s.getFechaSolicitud(), "dd-MM-yyyy hh:mm")+ "<br><br>"
                         + "<i>Por favor, no responda a este correo, el cuál fue generado automáticamente para ayudar a identificar las solicitudes que tienen la necesidad de ser atendidas de forma urgente.</i>";
-                super.sendEmail("neooku@gmail.com", to, "Envío Automático AIO: Departamento " + s.getDepartamento().getNombre(), body, null);
+                super.sendEmail("neooku@gmail.com", to, "Envío Automático: Departamento " + s.getDepartamento().getNombre(), body, null);
             }
 
         } catch (MessagingException ex) {

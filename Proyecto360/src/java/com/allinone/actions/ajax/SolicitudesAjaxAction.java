@@ -9,7 +9,6 @@ import com.allinone.persistence.model.SolicitudHistorial;
 import com.allinone.persistence.model.SolicitudesArea;
 import com.allinone.persistence.model.SolicitudesCategoria;
 import com.allinone.persistence.model.SolicitudesPermisos;
-import com.allinone.persistence.model.SolicitudesTipoArea;
 import com.allinone.persistence.model.SolicitudesTipoServicio;
 import com.allinone.persistence.model.Torre;
 import com.allinone.persistence.model.Usuario;
@@ -39,6 +38,9 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     private Long pkTipoSolicitud;
     private Long pkTipoInmueble;
     private Long pkAreaId;
+    private Long pkCategoria; //Tipo de Trabajo
+    
+    private Boolean busqueda = Boolean.FALSE;
 
     public String getTorres() {
         if (isPropietario()) {
@@ -98,8 +100,16 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getTipoServicio() {
-        List<SolicitudesTipoServicio> lista = getDaos().getSolicitudesTipoServicioDao().findBySolicitudTipoInmueble(pkTipoInmueble);
+        Long restringirPermisosUsuarioId = null;
+        if(isAdminCondominio()){ //Se restringen las opciones de búsqueda/nuevo ticket a lo indicado en la tabla de solicitudes-permisos
+            Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
+            restringirPermisosUsuarioId = u.getId();
+        }
+        List<SolicitudesTipoServicio> lista = getDaos().getSolicitudesTipoServicioDao().findBySolicitudTipoInmueble(pkTipoInmueble,restringirPermisosUsuarioId, busqueda);
         if (lista == null) {
+            getJsonResult().add("[\"0" 
+                        + "\", \"No tiene permisos asignados para "+(busqueda?"buscar Tickets de este Inmueble":"ingresar un nuevo Ticket")
+                        + " \"]");
         } else {
             for (SolicitudesTipoServicio d : lista) {
                 getJsonResult().add("[\"" + d.getId()
@@ -165,15 +175,15 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         List<SolicitudHistorial> lista;
         if (pkCondominio == null) {
             if (isAdministrator()) {
-                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado);
+                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado, pkAreaId, pkCategoria);
             } else {
                 getJsonResult().add("");
                 return SUCCESS_JSON;
             }
         } else if (pkTipo != null && pkTipo.toString().trim().length() > 0) {
-            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado);
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado, pkAreaId, pkCategoria);
         } else if (isPropietario()) {
-            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipoServicio>(), pkEstado);
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipoServicio>(), pkEstado, pkAreaId, pkCategoria);
         } else {
             //Solo una lista de las solicitudes del tipo que tiene permiso en la tabla rmm_solicitudes_permisos
             Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
@@ -184,7 +194,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                     tipos.add(p.getTipoServicio());
                 }
             }
-            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, tipos, pkEstado);
+            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, tipos, pkEstado, pkAreaId, pkCategoria);
         }
 
         if (lista == null || lista.isEmpty()) {
@@ -400,6 +410,22 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
 
     public void setPkAreaId(Long pkAreaId) {
         this.pkAreaId = pkAreaId;
+    }
+
+    public Boolean getBusqueda() {
+        return busqueda;
+    }
+
+    public void setBusqueda(Boolean busqueda) {
+        this.busqueda = busqueda;
+    }
+
+    public Long getPkCategoria() {
+        return pkCategoria;
+    }
+
+    public void setPkCategoria(Long pkCategoria) {
+        this.pkCategoria = pkCategoria;
     }
 
 }

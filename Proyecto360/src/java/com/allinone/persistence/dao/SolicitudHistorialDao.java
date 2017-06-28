@@ -14,7 +14,7 @@ public interface SolicitudHistorialDao extends DaoBase<SolicitudHistorial, Long>
 
     public SolicitudHistorial getHistorial(Long solicitudId, Long estadoId);
 
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId);
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId, Long areaId, Long categoriaId);
 
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipoServicio> tipoLst, Long estadoId);
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipoServicio> tipoLst, Long estadoId, Long areaId, Long categoriaId);
 }

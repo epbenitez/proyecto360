@@ -26,7 +26,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,7 +89,8 @@ public class SolicitudesAction extends BaseAction {
             torres.add(d.getDepartamento().getTorre());
             departamentos.add(d.getDepartamento());
 //            tipos = getDaos().getSolicitudesTipoDao().findAll();
-            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
+//            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
+                tipos = getDaos().getSolicitudesTipoServicioDao().find(d.getDepartamento().getCondominio().getId());
             estados = getDaos().getSolicitudesEstadoDao().findAll();
 
         } else {
@@ -101,24 +104,25 @@ public class SolicitudesAction extends BaseAction {
         List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), atender);
         if (permisos != null) {
             for (SolicitudesPermisos p : permisos) {
-//                tipos.add(p.getTipoSolicitud());
-                tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
+                tipos.add(p.getTipoServicio());
+                condominios.add(p.getCondominio());
             }
+            //Se muestran tipos de servicio de acuerdo a tabla de permisos
+            //Quitando duplicados
+            Set<SolicitudesTipoServicio> tipoServicioSet = new LinkedHashSet<SolicitudesTipoServicio>(tipos);
+            tipos.clear();
+            tipos.addAll(tipoServicioSet);
+            
+            //Se muestran condominios de acuerdo a tabla de permisos
+            //Quitando duplicados
+            Set<Condominio> condominioSet = new LinkedHashSet<Condominio>(condominios);
+            condominios.clear();
+            condominios.addAll(condominioSet);
         }
         estados = getDaos().getSolicitudesEstadoDao().findAll();
 
         if (isAdministrator()) {
             condominios = getDaos().getCondominioDao().findAll();
-        } else if (isPropietario()) {
-            DepartamentoUsuario du = getDaos().getDepartamentoUsuarioDao().findByUserId(u.getId());
-            Condominio condominio = du.getDepartamento().getCondominio();
-            condominios.add(condominio);
-//            tipos = getDaos().getSolicitudesTipoDao().findAll();
-            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
-
-        } else {
-
-            condominios = getDaos().getCondominioDao().condominiosPorUsuario(u.getId());
         }
     }
 

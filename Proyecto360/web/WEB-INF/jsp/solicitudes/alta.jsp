@@ -79,7 +79,6 @@
         <div class="row col-lg-12 main-box" id="busquedaForm">
             <div class="clearfix" >&nbsp;</div>
             <h3 style="margin-top: 5px; margin-left: 10px"><span>Nuevo Ticket</span></h3>
-            <h2 style="margin-left: 10px" >Seleccione Inmueble y  Torre para encontrar el departamento.</h2>
             <div class="clearfix" >&nbsp;</div>
             <div class="clearfix" >&nbsp;</div><div class="clearfix" >&nbsp;</div>
             <form id="formAltaSolicitud" name="formAltaSolicitud" action="/solicitudes/guardaSolicitudes.action" method="POST"  enctype="multipart/form-data">
@@ -116,72 +115,6 @@
                         </div>
                     </div>
                 </security:authorize>
-                <%--
-                <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label text-right">
-                            Torre:
-                        </label>
-                        <div class="col-lg-9">
-                            <s:select id="torre"  class="form-control"
-                                      list="torres" listKey="id" listValue="nombre" 
-                                      name="solicitud.departamento.torre.id"
-                                      />
-                            <span class="help-block" id="torreMessage" />
-                        </div>
-                    </div>
-                </security:authorize>
-                <security:authorize ifNotGranted="ROLE_PROPIETARIO">
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label text-right">
-                            Torre:
-                        </label>
-                        <div class="col-lg-9">
-                            <s:select id="torre"  class="form-control"
-                                      list="#{null}"
-                                      headerValue="-- Seleccione --"
-                                      name="solicitud.departamento.torre.id"
-                                      data-bv-notempty="true"
-                                      data-bv-notempty-message="Este campo es requerido"
-                                      />
-                            <span class="help-block" id="torreMessage" />
-                        </div>
-                    </div>
-                </security:authorize>
-
-                <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label text-right">
-                            Departamento:
-                        </label>
-                        <div class="col-lg-9">
-                            <s:select id="departamento"  class="form-control"
-                                      list="departamentos" listKey="id" listValue="nombre" 
-                                      headerValue="-- Seleccione --"
-                                      name="solicitud.departamento.id"
-                                      />
-                            <span class="help-block" id="departamentoMessage" />
-                        </div>
-                    </div>
-                </security:authorize>
-                <security:authorize ifNotGranted="ROLE_PROPIETARIO">
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label text-right">
-                            Departamento:
-                        </label>
-                        <div class="col-lg-9">
-                            <s:select id="departamento"  class="form-control"
-                                      list="#{null}"
-                                      headerValue="-- Seleccione --"
-                                      name="solicitud.departamento.id"
-                                      data-bv-notempty="true"
-                                      data-bv-notempty-message="Este campo es requerido"
-                                      />
-                            <span class="help-block" id="departamentoMessage" />
-                        </div>
-                    </div>
-                </security:authorize>
-                --%>
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
                         Tipo de Inmueble
