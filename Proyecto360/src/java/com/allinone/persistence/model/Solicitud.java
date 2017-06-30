@@ -50,6 +50,9 @@ public class Solicitud implements Serializable, BaseEntity {
     private String asunto;
     private String descripcion;
     private Long consecutivo;
+    private String correoElectronico;
+    
+    private Usuario usuarioSolicita;
     
     @Transient
     private SolicitudesUmbrales umbral;
@@ -197,11 +200,28 @@ public class Solicitud implements Serializable, BaseEntity {
     public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
         this.tipoServicio = tipoServicio;
     }
-    
+
+    public Usuario getUsuarioSolicita() {
+        return usuarioSolicita;
+    }
+
+    public void setUsuarioSolicita(Usuario usuarioSolicita) {
+        this.usuarioSolicita = usuarioSolicita;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
 
     @Override
     public String toString() {
-        return "Solicitud{" + "id=" + id + ", condominio=" + condominio + ", tipoServicio=" + tipoServicio + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaIngresoTicket=" + fechaIngresoTicket + ", fechaLectura=" + fechaLectura + ", fechaProgramada=" + fechaProgramada + ", fechaAtencion=" + fechaAtencion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", umbral=" + umbral + '}';
+        return "Solicitud{" + "id=" + id + ", condominio=" + condominio + ", tipoServicio=" + tipoServicio + ", area=" + area + ", categoriaSolicitud=" + categoriaSolicitud + ", estadoSolicitud=" + estadoSolicitud + ", fechaIngresoTicket=" + fechaIngresoTicket + ", fechaLectura=" + fechaLectura + ", fechaProgramada=" + fechaProgramada + ", fechaAtencion=" + fechaAtencion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", asunto=" + asunto + ", descripcion=" + descripcion + ", consecutivo=" + consecutivo + ", correoElectronico=" + correoElectronico + ", usuarioSolicita=" + usuarioSolicita + ", umbral=" + umbral + '}';
     }
+    
+    
 
 }

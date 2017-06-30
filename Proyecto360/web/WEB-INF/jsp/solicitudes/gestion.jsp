@@ -49,8 +49,9 @@
             });
             
             $("#condominio").change(function () {
-                getTipoImnueble();
-                $("#tiposInmueble").get(0).options.length = 0;
+//                getTipoImnueble();
+                getTipoServicio();
+//                $("#tiposInmueble").get(0).options.length = 0;
                 $("#tipoServicio").get(0).options.length = 0;
                 $("#area").get(0).options.length = 0;
                 $("#categoriaSolicitud").get(0).options.length = 0;
@@ -68,6 +69,7 @@
 
             $("#tipoServicio").change(function () {
                 getAreas();
+                $("#categoriaSolicitud").get(0).options.length = 0;
             });
 
             $("#area").change(function () {
@@ -123,10 +125,11 @@
                 }
                 var url = "/ajax/busquedaSolicitudesAjax.action";
 
-                url = url + "?pkCondominio=" + condominio + "&pkTorre=" + torre + "&pkDepartamento=" + departamento
-                        + "&pkTipo=" + $('#tipoSolicitud').val() + "&pkEstado=" + $('#estadoSolicitud').val()
-                        + "&pkAreaId=" + $('#area').val()
-                        + "&pkCategoria=" + $('#categoriaSolicitud').val();
+                url = url + "?pkCondominio=" + condominio                   //Inmueble
+                        + "&pkTipo=" + $('#tipoServicio').val()            //Tipo Servicio
+                        + "&pkAreaId=" + $('#area').val()                   //Area
+                        + "&pkCategoria=" + $('#categoriaSolicitud').val() //Tipo de Trabajo
+                        + "&pkEstado=" + $('#estadoSolicitud').val();      //Estado
 
                 $('#listado').DataTable({
                 dom: 'Bfrtip',
@@ -296,7 +299,7 @@
                     </div>
                 </security:authorize>
                 
-                <div class="form-group">
+<!--                <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
                         Tipo de Inmueble
                     </label>
@@ -310,7 +313,7 @@
                                   />
                         <span class="help-block" id="tipoSolicitudMessage" />
                     </div>
-                </div>
+                </div>-->
                 <div class="form-group">
                     <label class="col-lg-2 control-label text-right">
                         Tipo de Servicio
@@ -513,7 +516,7 @@
             url: '/ajax/getTipoServicioSolicitudesAjax.action',
             dataType: 'json',
             data: { busqueda: true,
-                    pkTipoInmueble: $('#tiposInmueble').val()},
+                    pkInmueble: $('#condominio').val()},
             beforeSend: function () {
                 dialog = BootstrapDialog.show({
                     title: 'Información',
@@ -550,7 +553,7 @@
             url: '/ajax/getAreasSolicitudesAjax.action',
             dataType: 'json',
             data: {
-                pkTipoInmueble: $('#tiposInmueble').val(),
+                pkInmueble: $('#condominio').val(),
                 pkTipoSolicitud: $('#tipoServicio').val()
             },
             beforeSend: function () {
@@ -589,7 +592,7 @@
             url: '/ajax/getCategoriasSolicitudesAjax.action',
             dataType: 'json',
             data: {
-                pkTipoInmueble: $('#tiposInmueble').val(),
+                pkInmueble: $('#condominio').val(),
                 pkTipoSolicitud: $('#tipoServicio').val(),
                 pkAreaId: $('#area').val()},
             beforeSend: function () {

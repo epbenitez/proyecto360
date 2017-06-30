@@ -35,11 +35,19 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
         return list == null || list.isEmpty() ? null : list.get(0);
     }
 
+    /**
+     * pkCondominio:    Inmueble
+     * pkTipo:          Tipo de Servicio
+     * pkAreaId:        Area
+     * pkCategoria:     Tipo de Trabajo
+     * pkEstado:        Estado
+     * @return 
+     */
     @Override
-    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoId, Long estadoId, Long areaId, Long categoriaId) {
+    public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, Long tipoServicioId, Long estadoId, Long areaId, Long categoriaId) {
         
         StringBuilder sql = new StringBuilder("select c.nombre, c.clave,'', '', st.nombre, st.clave, se.nombre, s.id, s.fechaingresoticket, ");
-        sql.append(" s.fechaatencion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id ");
+        sql.append(" s.fechaatencion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id, s.fechaprogramada  ");
         sql.append(" from ent_solicitudes s ");
         sql.append(" inner join ent_condominio c on c.id = s.condominio_id ");
         sql.append(" inner join cat_solicitudes_tipo_servicio st on st.id = s.tipoServicio_id ");
@@ -56,8 +64,8 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
             sql.append(" and s.condominio_id = ").append(condominioId);
         }
 
-        if (tipoId != null && !tipoId.toString().isEmpty()) {
-            sql.append(" and s.tipoServicio_id = ").append(tipoId);
+        if (tipoServicioId != null && !tipoServicioId.toString().isEmpty()) {
+            sql.append(" and s.tipoServicio_id = ").append(tipoServicioId);
         }
 
         if (estadoId != null && !estadoId.toString().isEmpty()) {
@@ -71,6 +79,8 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
         if (categoriaId != null && !categoriaId.toString().isEmpty()) {
             sql.append(" and s.categoriasolicitud_id = ").append(categoriaId);
         }
+        
+         System.out.println("1-sql"+ sql);
 
 //        List<Solicitud> solicitudesList = executeQuery(jpql.toString());
         List<SolicitudHistorial> solicitudesList = new ArrayList<SolicitudHistorial>();
@@ -80,8 +90,9 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
                 SolicitudHistorial sh = new SolicitudHistorial();
                 Solicitud s = new Solicitud();
                 s.setId(o[7]==null?null:new Long(o[7].toString()));
-                s.setFechaIngresoTicket(o[8]==null?null:UtilFile.strToDate(o[8].toString(), "yyyy-MM-dd hh:mm:ss"));
-                s.setFechaAtencion(o[9]==null?null:UtilFile.strToDate(o[9].toString(), "yyyy-MM-dd hh:mm:ss"));
+                s.setFechaIngresoTicket(o[8]==null?null:UtilFile.strToDate(o[8].toString(), "yyyy-MM-dd hh:mm"));
+                s.setFechaAtencion(o[9]==null?null:UtilFile.strToDate(o[9].toString(), "yyyy-MM-dd hh:mm"));
+                s.setFechaProgramada(o[18]==null?null:UtilFile.strToDate(o[18].toString(), "yyyy-MM-dd"));
                 s.setConsecutivo(o[10]==null?null:new Long(o[10].toString()));
                 s.setSolicitante(o[11]==null?null:o[11].toString());
                 
@@ -133,7 +144,7 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
     public List<SolicitudHistorial> getSolicitudesHistorial(Long condominioId, List<SolicitudesTipoServicio> tipoLst, Long estadoId, Long areaId, Long categoriaId) {
 
         StringBuilder sql = new StringBuilder("select c.nombre, c.clave,'', '', st.nombre, st.clave, se.nombre, s.id, s.fechaingresoticket, ");
-        sql.append(" s.fechaatencion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id ");
+        sql.append(" s.fechaatencion , s.consecutivo, s.solicitante, u.usuario,  h.comentario, u2.usuario, c.id, st.id, se.id, s.fechaprogramada ");
         sql.append(" from ent_solicitudes s ");
         sql.append(" inner join ent_condominio c on c.id = s.condominio_id ");
         sql.append(" inner join cat_solicitudes_tipo_servicio st on st.id = s.tipoServicio_id ");
@@ -171,6 +182,8 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
         if (categoriaId != null && !categoriaId.toString().isEmpty()) {
             sql.append(" and s.categoriasolicitud_id = ").append(categoriaId);
         }
+        
+        System.out.println("2-sql"+sql);
 
 //        List<Solicitud> solicitudesList = executeQuery(jpql.toString());
         List<SolicitudHistorial> solicitudesList = new ArrayList<SolicitudHistorial>();
@@ -180,8 +193,9 @@ public class SolicitudHistorialJpaDao extends JpaDaoBase<SolicitudHistorial, Lon
                 SolicitudHistorial sh = new SolicitudHistorial();
                 Solicitud s = new Solicitud();
                 s.setId(o[7]==null?null:new Long(o[7].toString()));
-                s.setFechaIngresoTicket(o[8]==null?null:UtilFile.strToDate(o[8].toString(), "yyyy-MM-dd"));
-                s.setFechaAtencion(o[9]==null?null:UtilFile.strToDate(o[9].toString(), "yyyy-MM-dd"));
+                s.setFechaIngresoTicket(o[8]==null?null:UtilFile.strToDate(o[8].toString(), "yyyy-MM-dd hh:mm"));
+                s.setFechaAtencion(o[9]==null?null:UtilFile.strToDate(o[9].toString(), "yyyy-MM-dd hh:mm"));
+                s.setFechaProgramada(o[18]==null?null:UtilFile.strToDate(o[18].toString(), "yyyy-MM-dd"));
                 s.setConsecutivo(o[10]==null?null:new Long(o[10].toString()));
                 s.setSolicitante(o[11]==null?null:o[11].toString());
                 

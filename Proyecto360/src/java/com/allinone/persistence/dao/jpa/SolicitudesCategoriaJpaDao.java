@@ -19,7 +19,8 @@ public class SolicitudesCategoriaJpaDao extends JpaDaoBase<SolicitudesCategoria,
     public List<SolicitudesCategoria> findBySolicitudTipoInmueble(Long inmuebleId, Long tipoServicioId, Long areaId) {
         String sql = "select distinct(c.id),c.nombre from rmm_solicitudes_tipo_area ta\n"
                 + "inner join cat_solicitudes_categoria c on c.id = ta.categoriasolicitud_id\n"
-                + "where ta.tipoinmueblesolicitud_id =  " + inmuebleId + "\n"
+                + "inner join ent_condominio co on co.tipoinmueble_id = ta.tipoinmueblesolicitud_id \n"
+                + "where co.id =  " + inmuebleId + "\n"
                 + " and ta.tiposervicio_id=" + tipoServicioId + "\n"
                 + " and  ta.areasolicitud_id = " + areaId;
         List<Object[]> list = executeNativeQuery(sql);

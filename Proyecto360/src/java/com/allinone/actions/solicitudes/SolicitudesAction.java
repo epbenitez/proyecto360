@@ -62,7 +62,7 @@ public class SolicitudesAction extends BaseAction {
 
     protected String contentDisposition = "inline";
     private InputStream fileInputStream;
-    
+
     private File uploadF1;
     private String uploadF1FileName;
     private String uploadF1ContentType;
@@ -74,7 +74,7 @@ public class SolicitudesAction extends BaseAction {
     private File uploadF3;
     private String uploadF3FileName;
     private String uploadF3ContentType;
-    
+
     private Long solicitudesDocumentoId;
 
     public SolicitudesAction() {
@@ -90,7 +90,7 @@ public class SolicitudesAction extends BaseAction {
             departamentos.add(d.getDepartamento());
 //            tipos = getDaos().getSolicitudesTipoDao().findAll();
 //            tiposInmueble = getDaos().getSolicitudesTipoInmuebleDao().findAll();
-                tipos = getDaos().getSolicitudesTipoServicioDao().find(d.getDepartamento().getCondominio().getId());
+            tipos = getDaos().getSolicitudesTipoServicioDao().find(d.getDepartamento().getCondominio().getId());
             estados = getDaos().getSolicitudesEstadoDao().findAll();
 
         } else {
@@ -112,7 +112,7 @@ public class SolicitudesAction extends BaseAction {
             Set<SolicitudesTipoServicio> tipoServicioSet = new LinkedHashSet<SolicitudesTipoServicio>(tipos);
             tipos.clear();
             tipos.addAll(tipoServicioSet);
-            
+
             //Se muestran condominios de acuerdo a tabla de permisos
             //Quitando duplicados
             Set<Condominio> condominioSet = new LinkedHashSet<Condominio>(condominios);
@@ -164,9 +164,9 @@ public class SolicitudesAction extends BaseAction {
             solicitud.setFechaIngresoTicket(new Date());
             solicitud.setEstadoSolicitud(new SolicitudesEstado(1L));
             solicitud.setConsecutivo(consecutivo.longValue() + 1);
+            solicitud.setUsuarioSolicita(u);
             solicitud = getDaos().getSolicitudDao().save(solicitud);
 
-            
             h.setSolicitud(solicitud);
             h.setFecha(new Date());
             h.setUsuario(u);
@@ -257,6 +257,8 @@ public class SolicitudesAction extends BaseAction {
     }
 
     public String guardaDetalle() {
+        Boolean enviarNotificacion = Boolean.FALSE;
+
         if (solicitud == null || solicitud.getId() == null) {
             addActionError("No se encontró la solicitud seleccionada.");
             return INPUT;
@@ -287,6 +289,8 @@ public class SolicitudesAction extends BaseAction {
                 solicitudOriginal.setFechaAtencion(d);
                 d = UtilFile.strToDate(fechaEntrega, "dd-MM-yyyy");
                 solicitudOriginal.setFechaNotificacionCliente(d);
+
+                enviarNotificacion = Boolean.TRUE;
             }
             if (solicitud.getCategoriaSolicitud() != null && solicitud.getCategoriaSolicitud().getId() != null) {
                 solicitudOriginal.setCategoriaSolicitud(solicitud.getCategoriaSolicitud());
@@ -304,8 +308,7 @@ public class SolicitudesAction extends BaseAction {
         hsolicitud.setUsuario(u);
 
         hsolicitud = getDaos().getSolicitudHistorialDao().save(hsolicitud);
-        
-        
+
         //Guardando documentos
         try {
             if (getUploadF1() != null) {
@@ -322,7 +325,24 @@ public class SolicitudesAction extends BaseAction {
             addActionError("Ocurrió un error al intentar guardar los documentos. " + e.getLocalizedMessage());
             return detalle();
         }
-        
+
+        if (enviarNotificacion) {
+            try {
+                String mailCondominio = solicitudOriginal.getCorreoElectronico();
+                if (mailCondominio != null) {
+                    String body = "<p>Su ticket ha sido atendido por el usuario: " + u.getUsuario() + "</p>"
+                            + "<b>Inmueble:</b> " + solicitudOriginal.getCondominio().getClave() + "<br>"
+                            + "<b>Descripción:</b> " + solicitudOriginal.getDescripcion() + "<br>"
+                            + "<p><b>Comentarios:</b> " + solicitud.getAsunto()+ "<br>"
+                            + "<b>Fecha Programada:</b> " + UtilFile.dateToString(solicitudOriginal.getFechaProgramada(), "dd-MM-yyyy") + "<br><br>"
+                            + "</p><i>Por favor, no responda a este correo, el cuál fue generado automáticamente para notificarle que su ticket ha comenzado a ser atendido.</i>";
+                    sendEmail("360@360.com", mailCondominio, "[" + solicitudOriginal.getId() + "] Ticket en atención", body);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         addActionMessage("Estado de solicitud actualizado correctamente");
         return detalle();
     }
@@ -367,7 +387,7 @@ public class SolicitudesAction extends BaseAction {
         addActionMessage("El mensaje se ha guardado exitósamente.");
         return INPUT;
     }
-    
+
     public String descargaDocumento() {
         ///notificaciones/mensajeria/descargaArchivoAction.action?documento.id=1
         if (solicitudesDocumentoId == null) {

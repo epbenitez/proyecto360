@@ -17,7 +17,7 @@
     <!-- Cron Trigger, run every 10 seconds -->
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="schedulerJob" />
-        <!--        <property name="cronExpression" value="0/10 * * * * ?" />-->
+                <!--<property name="cronExpression" value="0/50 * * * * ?" />-->
         <property name="cronExpression" value="0 0 6 * * ?" />
     </bean>
 

@@ -38,12 +38,15 @@ public class SolicitudesTipoServicioJpaDao extends JpaDaoBase<SolicitudesTipoSer
     public List<SolicitudesTipoServicio> findBySolicitudTipoInmueble(Long inmuebleId, Long restringirPermisosUsuarioId, Boolean atender) {
         String sql = "select distinct(ts.id),ts.nombre, ts.clave from rmm_solicitudes_tipo_area a\n"
                 + "inner join cat_solicitudes_tipo_servicio ts on ts.id = a.tiposervicio_id\n"
-                + "where a.tipoinmueblesolicitud_id =  " +inmuebleId;
+                + "inner join ent_condominio c on c.tipoinmueble_id = a.tipoinmueblesolicitud_id \n"
+                + "where  c.id  =  " +inmuebleId;
         if(restringirPermisosUsuarioId!=null){
             sql+=" and ts.id in ( select tiposervicio_id from rmm_solicitudes_permisos where usuario_id = "+restringirPermisosUsuarioId
                     +" and permiso like '"+(atender?"a":"i")+"'"
                     + ") ";
         }
+        
+        System.out.println("findBySolicitudTipoInmueble: " +sql);
         List<Object[]> list = executeNativeQuery(sql);
         
         if(list==null || list.isEmpty()){

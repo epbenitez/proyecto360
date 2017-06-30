@@ -24,21 +24,19 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Departamento departamento;
-    @ManyToOne
-    private SolicitudesTipoServicio tipoServicio;
+    private Solicitud solicitud;
     @ManyToOne
     private SolicitudesEstado estadoSolicitud;
-//    @ManyToOne
-//    private SolicitudesCategoria categoriaSolicitud;
+    @ManyToOne
+    private SolicitudesCategoria categoriaSolicitud;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fechaSolicitud;
+    private Date fechaIngresoTicket;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaLectura;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaCompromiso;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date fechaSolucion;
+    private Date fechaatencion;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaNotificacionCliente;
     private String solicitante;
@@ -51,20 +49,8 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
 
     public VWSolicitudesUmbralesResponsables(){
         
-    }
-    public VWSolicitudesUmbralesResponsables(Long id, String departamento, String torreNombre, Long condominioId, Long tipoServicioId, 
-            String tipoServicioNombre, String estado, Date fechaSolicitud, Date  fechaSolucion, Date fechaNotificacion,Long consecutivo){
-        this.id = id;
-        this.departamento = new Departamento(departamento);
-        this.departamento.setCondominio(new Condominio(condominioId));
-        this.departamento.setTorre(new Torre(torreNombre));
-        this.tipoServicio = new SolicitudesTipoServicio(tipoServicioId,tipoServicioNombre);
-        this.estadoSolicitud = new SolicitudesEstado(estado);
-        this.fechaSolicitud = fechaSolicitud;
-        this.fechaSolucion = fechaSolucion;
-        this.fechaNotificacionCliente = fechaNotificacion;
-        this.consecutivo = consecutivo;
-    }
+    }   
+    
     
     public Long getId() {
         return id;
@@ -72,22 +58,6 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-    }
-
-    public SolicitudesTipoServicio getTipoServicio() {
-        return tipoServicio;
-    }
-
-    public void setTipoServicio(SolicitudesTipoServicio tipoServicio) {
-        this.tipoServicio = tipoServicio;
     }
 
     public SolicitudesEstado getEstadoSolicitud() {
@@ -98,12 +68,20 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
         this.estadoSolicitud = estadoSolicitud;
     }
 
-    public Date getFechaSolicitud() {
-        return fechaSolicitud;
+    public SolicitudesCategoria getCategoriaSolicitud() {
+        return categoriaSolicitud;
     }
 
-    public void setFechaSolicitud(Date fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
+    public void setCategoriaSolicitud(SolicitudesCategoria categoriaSolicitud) {
+        this.categoriaSolicitud = categoriaSolicitud;
+    }
+
+    public Date getFechaIngresoTicket() {
+        return fechaIngresoTicket;
+    }
+
+    public void setFechaIngresoTicket(Date fechaIngresoTicket) {
+        this.fechaIngresoTicket = fechaIngresoTicket;
     }
 
     public Date getFechaLectura() {
@@ -122,12 +100,12 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
         this.fechaCompromiso = fechaCompromiso;
     }
 
-    public Date getFechaSolucion() {
-        return fechaSolucion;
+    public Date getFechaatencion() {
+        return fechaatencion;
     }
 
-    public void setFechaSolucion(Date fechaSolucion) {
-        this.fechaSolucion = fechaSolucion;
+    public void setFechaatencion(Date fechaatencion) {
+        this.fechaatencion = fechaatencion;
     }
 
     public Date getFechaNotificacionCliente() {
@@ -138,6 +116,13 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
         this.fechaNotificacionCliente = fechaNotificacionCliente;
     }
 
+    public String getSolicitante() {
+        return solicitante;
+    }
+
+    public void setSolicitante(String solicitante) {
+        this.solicitante = solicitante;
+    }
 
     public String getComentario() {
         return comentario;
@@ -155,12 +140,12 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
         this.consecutivo = consecutivo;
     }
 
-    public String getSolicitante() {
-        return solicitante;
+    public String getCorreoElectronico() {
+        return correoElectronico;
     }
 
-    public void setSolicitante(String solicitante) {
-        this.solicitante = solicitante;
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 
     public Long getDiferenciaDias() {
@@ -179,16 +164,17 @@ public class VWSolicitudesUmbralesResponsables implements Serializable, BaseEnti
         this.umbral = umbral;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public Solicitud getSolicitud() {
+        return solicitud;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setSolicitud(Solicitud solicitud) {
+        this.solicitud = solicitud;
     }
 
     @Override
     public String toString() {
-        return "VWSolicitudesUmbralesResponsables{" + "id=" + id + ", departamento=" + departamento + ", tipoServicio=" + tipoServicio + ", estadoSolicitud=" + estadoSolicitud + ", fechaSolicitud=" + fechaSolicitud + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaSolucion=" + fechaSolucion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", comentario=" + comentario + ", consecutivo=" + consecutivo + ", correoElectronico=" + correoElectronico + ", diferenciaDias=" + diferenciaDias + ", umbral=" + umbral + '}';
+        return "VWSolicitudesUmbralesResponsables{" + "id=" + id + ", solicitud=" + solicitud + ", estadoSolicitud=" + estadoSolicitud + ", categoriaSolicitud=" + categoriaSolicitud + ", fechaIngresoTicket=" + fechaIngresoTicket + ", fechaLectura=" + fechaLectura + ", fechaCompromiso=" + fechaCompromiso + ", fechaatencion=" + fechaatencion + ", fechaNotificacionCliente=" + fechaNotificacionCliente + ", solicitante=" + solicitante + ", comentario=" + comentario + ", consecutivo=" + consecutivo + ", correoElectronico=" + correoElectronico + ", diferenciaDias=" + diferenciaDias + ", umbral=" + umbral + '}';
     }
+    
 }

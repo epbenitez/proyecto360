@@ -17,7 +17,9 @@ import com.opensymphony.xwork2.ActionContext;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -36,10 +38,11 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     private String pkTipoPermiso;
 
     private Long pkTipoSolicitud;
+    private Long pkInmueble;
     private Long pkTipoInmueble;
     private Long pkAreaId;
     private Long pkCategoria; //Tipo de Trabajo
-    
+
     private Boolean busqueda = Boolean.FALSE;
 
     public String getTorres() {
@@ -101,15 +104,15 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
 
     public String getTipoServicio() {
         Long restringirPermisosUsuarioId = null;
-        if(isAdminCondominio()){ //Se restringen las opciones de búsqueda/nuevo ticket a lo indicado en la tabla de solicitudes-permisos
+        if (isAdminCondominio()) { //Se restringen las opciones de búsqueda/nuevo ticket a lo indicado en la tabla de solicitudes-permisos
             Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
             restringirPermisosUsuarioId = u.getId();
         }
-        List<SolicitudesTipoServicio> lista = getDaos().getSolicitudesTipoServicioDao().findBySolicitudTipoInmueble(pkTipoInmueble,restringirPermisosUsuarioId, busqueda);
+        List<SolicitudesTipoServicio> lista = getDaos().getSolicitudesTipoServicioDao().findBySolicitudTipoInmueble(pkInmueble, restringirPermisosUsuarioId, busqueda);
         if (lista == null) {
-            getJsonResult().add("[\"0" 
-                        + "\", \"No tiene permisos asignados para "+(busqueda?"buscar Tickets de este Inmueble":"ingresar un nuevo Ticket")
-                        + " \"]");
+            getJsonResult().add("[\"0"
+                    + "\", \"No tiene permisos asignados para " + (busqueda ? "buscar Tickets de este Inmueble" : "ingresar un nuevo Ticket")
+                    + " \"]");
         } else {
             for (SolicitudesTipoServicio d : lista) {
                 getJsonResult().add("[\"" + d.getId()
@@ -131,7 +134,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getAreas() {
-        List<SolicitudesArea> lista = getDaos().getSolicitudesAreaDao().findBySolicitudTipoInmueble(pkTipoInmueble, pkTipoSolicitud);
+        List<SolicitudesArea> lista = getDaos().getSolicitudesAreaDao().findBySolicitudTipoInmueble(pkInmueble, pkTipoSolicitud);
         if (lista == null) {
         } else {
             for (SolicitudesArea d : lista) {
@@ -144,7 +147,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     }
 
     public String getCategorias() {
-        List<SolicitudesCategoria> lista = getDaos().getSolicitudesCategoriaDao().findBySolicitudTipoInmueble(pkTipoInmueble, pkTipoSolicitud,pkAreaId);
+        List<SolicitudesCategoria> lista = getDaos().getSolicitudesCategoriaDao().findBySolicitudTipoInmueble(pkInmueble, pkTipoSolicitud, pkAreaId);
         if (lista == null) {
         } else {
             for (SolicitudesCategoria d : lista) {
@@ -169,35 +172,47 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         return SUCCESS_JSON;
     }
 
+    /**
+     * pkCondominio: Inmueble pkTipo: Tipo de Servicio pkAreaId: Area
+     * pkCategoria: Tipo de Trabajo pkEstado: Estado
+     *
+     * @return
+     */
     public String busqueda() {
         NumberFormat formatter = new DecimalFormat("0000");
         SolicitudesBO bo = new SolicitudesBO(getDaos());
-        List<SolicitudHistorial> lista;
-        if (pkCondominio == null) {
-            if (isAdministrator()) {
-                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado, pkAreaId, pkCategoria);
-            } else {
-                getJsonResult().add("");
-                return SUCCESS_JSON;
-            }
-        } else if (pkTipo != null && pkTipo.toString().trim().length() > 0) {
+        List<SolicitudHistorial> lista = null;
+        if (isAdministrator()) {
             lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, pkTipo, pkEstado, pkAreaId, pkCategoria);
-        } else if (isPropietario()) {
-            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipoServicio>(), pkEstado, pkAreaId, pkCategoria);
         } else {
-            //Solo una lista de las solicitudes del tipo que tiene permiso en la tabla rmm_solicitudes_permisos
-            Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
-            List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), Boolean.TRUE);
-            List<SolicitudesTipoServicio> tipos = new ArrayList<SolicitudesTipoServicio>();
-            if (permisos != null) {
-                for (SolicitudesPermisos p : permisos) {
-                    tipos.add(p.getTipoServicio());
+            if (pkCondominio == null) {
+                if (!isAdministrator()) {
+                    getJsonResult().add("");
+                    return SUCCESS_JSON;
                 }
+            } else if (isPropietario()) {
+                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, new ArrayList<SolicitudesTipoServicio>(), pkEstado, pkAreaId, pkCategoria);
+            } else {
+                //Solo una lista de las solicitudes del tipo que tiene permiso en la tabla rmm_solicitudes_permisos
+                Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
+                List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findByUsuario(u.getId(), Boolean.TRUE);
+                List<SolicitudesTipoServicio> tipos = new ArrayList<SolicitudesTipoServicio>();
+                if (permisos != null) {
+                    for (SolicitudesPermisos p : permisos) {
+                        tipos.add(p.getTipoServicio());
+                    }
+                    //Quitando duplicados
+                    Set<SolicitudesTipoServicio> tipoServicioSet = new LinkedHashSet<SolicitudesTipoServicio>(tipos);
+                    tipos.clear();
+                    tipos.addAll(tipoServicioSet);
+                }
+                lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, tipos, pkEstado, pkAreaId, pkCategoria);
             }
-            lista = getDaos().getSolicitudHistorialDao().getSolicitudesHistorial(pkCondominio, tipos, pkEstado, pkAreaId, pkCategoria);
         }
 
         if (lista == null || lista.isEmpty()) {
+            getJsonResult().add("");
+            return SUCCESS_JSON;
         } else if (isAdministrator() || isPropietario()) {
 
             lista = bo.getUmbrales(lista);
@@ -215,10 +230,10 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                 getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
                         + "\", \"" + sh.getSolicitud().getTipoServicio().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
-                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket()== null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm:ss"))
+                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm:ss"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
-                                                    + "\", \"" + (sh.getSolicitud().getFechaProgramada() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
-                        + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")
+                        + "\", \"" + (sh.getSolicitud().getFechaProgramada() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
+                        + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")
                         + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoServicio().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
                         //                            + "\", \"" + (d.getFechaNotificacionCliente() == null ? "" : UtilFile.dateToString(d.getFechaNotificacionCliente(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaNotificacionCliente()) + " días)")
 
@@ -244,7 +259,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
                         + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
-                                                    + "\", \"" + (sh.getSolicitud().getFechaProgramada()== null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
+                        + "\", \"" + (sh.getSolicitud().getFechaProgramada() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")
                         + "\", \"" + sh.getSolicitud().getCondominio().getClave() + "-" + sh.getSolicitud().getTipoServicio().getClave() + "-" + formatter.format(sh.getSolicitud().getConsecutivo())
                         //                            + "\", \"" + (d.getFechaNotificacionCliente() == null ? "" : UtilFile.dateToString(d.getFechaNotificacionCliente(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaNotificacionCliente()) + " días)")
@@ -426,6 +441,14 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
 
     public void setPkCategoria(Long pkCategoria) {
         this.pkCategoria = pkCategoria;
+    }
+
+    public Long getPkInmueble() {
+        return pkInmueble;
+    }
+
+    public void setPkInmueble(Long pkInmueble) {
+        this.pkInmueble = pkInmueble;
     }
 
 }

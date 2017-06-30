@@ -196,6 +196,18 @@
                         <span class="help-block" id="comentarioMessage" />
                     </div>
                 </div>
+                        
+                <div class="form-group">
+                    <label class="col-lg-2 control-label text-right">Correo Electrónico</label>
+                    <div class="col-lg-9">
+                        <s:textfield id="asunto" name="solicitud.correoElectronico" class="form-control"
+                                     maxLength="200"
+                                     data-bv-notempty="true"
+                                     data-bv-notempty-message="Este campo es requerido" />
+                        <span class="help-block" id="solicitanteMessage" />
+                    </div>
+                </div> 
+                        
                 <div class="form-group">
                     <div class="col-lg-2" ></div>    
                     <div class="col-lg-9" id="comentarioContador" text-right></div>    
@@ -286,7 +298,8 @@
             type: 'POST',
             url: '/ajax/getTipoServicioSolicitudesAjax.action',
             dataType: 'json',
-            data: {pkTipoInmueble: $('#tiposInmueble').val()},
+            data: { busqueda: false,
+                    pkInmueble: $('#condominio').val()},
             beforeSend: function () {
                 dialog = BootstrapDialog.show({
                     title: 'Información',
@@ -323,7 +336,7 @@
             url: '/ajax/getAreasSolicitudesAjax.action',
             dataType: 'json',
             data: {
-                pkTipoInmueble: $('#tiposInmueble').val(),
+                pkInmueble: $('#condominio').val(),
                 pkTipoSolicitud: $('#tipoServicio').val()
             },
             beforeSend: function () {
@@ -362,7 +375,7 @@
             url: '/ajax/getCategoriasSolicitudesAjax.action',
             dataType: 'json',
             data: {
-                pkTipoInmueble: $('#tiposInmueble').val(),
+                pkInmueble: $('#condominio').val(),
                 pkTipoSolicitud: $('#tipoServicio').val(),
                 pkAreaId: $('#area').val()},
             beforeSend: function () {
@@ -392,6 +405,8 @@
 
         return false;
     }
+    
+   
 </script>
 
 

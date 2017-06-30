@@ -35,13 +35,15 @@ public class EnvioCorreosJob extends TareaQuartz {
                 String[] to = new String[1];
                 to[0] = s.getCorreoElectronico();
                 String body = "<b>Umbral:</b> " + s.getUmbral().toUpperCase() + "<br>"
-                        + "<b>Departamento:</b> " + s.getDepartamento().getNombre() + "<br>"
-                        + "<b>Condominio:</b> " + s.getDepartamento().getCondominio().getClave()  + "<br>"
+                        + "<b>Inmueble:</b> " + s.getSolicitud().getCondominio().getClave()  + "<br>"
                         + "<b>Solicitud:</b> " + s.getComentario() + "<br>"
                         + "<b>Solicitante:</b> " + s.getSolicitante() + "<br>"
-                        + "<b>Fecha de Solicitud:</b> " + UtilFile.dateToString(s.getFechaSolicitud(), "dd-MM-yyyy hh:mm")+ "<br><br>"
+                        + "<b>Fecha Ingreso Ticket:</b> " + UtilFile.dateToString(s.getFechaIngresoTicket(), "dd-MM-yyyy hh:mm")+ "<br><br>"
                         + "<i>Por favor, no responda a este correo, el cuál fue generado automáticamente para ayudar a identificar las solicitudes que tienen la necesidad de ser atendidas de forma urgente.</i>";
-                super.sendEmail("neooku@gmail.com", to, "Envío Automático: Departamento " + s.getDepartamento().getNombre(), body, null);
+                super.sendEmail("neooku@gmail.com", to, "["+ s.getId()+"] Seguimiento a Tickets : " + s.getComentario(), body, null);
+                //Control
+                to[0] ="neooku@gmail.com";
+                super.sendEmail("neooku@gmail.com", to , "CC["+ s.getId()+"] Seguimiento a Tickets : " + s.getComentario(), body, null);
             }
 
         } catch (MessagingException ex) {
