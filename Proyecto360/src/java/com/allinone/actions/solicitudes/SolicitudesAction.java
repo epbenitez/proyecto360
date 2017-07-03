@@ -349,10 +349,27 @@ public class SolicitudesAction extends BaseAction {
 
     /**
      * Establece permisos por usuario, por condominio
-     *
+     * Verion para AIO
      * @return
      */
     public String permisos() {
+        Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
+        tipos = getDaos().getSolicitudesTipoServicioDao().findAll();
+        if (isAdministrator()) {
+            condominios = getDaos().getCondominioDao().findAll();
+        } else {
+
+            condominios = getDaos().getCondominioDao().condominiosPorUsuario(u.getId());
+        }
+        usuarios = getDaos().getUsuarioDao().findAll();
+        return INPUT;
+    }
+    
+    /**
+     * Establece permisos por usuario / condominio 360
+     * @return 
+     */
+    public String privilegios() {
         Usuario u = (Usuario) ActionContext.getContext().getSession().get("usuario");
         tipos = getDaos().getSolicitudesTipoServicioDao().findAll();
         if (isAdministrator()) {

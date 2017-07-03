@@ -167,7 +167,7 @@
                     <div class="clearfix" >&nbsp;</div><div class="clearfix" >&nbsp;</div>
                     <div class="form-group">
                         <label class="col-lg-2 control-label text-right">
-                            Condominio:
+                            Inmueble:
                         </label>
                         <div class="col-lg-9">
                             <s:select id="condominio"  class="form-control" 

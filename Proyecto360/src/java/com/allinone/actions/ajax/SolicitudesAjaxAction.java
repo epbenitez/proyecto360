@@ -31,6 +31,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
     private Long pkTorre;
     private Long pkDepartamento;
     private Long pkTipo;
+    private String pkTipoServicios;
     private Long pkEstado;
 
     private Long pkPermiso;
@@ -326,6 +327,44 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
         return SUCCESS_JSON;
     }
 
+    /**
+     * Version 360 (varios tipos de servicio en una transacción)
+     *
+     * @return
+     */
+    public String agregaPrivilegio() {
+
+        if (pkCondominio == null || pkTipoServicios == null || pkTipoPermiso == null || pkUsuario == null
+                || pkCondominio.equals("") || pkTipoServicios.equals("") || pkTipoPermiso.equals("") || pkUsuario.equals("")) {
+            return SUCCESS_JSON;
+        }
+
+//        System.out.println("pkTipoServicios" + pkTipoServicios);
+        String[] listaServicios = pkTipoServicios.split(",");
+        for (String servicio : listaServicios) {
+            pkTipo = new Long(servicio.trim());
+            SolicitudesPermisos permiso = new SolicitudesPermisos();
+            permiso.setCondominio(new Condominio(pkCondominio));
+            permiso.setPermiso(pkTipoPermiso);
+            permiso.setTipoServicio(new SolicitudesTipoServicio(pkTipo));
+            permiso.setUsuario(new Usuario(pkUsuario));
+
+            try {
+                List<SolicitudesPermisos> permisos = getDaos().getSolicitudesPermisosDao().findBy(pkCondominio, pkTipo, pkTipoPermiso, pkUsuario);
+                if (permisos == null || permisos.isEmpty()) {
+                    getDaos().getSolicitudesPermisosDao().save(permiso);
+                } else {
+                    getJsonResult().add("[\"El permiso especificado ya existe, por lo cual no fué agregado.\"]");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                getJsonResult().add("[\"Hubo un problema al tratar de insertar el permiso, por lo cual no fué agregado.\"]");
+            }
+        }
+        getJsonResult().add("[\"El permiso especificado fue agregado exitósamente.\"]");
+        return SUCCESS_JSON;
+    }
+
     public String eliminaPermiso() {
 
         if (pkPermiso == null || pkPermiso.equals("")) {
@@ -449,6 +488,14 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
 
     public void setPkInmueble(Long pkInmueble) {
         this.pkInmueble = pkInmueble;
+    }
+
+    public String getPkTipoServicios() {
+        return pkTipoServicios;
+    }
+
+    public void setPkTipoServicios(String pkTipoServicios) {
+        this.pkTipoServicios = pkTipoServicios;
     }
 
 }
