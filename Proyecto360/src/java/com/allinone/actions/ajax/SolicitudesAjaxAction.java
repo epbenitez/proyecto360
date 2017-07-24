@@ -200,7 +200,14 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                 List<SolicitudesTipoServicio> tipos = new ArrayList<SolicitudesTipoServicio>();
                 if (permisos != null) {
                     for (SolicitudesPermisos p : permisos) {
-                        tipos.add(p.getTipoServicio());
+                        //Si no seleccionaron Tipo de Servicio, muestra todos a los que tiene permiso
+                        if (pkTipo == null || pkTipo.toString().trim().equals("")) {
+                            tipos.add(p.getTipoServicio());
+                        }else{
+                            if(p.getTipoServicio().getId().equals(pkTipo)){
+                                tipos.add(p.getTipoServicio());
+                            }
+                        }
                     }
                     //Quitando duplicados
                     Set<SolicitudesTipoServicio> tipoServicioSet = new LinkedHashSet<SolicitudesTipoServicio>(tipos);
@@ -231,7 +238,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                 getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
                         + "\", \"" + sh.getSolicitud().getTipoServicio().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
-                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm:ss"))
+                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm aa"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd hh:mm") + " (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaProgramada() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd") + " (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")
@@ -258,7 +265,7 @@ public class SolicitudesAjaxAction extends JSONAjaxAction {
                 getJsonResult().add("[\"" + sh.getSolicitud().getCondominio().getNombre()
                         + "\", \"" + sh.getSolicitud().getTipoServicio().getNombre()
                         + "\", \"" + sh.getSolicitud().getEstadoSolicitud().getNombre()
-                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm"))
+                        + "\", \"" + (sh.getSolicitud().getFechaIngresoTicket() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaIngresoTicket(), "yyyy-MM-dd hh:mm aa"))
                         //                            + "\", \"" + (d.getFechaLectura() == null ? "" : UtilFile.dateToString(d.getFechaLectura(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(d.getFechaSolicitud(), d.getFechaLectura()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaProgramada() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaProgramada(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaProgramada()) + " días)")
                         + "\", \"" + (sh.getSolicitud().getFechaAtencion() == null ? "" : UtilFile.dateToString(sh.getSolicitud().getFechaAtencion(), "yyyy-MM-dd") + "<br> (" + UtilFile.getDias(sh.getSolicitud().getFechaIngresoTicket(), sh.getSolicitud().getFechaAtencion()) + " días)")

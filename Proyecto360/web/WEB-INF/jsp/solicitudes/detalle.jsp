@@ -233,7 +233,7 @@
                 <div>&nbsp;</div>
             </div>
 
-            <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADMINCONDOMINIO">       
+            <security:authorize ifAnyGranted="ROLE_ADMIN">       
                 <div class="main-box clearfix">
 
                     <div class="clearfix" >&nbsp;</div>
