@@ -106,9 +106,9 @@
                 <decorator:head />
 
             </head>
-            <body  class="fixed-header fixed-footer boxed-layout pace-done theme-blue-gradient">
+            <body  class="boxed-layout pace-done theme-red">
                 <div id="theme-wrapper">
-                    <header class="navbar" id="header-navbar">
+<!--                    <header class="navbar" id="header-navbar">
                         <div class="container">
                             <a href="/index.action" id="logo" class="navbar-brand">
                                 <i class="fa fa-building-o"> &nbsp;</i>360
@@ -129,7 +129,7 @@
                                             </a>
                                         </li>
 
-                                        <!--                                        <li class="dropdown hidden-xs">
+                                                                                <li class="dropdown hidden-xs">
                                                                                     <a class="btn dropdown-toggle" data-toggle="dropdown">
                                                                                         New Item
                                                                                         <i class="fa fa-caret-down"></i>
@@ -160,7 +160,7 @@
                                                                                             </a>
                                                                                         </li>
                                                                                     </ul>
-                                                                                </li>-->
+                                                                                </li>
 
                                     </ul>
                                 </div>
@@ -219,7 +219,7 @@
                                 </div>
                             </div>
                         </div>
-                    </header>
+                    </header>-->
                                                 <% String classcontainer="container"; %>
                                                     <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
                                                         <% classcontainer="container nav-small"; %>
@@ -229,7 +229,7 @@
                             <div id="nav-col">
                                 <section id="col-left" class="col-left-nano">
                                     <div id="col-left-inner" class="col-left-nano-content">
-
+<!-- 
                                         <security:authorize ifAnyGranted="ROLE_PROPIETARIO">
                                             <div id="" class="clearfix hidden-sm hidden-xs dropdown profile2-dropdown" style="text-align: center">
                                                 <img src="/img/logo_torres/<s:property value="deptoUsuario.departamento.condominio.clave" />.png" alt="<s:property value="deptoUsuario.departamento.torre.nombre" />"/>
@@ -240,6 +240,7 @@
                                                 <img src="/custom/images/user.jpg" alt="" class="fa fa-user"/>
                                             </div>
                                         </security:authorize>
+-->
                                         <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
                                             <%=ActionContext.getContext().getSession().get("menu")%>
                                         </div>
@@ -273,11 +274,11 @@
                                     </div>
                                 </div>
 
-                                <footer id="footer-bar" class="row">
+<!--                                <footer id="footer-bar" class="row">
                                     <p id="footer-copyright" class="col-xs-12">
                                         Proyecto 360 
                                     </p>
-                                </footer>
+                                </footer>-->
                             </div>
                         </div>
                     </div>

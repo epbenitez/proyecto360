@@ -40,6 +40,8 @@
         $(document).ready(function () {
             
             $("body").removeClass("boxed-layout");
+            
+            $("#page-wrapper").addClass("nav-small")
 
             $('.fancybox').fancybox({
                 autoSize: true,

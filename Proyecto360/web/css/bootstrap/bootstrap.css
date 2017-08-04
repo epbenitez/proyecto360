@@ -1532,7 +1532,7 @@ dd {
 .dl-horizontal dd:after {
   clear: both;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .dl-horizontal dt {
     float: left;
     width: 160px;
@@ -1689,7 +1689,7 @@ pre code {
     width: 750px;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .container {
     width: 970px;
   }
@@ -2150,7 +2150,7 @@ pre code {
     margin-left: 100%;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
     float: left;
   }
@@ -3740,7 +3740,7 @@ tbody.collapse.in {
   margin-bottom: 1px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-right .dropdown-menu {
     right: 0;
     left: auto;
@@ -4246,7 +4246,7 @@ tbody.collapse.in {
 .navbar:after {
   clear: both;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar {
     border-radius: 4px;
   }
@@ -4259,7 +4259,7 @@ tbody.collapse.in {
 .navbar-header:after {
   clear: both;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-header {
     float: left;
   }
@@ -4283,7 +4283,7 @@ tbody.collapse.in {
 .navbar-collapse.in {
   overflow-y: auto;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-collapse {
     width: auto;
     border-top: 0;
@@ -4323,7 +4323,7 @@ tbody.collapse.in {
   margin-right: -15px;
   margin-left: -15px;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .container > .navbar-header,
   .container > .navbar-collapse,
   .container-fluid > .navbar-header,
@@ -4337,7 +4337,7 @@ tbody.collapse.in {
   z-index: 1000;
   border-width: 0 0 1px;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-static-top {
     border-radius: 0;
   }
@@ -4350,7 +4350,7 @@ tbody.collapse.in {
   left: 0;
   z-index: 1030;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-fixed-top,
   .navbar-fixed-bottom {
     border-radius: 0;
@@ -4381,7 +4381,7 @@ tbody.collapse.in {
 .navbar-brand > img {
   display: block;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
     margin-left: -15px;
   }
@@ -4411,7 +4411,7 @@ tbody.collapse.in {
 .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-toggle {
     display: none;
   }
@@ -4446,7 +4446,7 @@ tbody.collapse.in {
     background-image: none;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-nav {
     float: left;
     margin: 0;
@@ -4529,7 +4529,7 @@ tbody.collapse.in {
     margin-bottom: 0;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-form {
     width: auto;
     border: 0;
@@ -4572,7 +4572,7 @@ tbody.collapse.in {
   margin-top: 15px;
   margin-bottom: 15px;
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-text {
     float: left;
     margin-left: 15px;
@@ -4580,7 +4580,7 @@ tbody.collapse.in {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .navbar-left {
     float: left !important;
   }
@@ -6046,7 +6046,7 @@ button.close {
     width: 300px;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .modal-lg {
     width: 900px;
   }
@@ -6648,7 +6648,7 @@ button.close {
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 892px) and (max-width: 1199px) {
   .visible-md {
     display: block !important;
   }
@@ -6666,19 +6666,19 @@ button.close {
     display: table-cell !important;
   }
 }
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 892px) and (max-width: 1199px) {
   .visible-md-block {
     display: block !important;
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 892px) and (max-width: 1199px) {
   .visible-md-inline {
     display: inline !important;
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 892px) and (max-width: 1199px) {
   .visible-md-inline-block {
     display: inline-block !important;
   }
@@ -6730,7 +6730,7 @@ button.close {
     display: none !important;
   }
 }
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 892px) and (max-width: 1199px) {
   .hidden-md {
     display: none !important;
   }
