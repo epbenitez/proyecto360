@@ -38,40 +38,76 @@
 
         <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.print.min.js"></script>
 
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tipoInmueblesId').DataTable();
+                $('#tipoInmueblesId_length').hide();
+                $('#tipoInmueblesId_filter').hide();
+                $('#tipoInmueblesId_info').hide();
+                $('#tipoInmueblesId_paginate').hide();
+
+            });
+        </script>
     </head>
 
 
     <s:form id="cargaForm" action="masivoResultadoAltaUsuario.action" method="POST" enctype="multipart/form-data">
 
-        <h1>Carga de Condominios y Usuarios</h1>
-        
+        <h1>Carga de Inmuebles</h1>
 
-            <div class="main-box clearfix">
-                <div class="clearfix">&nbsp;</div>  
 
-                <div class="col-md-12">
-                    <s:if test="hasActionErrors()">
-                        <div class="alert alert-danger">
-                            <i class="fa fa-times-circle fa-fw fa-lg"></i>
-                            <strong>&iexcl;Error!</strong> <s:actionerror/>
-                        </div>
-                    </s:if>
-                    <s:if test="hasActionMessages()">
-                        <div class="alert alert-success">
-                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
-                            <strong>&iexcl;Realizado!</strong> <s:actionmessage />
-                        </div>
+        <div class="main-box clearfix">
+            <div class="clearfix">&nbsp;</div>  
 
-                    </s:if>
-                </div>
-                <div class="col-lg-12">
+            <div class="col-md-12">
+                <s:if test="hasActionErrors()">
+                    <div class="alert alert-danger">
+                        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                        <strong>&iexcl;Error!</strong> <s:actionerror/>
+                    </div>
+                </s:if>
+                <s:if test="hasActionMessages()">
+                    <div class="alert alert-success">
+                        <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                        <strong>&iexcl;Realizado!</strong> <s:actionmessage />
+                    </div>
 
-                    <h3 style="margin-top: 5px; margin-left: 10px"><span>Carga Masiva de Usuarios</span></h3>
+                </s:if>
+            </div>
+            <div class="col-lg-12">
 
+                <h3 style="margin-top: 5px; margin-left: 10px"><span>Selecci&oacute;n de Archivo</span></h3>
+                <p>
+                    Es necesario ingresar el formato correcto. 
+                    Si no cuenta con el formato, puede descargarlo <a target="_blank" href="/resources/ejemplos/360-CargaMasivaUsuarios.xlsx" >  aquí</a>.
+                </p>
+                <p>La columna "Tipo de Inmueble" debe contener uno de los siguientes valores:</p>
+                <div class="main-box clearfix">
+                    <div class="col-lg-6">    
+                        <div class="clearfix">&nbsp;</div> 
+                        <table  id="tipoInmueblesId" class="table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Tipo de Inmueble</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <s:iterator value="tipoInmuebleLista" >
+                                    <tr>
+                                        <th><s:property value="id" escape="false" ></s:property></th>
+                                        <th><s:property value="nombre" escape="false" ></s:property></th>
+                                        </tr>
+                                </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-12">&nbsp;</div>
                     <div class="col-md-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-file-excel-o"></i></span>
-                            <s:file  class="file" data-show-preview="true" labelposition="left" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" name="upload" />
+                                <s:file  class="file" data-show-preview="true" labelposition="left" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" name="upload" />
                             <span class="help-block" id="estadoMessage" />
                         </div>
                     </div>
@@ -81,11 +117,11 @@
                         <button type="submit" id="cargar" class="btn btn-success">Cargar</button>
                     </div>
                     <div class="clearfix">&nbsp;</div>   
-
                 </div>
-
-
             </div>
+
+
+        </div>
 
     </s:form>
 

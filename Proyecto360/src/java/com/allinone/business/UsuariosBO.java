@@ -4,12 +4,12 @@ import com.allinone.persistence.model.Condominio;
 import com.allinone.persistence.model.Departamento;
 import com.allinone.persistence.model.DepartamentoUsuario;
 import com.allinone.persistence.model.Rol;
-import com.allinone.persistence.model.TipoDepartamento;
+import com.allinone.persistence.model.SolicitudesTipoInmueble;
 import com.allinone.persistence.model.Torre;
 import com.allinone.persistence.model.Usuario;
+import com.allinone.persistence.model.UsuarioCondominio;
 import com.allinone.persistence.model.UsuarioPrivilegio;
 import com.allinone.service.Service;
-import com.allinone.util.UtilFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
@@ -69,14 +69,13 @@ public class UsuariosBO extends XlsLoaderBO {
 
         Integer columna = 0;
         String condominioStr = "";
-        String torreStr = "";
+        String tipoInmuebleStr = "";
         String departamentoStr;
         String usuarioStr = "";
         String pwdString = "";
         String estatusStr = "";
         Condominio condominio = new Condominio();
-        Torre torre = new Torre();
-        Departamento dpto = new Departamento();
+        SolicitudesTipoInmueble tipoInmueble = new SolicitudesTipoInmueble();
         Usuario usuario = new Usuario();
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
@@ -84,7 +83,27 @@ public class UsuariosBO extends XlsLoaderBO {
 
             try {
 
-                //------------------------CONDOMINIO----------------------------
+                //--------------------------ID INMUEBLE COLUMNA 2-------------------------------
+                if (row.getCell(1) != null && row.getCell(1).getCellType() != Cell.CELL_TYPE_BLANK) {
+                    columna = 2;
+                    try {
+                        tipoInmuebleStr = row.getCell(1).getStringCellValue();
+                    } catch (Exception e) {
+                        tipoInmuebleStr = row.getCell(1).getNumericCellValue() + "";
+                    }
+
+                    if (tipoInmuebleStr != null && !tipoInmuebleStr.isEmpty()) {
+                        if (tipoInmuebleStr.indexOf(".") > 0) {
+                            tipoInmuebleStr = tipoInmuebleStr.trim().substring(0, tipoInmuebleStr.indexOf("."));
+                        }
+                        tipoInmueble = service.getSolicitudesTipoInmuebleDao().findById(new Long(tipoInmuebleStr));
+                        if (tipoInmueble == null) {
+                            throw new Exception("Tipo de Inmueble no reconocido (" + tipoInmuebleStr + ")");
+                        }
+                    }
+                }
+
+                //------------------------CONDOMINIO COLUMNA 1----------------------------
                 if (row.getCell(0) != null && row.getCell(0).getCellType() != Cell.CELL_TYPE_BLANK) {
                     columna = 1;
                     condominioStr = row.getCell(0).getStringCellValue();
@@ -94,84 +113,42 @@ public class UsuariosBO extends XlsLoaderBO {
                             condominio = new Condominio();
                             condominio.setClave(condominioStr.replaceAll(" ", ""));
                             condominio.setNombre(condominioStr);
+                            condominio.setTipoInmueble(tipoInmueble);
                             condominio = service.getCondominioDao().save(condominio);
                         }
                     }
                 }
 
-                //--------------------------TORRE-------------------------------
-                if (row.getCell(1) != null && row.getCell(1).getCellType() != Cell.CELL_TYPE_BLANK) {
-                    columna = 2;
-                    torreStr = row.getCell(1).getStringCellValue();
-                    if (torreStr != null && !torreStr.isEmpty()) {
-                        String claveTorre = condominio.getNombre().replaceAll(" ", "") + torreStr.replaceAll(" ", "");
-                        torre = service.getTorreDao().findByClave(claveTorre);
-                        if (torre == null) {
-                            torre = new Torre();
-                            torre.setClave(claveTorre);
-                            torre.setNombre(torreStr);
-                            torre = service.getTorreDao().save(torre);
-                        }
-                    }
-                }
-
-                //------------------------DEPARTAMENTO--------------------------
-                if (row.getCell(2) != null && row.getCell(2).getCellType() != Cell.CELL_TYPE_BLANK) {
-                    columna = 3;
+                //------------------------USUARIO COLUMNA 4-------------------------------
+                if (row.getCell(3) != null && row.getCell(3).getCellType() != Cell.CELL_TYPE_BLANK) {
+                    columna = 4;
                     try {
-                        row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-                        departamentoStr = row.getCell(2).getStringCellValue();
+                        row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+                        usuarioStr = row.getCell(3).getStringCellValue();
                     } catch (Exception e) {
-                        departamentoStr = row.getCell(2).getNumericCellValue() + "";
-                    }
-
-                    if (departamentoStr != null) {
-                        if (departamentoStr.indexOf(".") >= 0) {
-                            departamentoStr = departamentoStr.substring(0, departamentoStr.indexOf("."));
-                        }
-
-                        dpto = service.getDepartamentoDao().findBy(departamentoStr, torre.getClave(), condominio.getId());
-                        if (dpto == null) {
-                            dpto = new Departamento();
-                            dpto.setCondominio(condominio);
-                            dpto.setTorre(torre);
-                            dpto.setNombre(departamentoStr);
-                            dpto.setTipoDepartamento(new TipoDepartamento(1L));
-                            dpto = service.getDepartamentoDao().save(dpto);
-                        }
-                    }
-                }
-
-                //------------------------USUARIO-------------------------------
-                if (row.getCell(4) != null && row.getCell(4).getCellType() != Cell.CELL_TYPE_BLANK) {
-                    columna = 5;
-                    try {
-                        row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
-                        usuarioStr = row.getCell(4).getStringCellValue();
-                    } catch (Exception e) {
-                        usuarioStr = row.getCell(4).getNumericCellValue() + "";
+                        usuarioStr = row.getCell(3).getNumericCellValue() + "";
                     }
 
                 }
                 //------------------------PASSWORD-------------------------------
-                if (row.getCell(5) != null && row.getCell(5).getCellType() != Cell.CELL_TYPE_BLANK) {
-                    columna = 6;
+                if (row.getCell(4) != null && row.getCell(4).getCellType() != Cell.CELL_TYPE_BLANK) {
+                    columna = 5;
                     try {
-                        row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
-                        pwdString = row.getCell(5).getStringCellValue();
+                        row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+                        pwdString = row.getCell(4).getStringCellValue();
                     } catch (Exception e) {
-                        pwdString = row.getCell(5).getNumericCellValue() + "";
+                        pwdString = row.getCell(4).getNumericCellValue() + "";
                     }
 
                 }
                 //------------------------ESTATUS-------------------------------
-                if (row.getCell(6) != null && row.getCell(6).getCellType() != Cell.CELL_TYPE_BLANK) {
-                    columna = 7;
+                if (row.getCell(5) != null && row.getCell(5).getCellType() != Cell.CELL_TYPE_BLANK) {
+                    columna = 6;
                     try {
-                        row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
-                        estatusStr = row.getCell(6).getStringCellValue();
+                        row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+                        estatusStr = row.getCell(5).getStringCellValue();
                     } catch (Exception e) {
-                        estatusStr = row.getCell(6).getNumericCellValue() + "";
+                        estatusStr = row.getCell(5).getNumericCellValue() + "";
                     }
 
                 }
@@ -196,34 +173,40 @@ public class UsuariosBO extends XlsLoaderBO {
                     }
                 }
 
-                //----------------RELACION USUARIO-DEPTO------------------------
-                if (dpto != null && usuario != null) {
-                    columna = 2000;
-                    DepartamentoUsuario du = new DepartamentoUsuario();
-                    du.setDepartamento(dpto);
-                    du.setUsuario(usuario);
-                    service.getDepartamentoUsuarioDao().save(du);
+                //-----RELACION CONDOMINIO-USUARIO------------------------------
+                if (condominio != null && usuario != null) {
+                    UsuarioCondominio uc = new UsuarioCondominio();
+                    uc.setCondominio(condominio);
+                    uc.setUsuario(usuario);
+                    service.getUsuarioCondominioDao().save(uc);
                 }
 
+//                //----------------RELACION USUARIO-DEPTO------------------------
+//                  ---YA NO APLICA--- 2017-09-04
+//                if (dpto != null && usuario != null) {
+//                    columna = 2000;
+//                    DepartamentoUsuario du = new DepartamentoUsuario();
+//                    du.setDepartamento(dpto);
+//                    du.setUsuario(usuario);
+//                    service.getDepartamentoUsuarioDao().save(du);
+//                }
                 logScreen.add("<tr><td>" + (i + 1) + "</td><td>"
-                        + dpto.getCondominio().getNombre() + "</td><td>"
-                        + dpto.getTorre().getNombre()+ "</td><td>"
-                        + dpto.getNombre() + "</td><td>"
+                        + condominio.getNombre() + "</td><td>"
+                        + tipoInmueble.getNombre() + "</td><td>"
                         + usuario.getUsuario() + "</td><td>"
                         + (usuario.isActivo() ? "Activo" : "Inactivo") + "</td>"
                         + "<td style='color:green'>OK</td></tr>");
 
             } catch (Exception e) {
                 if (columna == 1000) {
-                    logScreen.add("<tr><td>" + (i + 1) + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + ""
+                    logScreen.add("<tr><td>" + (i + 1) + "</td><td>" + "" + "</td><td>" + "" 
                             + "</td><td>" + "" + "</td><td>" + "" + "</td><td style='color:red'>ERROR AL INTENTAR CREAR EL USUARIO " + usuarioStr + "</td></tr>");
 
-                } else if (columna == 1000) {
-                    logScreen.add("<tr><td>" + (i + 1) + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + ""
-                            + "</td><td>" + "" + "</td><td>" + "" + "</td><td style='color:red'>ERROR AL ESTABLECER LA RELACION USUARIO - DEPARTAMENTO </td></tr>");
-
-                } else {
-                    logScreen.add("<tr><td>" + (i + 1) + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + ""
+                } else if (tipoInmueble == null) {
+                    logScreen.add("<tr><td>" + (i + 1) + "</td><td>" + "" + "</td><td>" + "" 
+                            + "</td><td>" + "" + "</td><td>" + "" + "</td><td style='color:red'>ERROR EN LA COLUMNA: " + columna + " ( "+ e.getMessage()+ ")</td></tr>");
+                }else {
+                    logScreen.add("<tr><td>" + (i + 1) + "</td><td>" + "" + "</td><td>" + "" 
                             + "</td><td>" + "" + "</td><td>" + "" + "</td><td style='color:red'>ERROR EN EL FORMATO DE LA COLUMNA: " + columna + "</td></tr>");
                 }
                 e.printStackTrace();

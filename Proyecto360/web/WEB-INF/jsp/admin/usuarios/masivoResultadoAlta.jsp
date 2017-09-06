@@ -104,7 +104,7 @@
 
         <div class="col-lg-12">
 
-            <h3 style="margin-top: 5px; margin-left: 10px"><span>Resultado de la operaci&oacute;n de carga de abonos</span></h3>
+            <h3 style="margin-top: 5px; margin-left: 10px"><span>Resultado de la operaci&oacute;n de carga de inmuebles/usuarios</span></h3>
 
             
         </div>
@@ -118,8 +118,7 @@
                     <tr>
                         <th>Rengl&oacute;n</th>
                         <th>Condominio</th>
-                        <th>Torre</th>
-                        <th>Departamento</th>
+                        <th>Tipo de Inmueble</th>
                         <th>Usuario</th>
                         <th>Estatus Usuario</th>
                         <th>Estatus Operación</th>

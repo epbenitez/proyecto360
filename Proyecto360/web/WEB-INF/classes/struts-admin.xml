@@ -8,6 +8,7 @@
             <result name="input">/WEB-INF/jsp/admin/usuarios/detalle.jsp</result>
             <result name="nuevo">/WEB-INF/jsp/admin/usuarios/nuevo.jsp</result>
             <result name="lista">/WEB-INF/jsp/admin/usuarios/lista.jsp</result>
+             <result name="masivo">/WEB-INF/jsp/admin/usuarios/masivo.jsp</result>
         </action>
                 
     </package>

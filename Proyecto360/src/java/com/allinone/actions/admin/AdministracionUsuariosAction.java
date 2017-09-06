@@ -6,6 +6,7 @@ import com.allinone.persistence.model.Condominio;
 import com.allinone.persistence.model.DepartamentoUsuario;
 import com.allinone.persistence.model.PersonalAdministrativo;
 import com.allinone.persistence.model.Rol;
+import com.allinone.persistence.model.SolicitudesTipoInmueble;
 import com.allinone.persistence.model.Usuario;
 import com.allinone.persistence.model.UsuarioCondominio;
 import com.allinone.persistence.model.UsuarioPrivilegio;
@@ -46,6 +47,8 @@ public class AdministracionUsuariosAction extends BaseAction implements Mensajes
 
     private List<Condominio> condominiolist = new ArrayList<Condominio>();
     private Long condominioId;
+    
+    private List<SolicitudesTipoInmueble> tipoInmuebleLista = new ArrayList<SolicitudesTipoInmueble>();
 
     /**
      * [form Función default para la administración de usuarios ]
@@ -187,7 +190,7 @@ public class AdministracionUsuariosAction extends BaseAction implements Mensajes
      * @return
      */
     public String masivo() {
-
+        tipoInmuebleLista = getDaos().getSolicitudesTipoInmuebleDao().findAll();
         return SUCCESS;
     }
 
@@ -197,6 +200,8 @@ public class AdministracionUsuariosAction extends BaseAction implements Mensajes
      * @return
      */
     public String masivoResultadoAlta() {
+        tipoInmuebleLista = getDaos().getSolicitudesTipoInmuebleDao().findAll();
+        
         if (getUpload() != null) {
 
             UsuariosBO bo = new UsuariosBO(getDaos());
@@ -237,21 +242,21 @@ public class AdministracionUsuariosAction extends BaseAction implements Mensajes
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();
                     addActionError(getText("carga.archivo.errorFmto"));
-                    return INPUT;
+                    return "masivo";
                 } catch (java.lang.Exception le) {
                     addActionError(getText("carga.archivo.error.sistema"));// + hideError(le));
                     le.printStackTrace();
-                    return INPUT;
+                    return "masivo";
                 }
             } // Si no es el content type deseado
             else {
                 addActionError(getText("carga.archivo.errorFmto"));
-                return INPUT;
+                return "masivo";
             }
 
         } else {
             addActionError(getText("carga.archivo.errorFile"));
-            return INPUT;
+            return "masivo";
 
         }
         return SUCCESS;
@@ -383,6 +388,14 @@ public class AdministracionUsuariosAction extends BaseAction implements Mensajes
 
     public void setCondominioId(Long condominioId) {
         this.condominioId = condominioId;
+    }
+
+    public List<SolicitudesTipoInmueble> getTipoInmuebleLista() {
+        return tipoInmuebleLista;
+    }
+
+    public void setTipoInmuebleLista(List<SolicitudesTipoInmueble> tipoInmuebleLista) {
+        this.tipoInmuebleLista = tipoInmuebleLista;
     }
 
 }
