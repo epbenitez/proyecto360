@@ -10,19 +10,19 @@
                           name="mysql_360Pool" non-transactional-connections="false" pool-resize-quantity="1" res-type="javax.sql.DataSource"
                           statement-timeout-in-seconds="-1" steady-pool-size="1" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
        
-        <property name="User" value="root"/> 
+        <!--        <property name="User" value="root"/> 
         <property name="Password" value="DadVeic5"/>
                 <property name="serverName" value="148.247.220.72"/> 
         <property name="portNumber" value="3306"/>
         <property name="databaseName" value="proyecto360"/>
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-         <!--
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+         
         <property name="User" value="root"/>
         <property name="Password" value="password"/>
-                <property name="serverName" value="127.0.0.1"/> 
+        <property name="serverName" value="127.0.0.1"/> 
         <property name="portNumber" value="3306"/>
-        <property name="databaseName" value="allinone"/>
+        <property name="databaseName" value="proyecto360"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        -->
+        
     </jdbc-connection-pool>
 </resources>
